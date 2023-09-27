@@ -37,20 +37,19 @@ public class CameraFusedPID extends LinearOpMode {
     private double lastError = 0;
 
     private BNO055IMU imu;
-    double cX = 0;
-    double cY = 0;
-    double width = 0;
+    static double cX = 0;
+    static double cY = 0;
+    static double width = 0;
 
     private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
     /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
-    private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
-    private static final double FOV = 46;
+    public static final int CAMERA_WIDTH = 1920; // width  of wanted camera resolution
+    public static final int CAMERA_HEIGHT = 1080; // height of wanted camera resolution
+    private static final double FOV = 46.4;
 
     // Calculate the distance using the formula
     public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
-    public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
-
+    public static final double focalLength = 1425;  // Replace with the focal length of the camera in pixels
 
     @Override
     public void runOpMode() {
@@ -86,7 +85,7 @@ public class CameraFusedPID extends LinearOpMode {
         controlHubCam.stopStreaming();
     }
 
-    private void initOpenCV() {
+    public void initOpenCV() {
 
         // Create an instance of the camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
@@ -101,14 +100,18 @@ public class CameraFusedPID extends LinearOpMode {
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
     }
-    class YellowBlobDetectionPipeline extends OpenCvPipeline {
+    static class YellowBlobDetectionPipeline extends OpenCvPipeline {
+        Mat yellowMask;
+        List<MatOfPoint> contours;
+
         @Override
         public Mat processFrame(Mat input) {
             // Preprocess the frame to detect yellow regions
-            Mat yellowMask = preprocessFrame(input);
+
+            yellowMask = preprocessFrame(input);
 
             // Find contours of the detected yellow regions
-            List<MatOfPoint> contours = new ArrayList<>();
+            contours = new ArrayList<>();
             Mat hierarchy = new Mat();
             Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
@@ -160,7 +163,7 @@ public class CameraFusedPID extends LinearOpMode {
             return yellowMask;
         }
 
-        private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
+        public static MatOfPoint findLargestContour(List<MatOfPoint> contours) {
             double maxArea = 0;
             MatOfPoint largestContour = null;
 
@@ -174,7 +177,7 @@ public class CameraFusedPID extends LinearOpMode {
 
             return largestContour;
         }
-        private double calculateWidth(MatOfPoint contour) {
+        public static double calculateWidth(MatOfPoint contour) {
             Rect boundingRect = Imgproc.boundingRect(contour);
             return boundingRect.width;
         }
@@ -184,7 +187,7 @@ public class CameraFusedPID extends LinearOpMode {
         double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
         return midpoint;
     }
-    private static double getDistance(double width){
+    public static double getDistance(double width){
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
     }
@@ -208,5 +211,8 @@ public class CameraFusedPID extends LinearOpMode {
         return radians;
     }
 
+    public static double getWidth() {
+        return width;
+    }
 
 }

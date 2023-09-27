@@ -32,8 +32,8 @@ public class opencv extends LinearOpMode {
     double width = 0;
 
     private OpenCvCamera webcam;  // Use OpenCvCamera class from FTC SDK
-    private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 1920; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 1080; // height of wanted camera resolution
 
     // Calculate the distance using the formula
     public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
@@ -94,10 +94,13 @@ public class opencv extends LinearOpMode {
         webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
     }
     class YellowBlobDetectionPipeline extends OpenCvPipeline {
+
+        Mat yellowMask;
+
         @Override
         public Mat processFrame(Mat input) {
             // Preprocess the frame to detect yellow regions
-            Mat yellowMask = preprocessFrame(input);
+            yellowMask = preprocessFrame(input);
 
             // Find contours of the detected yellow regions
             List<MatOfPoint> contours = new ArrayList<>();
