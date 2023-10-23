@@ -1,14 +1,20 @@
 package org.firstinspires.ftc.teamcode.drive.Sensors;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import android.graphics.Color;
+
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class SensorColor {
     private ColorSensor color;
     private LinearOpMode opmode;
+    private DcMotorEx frontLeft, frontRight, backRight, backLeft;
     public SensorColor(HardwareMap hardwareMap, LinearOpMode opMode) {
         color = hardwareMap.get(ColorSensor.class, "colorSensor");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         this.opmode = opMode;
     }
     public void colorDetection(boolean redOrBlue) {
@@ -24,6 +30,12 @@ public class SensorColor {
         } else if (!redOrBlue && hsvValues[0] < 35) {
             opmode.telemetry.addData("Red", "You are over Red");
             opmode.telemetry.update();
+        }
+        else{
+            frontRight.setPower(0.5);
+            frontLeft.setPower(0.5);
+            backRight.setPower(0.5);
+            backLeft.setPower(0.5);
         }
         opmode.telemetry.update();
     }
