@@ -17,6 +17,7 @@ public class SensorColor {
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         this.opmode = opMode;
     }
+
     public void colorDetection(boolean redOrBlue) {
 
         float[] hsvValues = {0F, 0F, 0F};

@@ -21,6 +21,7 @@ public class TeleOp_Drive extends LinearOpMode {
         Launcher launcher = new Launcher(hardwareMap, this);
         Spintake spintake = new Spintake(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
+        FourBar fourBar = new FourBar(hardwareMap, this);
         SensorColor sensorColor = new SensorColor(hardwareMap, this);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -38,8 +39,15 @@ public class TeleOp_Drive extends LinearOpMode {
 
             spintake.spin();
             slides.moveSlides();
-            launcher.launch();
-            launcher.resetPos();
+            if (gamepad2.right_bumper)
+                launcher.launch();
+            if (gamepad2.left_bumper)
+                launcher.resetPos();
+
+            if (gamepad2.x)
+                fourBar.resetPos();
+            if (gamepad2.a)
+                fourBar.rotate();
         }
 
 

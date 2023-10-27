@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 public class Launcher {
     private Servo launcher;
     private LinearOpMode opmode;
-    private final double START_POS = 0.0;
-    private final double END_POS = 0.4;
+    private final double START_POS = 1;
+    private final double END_POS = 0.6;
 
     public Launcher(HardwareMap hardwareMap, LinearOpMode opmode) {
         launcher = hardwareMap.get(Servo.class, "launcher");
@@ -20,14 +20,15 @@ public class Launcher {
     }
 
     public void resetPos() {
-        if (opmode.gamepad2.left_bumper) {
-            launcher.setPosition(START_POS);
-        }
+        launcher.setPosition(START_POS);
+        opmode.telemetry.addData("LauncherPos: ", launcher.getPosition());
+        opmode.telemetry.update();
     }
 
     public void launch() {
-        if (opmode.gamepad2.right_bumper)
-            launcher.setPosition(END_POS);
+        launcher.setPosition(END_POS);
+        opmode.telemetry.addData("LauncherPos: ", launcher.getPosition());
+        opmode.telemetry.update();
     }
 
 

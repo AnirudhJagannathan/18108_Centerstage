@@ -4,23 +4,23 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class FourBar {
-    private Servo fourBar;
+    private Servo fourbarLeft;
+    private Servo fourBarRight;
     private LinearOpMode opmode;
-    private final double START_POS = 0.0;
-    private final double END_POS = 0.5;
+    private final double START_POS = 0.95;
+    private final double END_POS = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
-        fourBar = hardwareMap.get(Servo.class, "fourBar");
+        fourbarLeft = hardwareMap.get(Servo.class, "fourBarLeft");
+        fourBarRight = hardwareMap.get(Servo.class, "fourBarRight");
         this.opmode = opmode;
     }
-    public void raise(){
-        if (opmode.gamepad2.x){
-            fourBar.setPosition(START_POS);
-        }
+    public void resetPos(){
+        fourbarLeft.setPosition(START_POS);
+        fourBarRight.setPosition(START_POS);
     }
-    public void lower(){
-        if (opmode.gamepad2.y){
-            fourBar.setPosition(END_POS);
-        }
+    public void rotate(){
+        fourbarLeft.setPosition(END_POS);
+        fourBarRight.setPosition(END_POS);
     }
 
 }
