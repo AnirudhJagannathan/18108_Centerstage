@@ -24,7 +24,7 @@ public class Localizer {
         this.opmode = opMode;
     }
     public void position_tracking(){
-        // tracking x-coordinate
-        float x = rightEncoder.getCurrentPosition() + leftEncoder.getCurrentPosition();
+
+
     }
 }

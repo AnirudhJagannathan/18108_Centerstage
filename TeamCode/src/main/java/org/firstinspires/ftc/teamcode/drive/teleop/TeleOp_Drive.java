@@ -25,11 +25,12 @@ public class TeleOp_Drive extends LinearOpMode {
         SensorColor sensorColor = new SensorColor(hardwareMap, this);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slides.resetSlides();
 
         waitForStart();
 
         while (!isStopRequested()) {
-            drive.setWeightedDrivePower(
+             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
@@ -37,16 +38,19 @@ public class TeleOp_Drive extends LinearOpMode {
                     )
             );
 
+
+
             spintake.spin();
+            spintake.outtake();
             slides.moveSlides();
-            if (gamepad2.right_bumper)
+            if (gamepad2.y)
                 launcher.launch();
             if (gamepad2.left_bumper)
                 launcher.resetPos();
 
-            if (gamepad2.x)
+            if (gamepad2.left_trigger > 0)
                 fourBar.resetPos();
-            if (gamepad2.a)
+            else if (gamepad2.right_trigger > 0)
                 fourBar.rotate();
         }
 

@@ -1,26 +1,27 @@
 package org.firstinspires.ftc.teamcode.drive.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class FourBar {
-    private Servo fourbarLeft;
-    private Servo fourBarRight;
+    private CRServo fourbarLeft;
+    private CRServo fourBarRight;
     private LinearOpMode opmode;
     private final double START_POS = 0.95;
     private final double END_POS = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
-        fourbarLeft = hardwareMap.get(Servo.class, "fourBarLeft");
-        fourBarRight = hardwareMap.get(Servo.class, "fourBarRight");
+        fourbarLeft = hardwareMap.get(CRServo.class, "fourBarLeft");
+        fourBarRight = hardwareMap.get(CRServo.class, "fourBarRight");
         this.opmode = opmode;
     }
     public void resetPos(){
-        fourbarLeft.setPosition(START_POS);
-        fourBarRight.setPosition(START_POS);
+        fourbarLeft.setPower(-0.25);
+        fourBarRight.setPower(-0.25);
     }
-    public void rotate(){
-        fourbarLeft.setPosition(END_POS);
-        fourBarRight.setPosition(END_POS);
+    public void rotate() {
+        fourbarLeft.setPower(1.0);
+        fourBarRight.setPower(1.0);
     }
 
 }
