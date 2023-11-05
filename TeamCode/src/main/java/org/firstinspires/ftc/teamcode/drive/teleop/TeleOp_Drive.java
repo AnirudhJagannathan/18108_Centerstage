@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.Sensors.SensorColor;
+import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
+import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 
 @TeleOp
 public class TeleOp_Drive extends LinearOpMode {
@@ -22,7 +23,7 @@ public class TeleOp_Drive extends LinearOpMode {
         Spintake spintake = new Spintake(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
-        SensorColor sensorColor = new SensorColor(hardwareMap, this);
+        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slides.resetSlides();
@@ -43,15 +44,20 @@ public class TeleOp_Drive extends LinearOpMode {
             spintake.spin();
             spintake.outtake();
             slides.moveSlides();
+            /* if (gamepad1.x) {
+                sensorDistance.lengthDetection();
+                sensorDistance.distanceDetection(hardwareMap);
+                }
+             */
             if (gamepad2.y)
                 launcher.launch();
             if (gamepad2.left_bumper)
                 launcher.resetPos();
-
             if (gamepad2.left_trigger > 0)
                 fourBar.resetPos();
             else if (gamepad2.right_trigger > 0)
                 fourBar.rotate();
+
         }
 
 

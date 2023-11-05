@@ -25,7 +25,7 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     final int ONE_SHIP_THRESHOLD = 150;
     final int NONE_SHIP_THRESHOLD = 50;
 
-    // Upper-left point of the rectangle where shipping elemnt will be defined
+    // Upper-left point of the rectangle where shipping element will be defined
     static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(67, 60);
     // The width of the rectangle where the sh. el. will be defined
     static final int REGION_WIDTH = 20;
