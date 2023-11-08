@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.Range;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
@@ -19,11 +20,12 @@ public class TeleOp_Drive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        CenterstageBot csBot = new CenterstageBot(hardwareMap, this);
         Launcher launcher = new Launcher(hardwareMap, this);
         Spintake spintake = new Spintake(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
-        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
+        // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slides.resetSlides();
@@ -31,14 +33,16 @@ public class TeleOp_Drive extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested()) {
-             drive.setWeightedDrivePower(
+             /* drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
                             -gamepad1.right_stick_x
                     )
             );
+              */
 
+            csBot.mecanumDriving();
 
 
             spintake.spin();

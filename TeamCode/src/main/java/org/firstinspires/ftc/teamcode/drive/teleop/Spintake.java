@@ -11,7 +11,7 @@ public class Spintake {
     private DcMotorEx spintake;
     private LinearOpMode opmode;
     private boolean on;
-    private final double POWER = 0.3;
+    private final double POWER = 1.0;
 
     public Spintake(HardwareMap hardwareMap, LinearOpMode opmode) {
         spintake = hardwareMap.get(DcMotorEx.class, "spintake");
