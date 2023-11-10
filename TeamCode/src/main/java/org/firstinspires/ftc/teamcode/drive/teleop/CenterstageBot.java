@@ -25,17 +25,17 @@ public class CenterstageBot {
         double v1, v2, v3, v4;
 
         if (opmode.gamepad1.right_bumper) {
-            v1 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
-            v2 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
-            v3 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
-            v4 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
+            v1 = Range.clip(-drive + strafe + turn, -0.2, 0.2);
+            v2 = Range.clip(-drive - strafe - turn, -0.2, 0.2);
+            v3 = Range.clip(-drive + strafe - turn, -0.2, 0.2);
+            v4 = Range.clip(-drive - strafe + turn, -0.2, 0.2);
         }
 
         else {
             v1 = Range.clip(-drive + strafe + turn, -1, 1);
-            v2 = Range.clip(-drive - strafe + turn, -1, 1);
+            v2 = Range.clip(-drive - strafe - turn, -1, 1);
             v3 = Range.clip(-drive + strafe - turn, -1, 1);
-            v4 = Range.clip(-drive - strafe - turn, -1, 1);
+            v4 = Range.clip(-drive - strafe + turn, -1, 1);
         }
         leftFront.setPower(v1);
         rightFront.setPower(v2);

@@ -11,7 +11,7 @@ public class Spintake {
     private DcMotorEx spintake;
     private LinearOpMode opmode;
     private boolean on;
-    private final double POWER = 1.0;
+    private final double POWER = 0.7;
 
     public Spintake(HardwareMap hardwareMap, LinearOpMode opmode) {
         spintake = hardwareMap.get(DcMotorEx.class, "spintake");
@@ -34,5 +34,10 @@ public class Spintake {
     public void outtake() {
         if (opmode.gamepad2.right_bumper)
             spintake.setPower(-POWER);
+    }
+
+    public void outtake(long time) {
+        spintake.setPower(-0.5 * POWER);
+        opmode.sleep(time);
     }
 }

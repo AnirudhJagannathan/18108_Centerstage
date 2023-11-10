@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 public class Launcher {
     private Servo launcher;
     private LinearOpMode opmode;
-    private final double START_POS = 1;
-    private final double END_POS = 0.6;
+    private final double START_POS = 0.6;
+    private final double END_POS = 1;
 
     public Launcher(HardwareMap hardwareMap, LinearOpMode opmode) {
         launcher = hardwareMap.get(Servo.class, "launcher");

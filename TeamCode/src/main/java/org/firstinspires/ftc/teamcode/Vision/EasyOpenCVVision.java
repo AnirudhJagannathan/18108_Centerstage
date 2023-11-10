@@ -26,11 +26,11 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     final int NONE_SHIP_THRESHOLD = 50;
 
     // Upper-left point of the rectangle where shipping element will be defined
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(67, 60);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(175, 375);
     // The width of the rectangle where the sh. el. will be defined
-    static final int REGION_WIDTH = 20;
+    static final int REGION_WIDTH = 190;
     // The height of the rectangle where the sh. el. will be defined
-    static final int REGION_HEIGHT = 35;
+    static final int REGION_HEIGHT = 150;
 
     // Creating the upper-left point of the rectangle where the rings will be defined
     Point region1_pointA = new Point(
@@ -45,26 +45,39 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     Mat region1_Cb;
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
-    int avg1; // The amount of red in the specified rectangle
+    Mat Cr = new Mat();
+    int avg1R; // The amount of red in the specified rectangle
 
     // Working variables
     Mat region2_Cb;
     //Mat Cb2 = new Mat();
-    int avg2; // The amount of red in the specified rectangle
+    int avg2R; // The amount of red in the specified rectangle
 
     // Working variables
     Mat region3_Cb;
     //Mat Cb2 = new Mat();
-    int avg3; // The amount of red in the specified rectangle
+    int avg3R; // The amount of red in the specified rectangle
 
+    Mat region1_Cr;
+    int avg1B; // The amount of blue in the specified rectangle
+
+    // Working variables
+    Mat region2_Cr;
+    //Mat Cb2 = new Mat();
+    int avg2B; // The amount of blue in the specified rectangle
+
+    // Working variables
+    Mat region3_Cr;
+    //Mat Cb2 = new Mat();
+    int avg3B; // The amount of blue in the specified rectangle
 
 
     // Upper-left point of the rectangle where shipping elemnt will be defined
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(177, 60);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(575, 275);
     // The width of the rectangle where the sh. el. will be defined
-    static final int REGION2_WIDTH = 20;
+    static final int REGION2_WIDTH = 175;
     // The height of the rectangle where the sh. el. will be defined
-    static final int REGION2_HEIGHT = 35;
+    static final int REGION2_HEIGHT = 150;
 
     // Creating the upper-left point of the rectangle where the rings will be defined
     Point region2_pointA = new Point(
@@ -76,11 +89,11 @@ public class EasyOpenCVVision extends OpenCvPipeline {
             REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
 
     // Upper-left point of the rectangle where shipping elemnt will be defined
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(275, 60);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(975, 375);
     // The width of the rectangle where the sh. el. will be defined
-    static final int REGION3_WIDTH = 20;
+    static final int REGION3_WIDTH = 190;
     // The height of the rectangle where the sh. el. will be defined
-    static final int REGION3_HEIGHT = 35;
+    static final int REGION3_HEIGHT = 150;
 
     // Creating the upper-left point of the rectangle where the rings will be defined
     Point region3_pointA = new Point(
@@ -88,8 +101,8 @@ public class EasyOpenCVVision extends OpenCvPipeline {
             REGION3_TOPLEFT_ANCHOR_POINT.y);
     // Creating the lower-right point of the rectangle where the rings will be defined
     Point region3_pointB = new Point(
-            REGION3_TOPLEFT_ANCHOR_POINT.x + REGION2_WIDTH,
-            REGION3_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
+            REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH,
+            REGION3_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
 
 
 
@@ -105,6 +118,11 @@ public class EasyOpenCVVision extends OpenCvPipeline {
         Core.extractChannel(YCrCb, Cb, 1);
     }
 
+    void inputToCr(Mat input) {
+        Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
+        Core.extractChannel(YCrCb, Cr, 2);
+    }
+
     @Override
     public void init(Mat firstFrame) {
         inputToCb(firstFrame);
@@ -112,49 +130,61 @@ public class EasyOpenCVVision extends OpenCvPipeline {
         region2_Cb = Cb.submat(new Rect(region2_pointA, region2_pointB));
         region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
 
+        inputToCr(firstFrame);
+        region1_Cr = Cr.submat(new Rect(region1_pointA, region1_pointB));
+        region2_Cr = Cr.submat(new Rect(region2_pointA, region2_pointB));
+        region3_Cr = Cr.submat(new Rect(region3_pointA, region3_pointB));
     }
 
     @Override
     public Mat processFrame(Mat input) {
         inputToCb(input);
 
-        avg1 = (int) Core.mean(region1_Cb).val[0];
-        dataFromOpenCV.AVG1=avg1;
-        avg2 = (int) Core.mean(region2_Cb).val[0];
-        dataFromOpenCV.AVG2=avg2;
-        avg3 = (int) Core.mean(region3_Cb).val[0];
+        avg1R = (int) Core.mean(region1_Cb).val[0];
+        dataFromOpenCV.AVG1R = avg1R;
+        avg2R = (int) Core.mean(region2_Cb).val[0];
+        dataFromOpenCV.AVG2R = avg2R;
+        avg3R = (int) Core.mean(region3_Cb).val[0];
+        dataFromOpenCV.AVG3R = avg3R;
+
+        avg1B = (int) Core.mean(region1_Cr).val[0];
+        dataFromOpenCV.AVG1B = avg1B;
+        avg2B = (int) Core.mean(region2_Cr).val[0];
+        dataFromOpenCV.AVG2B = avg2B;
+        avg3B = (int) Core.mean(region3_Cr).val[0];
+        dataFromOpenCV.AVG3B = avg3B;
 
         Imgproc.rectangle(
                 input, // Buffer to draw on
                 region1_pointA, // First point which defines the rectangle
                 region1_pointB, // Second point which defines the rectangle
                 GREEN, // The color the rectangle is drawn in
-                1); // Thickness of the rectangle lines
+                3); // Thickness of the rectangle lines
 
         Imgproc.rectangle(
                 input, // Buffer to draw on
                 region2_pointA, // First point which defines the rectangle
                 region2_pointB, // Second point which defines the rectangle
                 GREEN, // The color the rectangle is drawn in
-                1); // Thickness of the rectangle lines
+                3); // Thickness of the rectangle lines
 
         Imgproc.rectangle(
                 input, // Buffer to draw on
                 region3_pointA, // First point which defines the rectangle
                 region3_pointB, // Second point which defines the rectangle
                 GREEN, // The color the rectangle is drawn in
-                1); // Thickness of the rectangle lines
+                3); // Thickness of the rectangle lines
 
         position = ShipPosition.NONE; // Record our analysis
 
 
-        if (avg1>avg2&avg1>avg3) {
+        if (avg1R>avg2R&avg1R>avg3R) {
             position = ShipPosition.LEFT;
         }
-        if (avg2>avg1&avg2>avg3) {
+        if (avg2R>avg1R&avg2R>avg3R) {
             position = ShipPosition.CENTER;
         }
-        if (avg3>avg1&avg3>avg2) {
+        if (avg3R>avg1R&avg3R>avg2R) {
             position = ShipPosition.NONE;
         }
 
@@ -199,10 +229,10 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     }
 
     public int getAnalysis() {
-        return avg1;
+        return avg1R;
     }
     public int getAnalysis2() {
-        return avg2;
+        return avg2R;
     }
 
 }
