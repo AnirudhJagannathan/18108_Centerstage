@@ -13,6 +13,7 @@ import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class TeleOp_Drive extends LinearOpMode {
@@ -25,43 +26,63 @@ public class TeleOp_Drive extends LinearOpMode {
         Spintake spintake = new Spintake(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
+        Hanging hanging = new Hanging(hardwareMap, this);
+
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
 
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        slides.resetSlides();
+        /*drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slides.resetSlides();*/
+        while (opModeInInit()){
+            launcher.resetPos();
+            fourBar.closeClaw();
+        }
 
         waitForStart();
 
         while (!isStopRequested()) {
-             /* drive.setWeightedDrivePower(
+              /* drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
                             -gamepad1.right_stick_x
                     )
-            );
-              */
+              );
+               */
+
 
             csBot.mecanumDriving();
 
 
             spintake.spin();
             spintake.outtake();
+            fourBar.manualControl();
             slides.moveSlides();
+            fourBar.manualControl();
             /* if (gamepad1.x) {
                 sensorDistance.lengthDetection();
                 sensorDistance.distanceDetection(hardwareMap);
                 }
              */
+          /*  if(gamepad2.b)
+                fourBar.closeClaw();*/
             if (gamepad2.y)
                 launcher.launch();
-            if (gamepad2.left_bumper)
+            if (gamepad2.b)
                 launcher.resetPos();
-            if (gamepad2.left_trigger > 0)
+           /* if (gamepad2.left_trigger > 0)
                 fourBar.resetPos();
             else if (gamepad2.right_trigger > 0)
                 fourBar.rotate();
+            */
+            if (gamepad1.left_trigger > 0)
+                hanging.lift();
+            if (gamepad1.right_trigger > 0)
+                hanging.lower();
 
+            if (gamepad2.a)
+                fourBar.closeClaw();
+            if (gamepad2.b)
+                fourBar.openClaw();
         }
 
 
