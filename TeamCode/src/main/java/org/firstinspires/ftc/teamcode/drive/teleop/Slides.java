@@ -40,12 +40,16 @@ public class Slides {
 
     }
 
-    public void moveSlidesAuto(){
+    public void moveSlidesAuto(double targetPos){
         double pos = (slideLeft.getCurrentPosition() + slideRight.getCurrentPosition())/2.0;
+        double neg = 1;
+        if (targetPos < pos){
+            neg = -1;
+        }
         double power = 0.5;
-        if (!(pos > 2000 || pos < -50) && pos < 400){
-            slideRight.setPower(power);
-            slideLeft.setPower(power);
+        if (!(pos > 2000 || pos < -50) && pos != targetPos){
+            slideRight.setPower(power * neg);
+            slideLeft.setPower(power * neg);
         }
         else {
             slideLeft.setPower(0);
