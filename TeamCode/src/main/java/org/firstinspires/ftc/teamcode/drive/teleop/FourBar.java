@@ -11,7 +11,7 @@ public class FourBar {
     private Servo fourBar2;
     private Servo claw;
 
-    static final double INCREMENT = 0.01;
+    static final double INCREMENT = 0.02;
 
     // private CRServo fourBarRight;
     private LinearOpMode opmode;
@@ -22,7 +22,8 @@ public class FourBar {
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
 
-    double position = 1.0;
+    double position = 0.85;
+    double position2 = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
         fourBar = hardwareMap.get(Servo.class, "fourBar");
         fourBar2 = hardwareMap.get(Servo.class, "fourBar2");
@@ -42,33 +43,61 @@ public class FourBar {
         // fourBarRight.setPower(1.0);
     }
     public void rotatePos(double pos) {
-        fourBar.setPosition(pos);
-        fourBar2.setPosition(pos);
+        while (pos < fourBar.getPosition()) {
+            position -= INCREMENT;
+            fourBar.setPosition(position);
+            fourBar2.setPosition(position);
+        }
+        while (pos > fourBar.getPosition()) {
+            position += INCREMENT;
+            fourBar.setPosition(position);
+            fourBar2.setPosition(position);
+        }
+        if (pos == fourBar.getPosition()) {
+            fourBar2.setPosition(pos);
+            fourBar.setPosition(pos);
+        }
     }
     public void closeClaw() {
         claw.setPosition(0.7);
         // fourBarRight.setPower(1.0);
     }
     public void openClaw() {
-        claw.setPosition(0.61);
+        claw.setPosition(0.57);
     }
 
-    public void manualControl() {
+    public void manualControl(boolean spintakeOn) {
         if (opmode.gamepad2.left_stick_y > 0) {
             // Keep stepping up until we hit the max value.
-            position -= INCREMENT ;
-            if (position <= 0.5) {
+            position -= INCREMENT;
+            position2 += INCREMENT;
+            if (position <= 0.5 && position2 >= 0.5) {
                 position = 0;// Switch ramp direction
+                position2 = 0.85;
             }
         }
         else if(opmode.gamepad2.left_stick_y < 0){
             position += INCREMENT;
-            if (position >= 1.0) {
-                position = 1.0;// Switch ramp direction
+            position2 -= INCREMENT;
+            if (position >= 0.85 && position2 <= 0) {
+                position = 0.85;// Switch ramp direction
+                position2 = 0;
             }
         }
         opmode.telemetry.addData("position:", position);
+        opmode.telemetry.addData("position2:", position2);
+        /* if (spintakeOn) {
+
+        } else {
+            fourBar.getController().pwmDisable();
+        }
+         */
         fourBar.setPosition(position);
-        fourBar2.setPosition(position);
+        fourBar2.setPosition(position2);
+    }
+
+    public void raiseFourBar() {
+        fourBar.setPosition(0.85);
+        fourBar2.setPosition(0);
     }
 }

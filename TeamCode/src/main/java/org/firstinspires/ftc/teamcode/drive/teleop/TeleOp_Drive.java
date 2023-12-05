@@ -41,6 +41,7 @@ public class TeleOp_Drive extends LinearOpMode {
         /*drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slides.resetSlides();*/
         while (opModeInInit()){
+            slides.resetSlides();
             launcher.resetPos();
             fourBar.closeClaw();
         }
@@ -48,7 +49,8 @@ public class TeleOp_Drive extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested()) {
-              /* drive.setWeightedDrivePower(
+            boolean spintakeOn = false;
+              /* drive.setWeightedDrivePower(n
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
@@ -57,98 +59,72 @@ public class TeleOp_Drive extends LinearOpMode {
               );
                */
 
-
             csBot.mecanumDriving();
 
+            if (slides.getCurrentPos() > 120) {
+                spintake.spin();
+                spintakeOn = true;
+            }
 
-            spintake.spin();
-            spintake.outtake();
-            //fourBar.manualControl();
-            slides.moveSlides();
-            /* if (gamepad1.x) {
-                sensorDistance.lengthDetection();
-                sensorDistance.distanceDetection(hardwareMap);
+            if (slides.getCurrentPos() > 10 && slides.getCurrentPos() < 150)
+                fourBar.raiseFourBar();
+            else
+                fourBar.manualControl(spintakeOn);
+
+            if (slides.getCurrentPos() < 120) {
+                // slides.moveSlides(true);
+                while (spintake.getPixelBarPos() < 0.9) {
+                    spintake.raiseBar();
                 }
-            */
+                spintakeOn = false;
+            }
+            if (gamepad2.x)
+                spintake.stop();
+            spintake.outtake();
 
-            if (gamepad2.y)
+            slides.moveSlides(false);
+
+            if (gamepad1.y)
                 launcher.launch();
             if (gamepad1.b)
                 launcher.resetPos();
-           if (gamepad2.dpad_up)
+            if (gamepad2.dpad_up)
                 fourBar.rotate();
             if (gamepad1.left_trigger > 0.1)
                 hanging.lift();
             if (gamepad1.right_trigger > 0.1)
                 hanging.lower();
-            if (gamepad2.start)
-                collectPixel();
             if (gamepad2.back)
-                depositClaw();
+                sensorDistance.distanceDetection(hardwareMap, 4);
             if (gamepad2.a)
                 fourBar.closeClaw();
             if (gamepad2.b)
                 fourBar.openClaw();
         }
-
-
-        /* while (!isStopRequested()) {
-            /* drive.setWeightedDrivePower(
-                    new Pose2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x
-                    )
-            );
-
-
-            double drive1 = gamepad1.left_stick_y;
-            double strafe = gamepad1.right_stick_x;
-            double turn = gamepad1.left_stick_x;
-            double v1, v2, v3, v4;
-
-            if (gamepad1.right_bumper) {
-                v1 = Range.clip(-drive1 + strafe + turn, -0.2, 0.2);
-                v2 = Range.clip(-drive1 - strafe - turn, -0.2, 0.2);
-                v3 = Range.clip(-drive1 + strafe - turn, -0.2, 0.2);
-                v4 = Range.clip(-drive1 - strafe + turn, -0.2, 0.2);
-            }
-
-            else {
-                v1 = Range.clip(-drive1 + strafe + turn, -0.85, 0.85);
-                v2 = Range.clip(-drive1 - strafe - turn, -0.85, 0.85);
-                v3 = Range.clip(-drive1 + strafe - turn, -0.85, 0.85);
-                v4 = Range.clip(-drive1 - strafe + turn, -0.85, 0.85);
-            }
-            leftFront.setPower(v1);
-            rightFront.setPower(v2);
-            leftRear.setPower(v3);
-            rightRear.setPower(v4);
-
-        }
-
-         */
     }
 
-    public void depositClaw(){
+    public void depositClaw() {
         fourBar.rotatePos(0.0);
-        fourBar.openClaw();
-        drive.setMotorPowers(1, 1,1, 1);
         sleep(300);
-        slides.moveSlidesAuto(0);
+        sensorDistance.distanceDetection(hardwareMap,4);
+        fourBar.openClaw();
+        sleep(300);
+        fourBar.rotatePos(1.0);
+        sleep(300);
+        //slides.moveSlidesAuto(0);
+        sleep(300);
         fourBar.rotatePos(0.8);
     }
 
-    public void collectPixel() {
+
+    public void collectPixel(){
+        spintake.raiseBar();
+        slides.moveSlidesToHeightABS(10, 0.4);
+        sleep(300);
         fourBar.rotatePos(0.8);
-        slides.moveSlidesAuto(-40);
         sleep(300);
         fourBar.closeClaw();
         sleep(300);
-        slides.moveSlidesAuto(-20);
         fourBar.rotatePos(1.0);
     }
-
-    // Anya Test commit
-
 }

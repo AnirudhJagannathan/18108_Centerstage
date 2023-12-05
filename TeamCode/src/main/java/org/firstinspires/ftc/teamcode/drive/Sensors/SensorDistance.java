@@ -25,11 +25,17 @@ public class SensorDistance {
         opmode.telemetry.update();
         return distance.getDistance(DistanceUnit.INCH);
     }
-    public void distanceDetection(HardwareMap hardwareMap){
+
+    public void distanceDetection(HardwareMap hardwareMap, int distance){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        while (lengthDetection() > 8)
-            drive.setMotorPowers(-0.4, -0.4, -0.4, -0.4);
-        drive.setMotorPowers(0,0,0,0);
+        while (true) {
+            if (lengthDetection() > distance) {
+                drive.setMotorPowers(-0.2, -0.2, -0.2, -0.2);
+            } else if (lengthDetection() <= distance) {
+                drive.setMotorPowers(0,0,0,0);
+                break;
+            }
+        }
         opmode.telemetry.addData("LineDetection", "We have parked");
     }
 }

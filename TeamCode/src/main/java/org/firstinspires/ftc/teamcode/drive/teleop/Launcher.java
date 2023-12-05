@@ -15,7 +15,7 @@ public class Launcher {
     private LinearOpMode opmode;
     private final double LAUNCHER_START_POS = 0.6;
     private final double LAUNCHER_END_POS = 1;
-    private final double PLACEHOLDER_HOLD = 0.85;
+    private final double PLACEHOLDER_HOLD = 0.4;
     private final double PLACEHOLDER_RELEASE = 0.6;
 
 
@@ -36,7 +36,7 @@ public class Launcher {
     }
 
     public void launch() {
-            placeHolder.setPosition(PLACEHOLDER_RELEASE);
+        placeHolder.setPosition(PLACEHOLDER_RELEASE);
         opmode.sleep(1000);
         launcher.setPosition(LAUNCHER_END_POS);
         opmode.telemetry.addData("LauncherPos: ", placeHolder.getPosition());

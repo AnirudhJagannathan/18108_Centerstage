@@ -11,6 +11,7 @@ public class Slides {
     private DcMotorEx slideLeft;
     private DcMotorEx slideRight;
     private LinearOpMode opmode;
+    // private Spintake spintake;
 
     public Slides(HardwareMap hardwareMap, LinearOpMode opmode) {
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
@@ -23,38 +24,55 @@ public class Slides {
         // slideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         // slideRight.setDirection(DcMotorSimple.Direction.REVERSE);
         this.opmode = opmode;
+
+        // spintake = new Spintake(hardwareMap, this.opmode);
     }
 
-    public void moveSlides() {
+    public void moveSlides(boolean belowLim) {
         double power = opmode.gamepad2.right_stick_y;
+        if (belowLim)
+            power = 0.15;
         double pos = (slideLeft.getCurrentPosition() + slideRight.getCurrentPosition()) / 2.0;
         opmode.telemetry.addData("slides: ", pos);
         opmode.telemetry.update();
-        if (!(pos > 2000 || pos < -50)) {
+        /* if (getCurrentPos() < 700 && spintake.getPixelBarPos() < 0.3) {
+            spintake.raiseBar();
+        }
+
+         */
+        if (!((pos > 400 && power < 0)  || (pos < -50 && power > 0))) {
             slideLeft.setPower(power);
             slideRight.setPower(-power);
+            opmode.telemetry.addData("powerL:", slideLeft.getPower());
+            opmode.telemetry.addData("powerR:", slideRight.getPower());
+            opmode.telemetry.update();
         } else {
             slideLeft.setPower(0);
             slideRight.setPower(0);
         }
-
     }
 
-    public void moveSlidesAuto(double targetPos){
-        double pos = (slideLeft.getCurrentPosition() + slideRight.getCurrentPosition())/2.0;
-        double neg = 1;
-        if (targetPos < pos){
-            neg = -1;
+    public void moveSlidesToHeightABS(int encoderPos, double power) {
+        slideLeft.setTargetPosition(encoderPos);
+        slideRight.setTargetPosition(encoderPos);
+
+        while (slideLeft.getCurrentPosition() < encoderPos - 10 || slideLeft.getCurrentPosition() > encoderPos + 10) {
+            if (slideLeft.getCurrentPosition() < encoderPos) {
+                slideLeft.setPower(-power);
+                slideRight.setPower(power);
+            } else {
+                slideLeft.setPower(power);
+                slideRight.setPower(-power);
+            }
         }
-        double power = 0.5;
-        if (!(pos > 2000 || pos < -50) && pos != targetPos){
-            slideRight.setPower(power * neg);
-            slideLeft.setPower(power * neg);
-        }
-        else {
-            slideLeft.setPower(0);
-            slideRight.setPower(0);
-        }
+
+        slideLeft.setPower(0);
+        slideRight.setPower(0);
+    }
+
+    public void stop() {
+        slideLeft.setPower(0);
+        slideRight.setPower(0);
     }
 
     public void resetSlides() {
@@ -63,5 +81,9 @@ public class Slides {
 
         slideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public double getCurrentPos() {
+        return ((double) (slideRight.getCurrentPosition() + slideLeft.getCurrentPosition())) / 2;
     }
 }

@@ -56,10 +56,10 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2, 0, 0.75);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(4, 0, 1);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(5, 0, 0.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0.75);
 
-    public static double LATERAL_MULTIPLIER = 1.44912;
+    public static double LATERAL_MULTIPLIER = 1.6501;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -97,11 +97,12 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        /* imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
+         */
 
         leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "backLeft");

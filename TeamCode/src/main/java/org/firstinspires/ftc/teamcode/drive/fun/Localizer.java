@@ -23,7 +23,7 @@ public class Localizer {
         int[] position = {0, 0, 0};
         this.opmode = opMode;
     }
-    public void front(int distance){
+    public void front(int distance) {
 
     }
 }
