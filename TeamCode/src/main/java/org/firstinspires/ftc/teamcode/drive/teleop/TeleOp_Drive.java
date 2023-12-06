@@ -62,11 +62,12 @@ public class TeleOp_Drive extends LinearOpMode {
             csBot.mecanumDriving();
 
             if (slides.getCurrentPos() > 120) {
-                spintake.spin();
+                if (gamepad2.left_bumper)
+                    spintake.spin();
                 spintakeOn = true;
             }
 
-            if (slides.getCurrentPos() > 10 && slides.getCurrentPos() < 150)
+            if (slides.getCurrentPos() > 25 && slides.getCurrentPos() < 150)
                 fourBar.raiseFourBar();
             else
                 fourBar.manualControl(spintakeOn);
@@ -80,10 +81,13 @@ public class TeleOp_Drive extends LinearOpMode {
             }
             if (gamepad2.x)
                 spintake.stop();
-            spintake.outtake();
+            if (gamepad2.right_bumper)
+                spintake.outtake();
 
             slides.moveSlides(false);
 
+            if (gamepad1.a)
+                slides.resetSlides();
             if (gamepad1.y)
                 launcher.launch();
             if (gamepad1.b)

@@ -15,7 +15,7 @@ public class Spintake {
     private Servo pixelBar;
     private LinearOpMode opmode;
     // private Slides slides;
-    private final double POWER = 0.45;
+    private final double POWER = 0.2;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
 
@@ -31,11 +31,8 @@ public class Spintake {
     }
 
     public void spin() {
-        if (opmode.gamepad2.left_bumper) {
-            spintake.setPower(POWER);
-            pixelBar.setPosition(BAR_END);
-            // on = true;
-        }
+        spintake.setPower(POWER);
+        pixelBar.setPosition(BAR_END);
         // when pixel gets stuck
         if (spintake.getCurrent(CurrentUnit.AMPS) > 4.6){
             spintake.setPower(0);
@@ -50,8 +47,7 @@ public class Spintake {
     }
 
     public void outtake() {
-        if (opmode.gamepad2.right_bumper)
-            spintake.setPower(-POWER);
+        spintake.setPower(-POWER);
     }
 
     public void outtake(long time) {

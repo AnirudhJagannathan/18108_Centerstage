@@ -99,5 +99,13 @@ public class FourBar {
     public void raiseFourBar() {
         fourBar.setPosition(0.85);
         fourBar2.setPosition(0);
+        position = 0.85;
+        position2 = 0;
+    }
+    public void lowerFourBar() {
+        fourBar.setPosition(0);
+        fourBar2.setPosition(0.85);
+        position = 0;
+        position2 = 0.85;
     }
 }
