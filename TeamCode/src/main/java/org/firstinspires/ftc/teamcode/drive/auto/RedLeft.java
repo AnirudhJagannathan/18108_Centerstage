@@ -180,11 +180,15 @@ public class RedLeft extends LinearOpMode {
             traj2End = backwards.end();
 
         Trajectory traj3 = drive.trajectoryBuilder(traj2End)
-                .lineToLinearHeading(new Pose2d(35.5, 0, Math.toRadians(91)))
+                .lineToLinearHeading(new Pose2d(66.5, 12, Math.toRadians(-91)))
                 .build();
 
+        /*Trajectory traj3mid = drive.trajectoryBuilder(traj1.end())
+
+                .build();*/
+
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .lineToLinearHeading(new Pose2d(35.5, -88, Math.toRadians(91)))
+                .lineToLinearHeading(new Pose2d(66.5, -68, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj5A = drive.trajectoryBuilder(traj4.end())
@@ -193,15 +197,13 @@ public class RedLeft extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
-        Trajectory traj5B = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(35.5, -92, Math.toRadians(91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+        Trajectory traj5B = drive.trajectoryBuilder(traj1.end())
+                .lineToLinearHeading(new Pose2d(65.5, -70, Math.toRadians(0)))
                 .build();
 
         Trajectory traj5C = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(34, -92, Math.toRadians(91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(40, -88, Math.toRadians(91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -264,8 +266,11 @@ public class RedLeft extends LinearOpMode {
             drive.followTrajectory(traj2B);
 
         spintake.outtake(500);
+        sleep(200);
         if (pos == 3)
             drive.followTrajectory(backwards);
+        if (pos == 2)
+            drive.turn(Math.toRadians(91));
         sleep(400);
 
         /* if (pos == 2)
@@ -274,23 +279,30 @@ public class RedLeft extends LinearOpMode {
             drive.turn(Math.toRadians(180));
          */
 
-        drive.followTrajectory(traj3);
-        drive.followTrajectory(traj4);
+        if (pos == 1) {
+            drive.followTrajectory(traj3);
+            drive.followTrajectory(traj4);
+            sleep(1000);
+            drive.followTrajectory(traj5A);
+        }
+        if (pos == 2) {
+            drive.followTrajectory(traj5B);
+        }
+        if (pos == 3) {
+            drive.followTrajectory(traj3);
+            drive.followTrajectory(traj4);
+            sleep(1000);
+            drive.followTrajectory(traj5C);
+        }
+
         fourBar.closeClaw();
         sleep(500);
         fourBar.raiseFourBar();
-        slides.moveSlidesToHeightABS(250, 0.7);
+        slides.moveSlidesToHeightABS(2500, 0.7);
+        sleep(300);
         fourBar.lowerFourBar();
         sleep(1000);
-        if (pos == 1)
-            drive.followTrajectory(traj5A);
-        if (pos == 2)
-            drive.followTrajectory(traj5B);
-        if (pos == 3)
-            drive.followTrajectory(traj5C);
         fourBar.openClaw();
-
-        drive.followTrajectory(traj6);
 
 
         /* if (pos == 1) {
