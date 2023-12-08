@@ -15,7 +15,7 @@ public class Spintake {
     private Servo pixelBar;
     private LinearOpMode opmode;
     // private Slides slides;
-    private final double POWER = 0.2;
+    private final double POWER = 0.4;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
 
@@ -23,7 +23,7 @@ public class Spintake {
         spintake = hardwareMap.get(DcMotorEx.class, "spintake");
         pixelBar = hardwareMap.get(Servo.class, "pixelBar");
         spintake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        spintake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spintake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         pixelBar.setPosition(BAR_START);
         this.opmode = opmode;
 
@@ -37,7 +37,7 @@ public class Spintake {
         if (spintake.getCurrent(CurrentUnit.AMPS) > 4.6){
             spintake.setPower(0);
             opmode.sleep(250);
-            spintake.setPower(-POWER * 0.3);
+            spintake.setPower(-POWER * 1);
         }
         opmode.telemetry.addData("Spintake", spintake.getCurrentPosition());
         opmode.telemetry.addData("Current Drawn", spintake.getCurrent(CurrentUnit.AMPS));
@@ -50,8 +50,13 @@ public class Spintake {
         spintake.setPower(-POWER);
     }
 
+    public void spin(long time) {
+        spintake.setPower(POWER);
+        // opmode.sleep(time);
+    }
+
     public void outtake(long time) {
-        spintake.setPower(-1 * POWER);
+        spintake.setPower(POWER);
         opmode.sleep(time);
     }
 
