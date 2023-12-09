@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.teleop;
+     package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import android.hardware.Sensor;
 
@@ -98,8 +98,6 @@ public class TeleOp_Drive extends LinearOpMode {
                 hanging.lift();
             if (gamepad1.right_trigger > 0.1)
                 hanging.lower();
-            if (gamepad2.back)
-                sensorDistance.distanceDetection(hardwareMap, 4);
             if (gamepad2.a)
                 fourBar.closeClaw();
             if (gamepad2.b)

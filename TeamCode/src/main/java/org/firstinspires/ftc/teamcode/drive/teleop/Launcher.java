@@ -15,8 +15,8 @@ public class Launcher {
     private LinearOpMode opmode;
     private final double LAUNCHER_START_POS = 0.6;
     private final double LAUNCHER_END_POS = 1;
-    private final double PLACEHOLDER_HOLD = 0.4;
-    private final double PLACEHOLDER_RELEASE = 0.6;
+    private final double PLACEHOLDER_HOLD = 0.1;
+    private final double PLACEHOLDER_RELEASE = 0.4;
 
 
 

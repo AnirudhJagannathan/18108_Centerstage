@@ -15,7 +15,7 @@ public class Spintake {
     private Servo pixelBar;
     private LinearOpMode opmode;
     // private Slides slides;
-    private final double POWER = 0.4;
+    private final double POWER = 0.8;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
 
@@ -56,7 +56,7 @@ public class Spintake {
     }
 
     public void outtake(long time) {
-        spintake.setPower(POWER);
+        spintake.setPower(-0.4 * POWER);
         opmode.sleep(time);
     }
 

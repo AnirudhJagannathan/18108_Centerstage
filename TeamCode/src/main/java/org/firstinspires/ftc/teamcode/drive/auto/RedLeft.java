@@ -189,7 +189,7 @@ public class RedLeft extends LinearOpMode {
             traj2End = backwards.end();
 
         Trajectory traj3 = drive.trajectoryBuilder(traj2End)
-                .lineToLinearHeading(new Pose2d(66.5, 12, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(65, 12, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj3B = drive.trajectoryBuilder(backwardsB.end())
@@ -201,7 +201,7 @@ public class RedLeft extends LinearOpMode {
                 .build();*/
 
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .lineToLinearHeading(new Pose2d(66.5, -68, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(65, -68, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())
@@ -345,6 +345,7 @@ public class RedLeft extends LinearOpMode {
         fourBar.closeClaw();
         sleep(750);
         fourBar.raiseFourBar();
+        sleep(500);
         slides.moveSlidesToHeightABS(1500, 0.7);
         sleep(300);
         fourBar.lowerFourBar();
@@ -364,6 +365,7 @@ public class RedLeft extends LinearOpMode {
             fourBar.closeClaw();
             sleep(750);
             fourBar.raiseFourBar();
+            sleep(500);
             slides.moveSlidesToHeightABS(1500, 0.7);
             sleep(300);
             fourBar.lowerFourBar();

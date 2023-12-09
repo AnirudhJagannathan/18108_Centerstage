@@ -22,7 +22,7 @@ public class FourBar {
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
 
-    double position = 0.85;
+    double position = 0.88;
     double position2 = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
         fourBar = hardwareMap.get(Servo.class, "fourBar");
