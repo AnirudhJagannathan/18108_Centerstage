@@ -48,7 +48,7 @@ public class BlueLeft extends LinearOpMode {
         TeleOp_Drive teleOp_drive = new TeleOp_Drive();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Spintake spintake = new Spintake(hardwareMap, this);
-        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
+        // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
         Webcam webcam1 = new Webcam(hardwareMap, "Webcam 1");
@@ -64,95 +64,35 @@ public class BlueLeft extends LinearOpMode {
         // FtcDashboard.getInstance().startCameraStream(webcam2.getWebcam(), 30);
 
         while (opModeInInit()) {
-            {
-                telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
-                telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
-                telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
-                telemetry.update();
-
-                /* ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-
-                if(currentDetections.size() != 0)
-                {
-                    boolean tagFound = false;
-
-                    for(AprilTagDetection tag : currentDetections)
-                    {
-                        if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                        {
-                            tagOfInterest = tag;
-                            tagFound = true;
-                            break;
-                        }
-                    }
-
-                    if (tagFound)
-                    {
-                        telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
-                        tagToTelemetry(tagOfInterest);
-                    }
-                    else
-                    {
-                        telemetry.addLine("Don't see tag of interest :(");
-
-                        if(tagOfInterest == null)
-                        {
-                            telemetry.addLine("(The tag has never been seen)");
-                        }
-                        else
-                        {
-                            telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                            tagToTelemetry(tagOfInterest);
-                        }
-                    }
-
-                }
-                else
-                {
-                    telemetry.addLine("Don't see tag of interest :(");
-
-                    if(tagOfInterest == null)
-                    {
-                        telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                        tagToTelemetry(tagOfInterest);
-                    }
-
-                }
-
-                telemetry.update();
-                sleep(20);
-                 */
-
-                slides.resetSlides();
-                fourBar.closeClaw();
-            }
-        }
-
-        /* if(tagOfInterest != null)
-        {
-            telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
+            telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
+            telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
+            telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
             telemetry.update();
+
+            slides.resetSlides();
+            fourBar.closeClaw();
         }
-        else
-        {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-            telemetry.update();
-        }
-         */
+
+        webcam1.setPipeline(new EasyOpenCVVision());
 
         int pos = 3;
+        double avg1 = dataFromOpenCV.AVG1B;
+        double avg2  = dataFromOpenCV.AVG2B;
+        double avg3 = dataFromOpenCV.AVG3B;
 
-        if (dataFromOpenCV.AVG1B > dataFromOpenCV.AVG2B && dataFromOpenCV.AVG1B > dataFromOpenCV.AVG3B)
+        if (avg1 > avg2 && avg1 > avg3)
             pos = 1;
-        if (dataFromOpenCV.AVG2B > dataFromOpenCV.AVG1B && dataFromOpenCV.AVG2B > dataFromOpenCV.AVG3B)
+        if (avg2 > avg1 && avg2 > avg3)
             pos = 2;
-        if (dataFromOpenCV.AVG3B > dataFromOpenCV.AVG1B && dataFromOpenCV.AVG3B > dataFromOpenCV.AVG2B)
+        if (avg3 > avg1 && avg3 > avg2)
             pos = 3;
+        if (dataFromOpenCV.AVG1B == dataFromOpenCV.AVG2B && dataFromOpenCV.AVG2B == dataFromOpenCV.AVG3B)
+            pos = 3;
+
+        telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
+        telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
+        telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
+        telemetry.update();
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);
         //Creating Autonomous trajectory

@@ -26,11 +26,11 @@ public class SensorDistance {
         return distance.getDistance(DistanceUnit.INCH);
     }
 
-    public void distanceDetection(HardwareMap hardwareMap, int distance){
+    public void distanceDetection(HardwareMap hardwareMap, double distance){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         while (true) {
             if (lengthDetection() > distance) {
-                drive.setMotorPowers(-0.2, -0.2, -0.2, -0.2);
+                drive.setMotorPowers(-0.4, -0.4, -0.4, -0.4);
             } else if (lengthDetection() <= distance) {
                 drive.setMotorPowers(0,0,0,0);
                 break;

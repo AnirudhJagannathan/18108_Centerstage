@@ -147,6 +147,7 @@ public class EasyOpenCVVision extends OpenCvPipeline {
         avg3R = (int) Core.mean(region3_Cb).val[0];
         dataFromOpenCV.AVG3R = avg3R;
 
+        inputToCr(input);
         avg1B = (int) Core.mean(region1_Cr).val[0];
         dataFromOpenCV.AVG1B = avg1B;
         avg2B = (int) Core.mean(region2_Cr).val[0];
@@ -178,28 +179,15 @@ public class EasyOpenCVVision extends OpenCvPipeline {
         position = ShipPosition.NONE; // Record our analysis
 
 
-        if (avg1R>avg2R&avg1R>avg3R) {
+        if (avg1R>avg2R&avg1R>avg3R || avg1B>avg2B&avg1B>avg3B) {
             position = ShipPosition.LEFT;
         }
-        if (avg2R>avg1R&avg2R>avg3R) {
+        if (avg2R>avg1R&avg2R>avg3R || avg2B>avg1B&avg2B>avg3B) {
             position = ShipPosition.CENTER;
         }
-        if (avg3R>avg1R&avg3R>avg2R) {
+        if (avg3R>avg1R&avg3R>avg2R || avg3B>avg1B&avg3B>avg2B) {
             position = ShipPosition.NONE;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
             if (NONE_SHIP_THRESHOLD > avg1) {

@@ -1,4 +1,4 @@
-     package org.firstinspires.ftc.teamcode.drive.teleop;
+package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import android.hardware.Sensor;
 
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class TeleOp_Drive extends LinearOpMode {
+public class TeleOp_DriveArvind extends LinearOpMode {
 
     private SampleMecanumDrive drive;
     private CenterstageBot csBot;
@@ -24,6 +24,7 @@ public class TeleOp_Drive extends LinearOpMode {
     private FourBar fourBar;
     private Hanging hanging;
     private SensorDistance sensorDistance;
+    private boolean ManualControl;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,12 +46,13 @@ public class TeleOp_Drive extends LinearOpMode {
             slides.resetSlides();
             launcher.resetPos();
             fourBar.closeClaw();
+            ManualControl = false;
         }
 
         waitForStart();
 
-        while (!isStopRequested()) {
-            boolean spintakeOn = false;
+        while (opModeIsActive()) {
+            /*boolean spintakeOn = false;
               /* drive.setWeightedDrivePower(n
                     new Pose2d(
                             -gamepad1.left_stick_y,
@@ -58,9 +60,9 @@ public class TeleOp_Drive extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
               );
-               */
 
-            csBot.mecanumDriving();
+
+
 
             if (slides.getCurrentPos() > 120) {
                 if (gamepad2.left_bumper)
@@ -71,70 +73,70 @@ public class TeleOp_Drive extends LinearOpMode {
             if (slides.getCurrentPos() > 25 && slides.getCurrentPos() < 150)
                 fourBar.raiseFourBar();
             else
-                fourBar.manualControl(spintakeOn);
+                //fourBar.manualControl(spintakeOn);
 
-            if (slides.getCurrentPos() < 120) {
-                // slides.moveSlides(true);
-                while (spintake.getPixelBarPos() < 0.9) {
-                    spintake.raiseBar();
-                }
-                spintakeOn = false;
+                if (slides.getCurrentPos() < 120) {
+                    // slides.moveSlides(true);
+                    while (spintake.getPixelBarPos() < 0.9) {
+                        spintake.raiseBar();
+                    }
+                    spintakeOn = false;
+                }*/
+            while (!(ManualControl)) {
+                csBot.mecanumDriving();
+                fourBar.manualControl(true);
+
+                if (gamepad2.x)
+                    spintake.stop();
+                if (gamepad2.left_bumper && slides.getCurrentPos() > 120)
+                    spintake.spin();
+                if (gamepad2.right_bumper)
+                    spintake.outtake();
+
+                slides.moveSlides(false);
+
+                if (gamepad1.a)
+                    slides.resetSlides();
+                if (gamepad1.y)
+                    launcher.launch();
+                if (gamepad1.b)
+                    launcher.resetPos();
+                if (gamepad2.dpad_up)
+                    fourBar.rotate();
+                if (gamepad1.left_trigger > 0.1)
+                    hanging.lift();
+                if (gamepad1.right_trigger > 0.1)
+                    hanging.lower();
+                if (gamepad2.back)
+                    depositClaw();
+                if (gamepad2.left_trigger > 0.1)
+                    collectPixel();
+                if (gamepad2.a)
+                    fourBar.closeClaw();
+                if (gamepad2.b)
+                    fourBar.openClaw();
+                if (gamepad1.dpad_left)
+                    ManualControl = true;
             }
-            if (gamepad2.x)
-                spintake.stop();
-            if (gamepad2.right_bumper)
-                spintake.outtake();
-
-            slides.moveSlides(false);
-
-            if (gamepad1.a)
-                slides.resetSlides();
-            if (gamepad1.y)
-                launcher.launch();
-            if (gamepad1.b)
-                launcher.resetPos();
-            if (gamepad2.dpad_up)
-                fourBar.rotate();
-            if (gamepad1.left_trigger > 0.1)
-                hanging.lift();
-            if (gamepad1.right_trigger > 0.1)
-                hanging.lower();
-            if (gamepad2.a)
-                fourBar.closeClaw();
-            if (gamepad2.b)
-                fourBar.openClaw();
-
-            if (gamepad2.dpad_down)
-                fourBar.lowerFourBar();
-            if (gamepad2.dpad_up)
-                fourBar.raiseFourBar();
-            if (gamepad2.dpad_left)
-                fourBar.pixelFourBar();
+            if (gamepad1.dpad_right)
+                ManualControl = false;
         }
     }
 
-    public void depositPixel() {
-        fourBar.rotatePos(0.0);
-        sleep(300);
-        sensorDistance.distanceDetection(hardwareMap,2);
+    public void depositClaw() {
+        fourBar.lowerFourBar();
+        sensorDistance.distanceDetection(hardwareMap,11.8);
         fourBar.openClaw();
-        sleep(300);
-        fourBar.rotatePos(1.0);
-        sleep(300);
-        //slides.moveSlidesAuto(0);
-        sleep(300);
-        fourBar.rotatePos(0.8);
+        fourBar.raiseFourBar();
     }
 
 
     public void collectPixel(){
+        spintake.stop();
+        fourBar.openClaw();
         spintake.raiseBar();
-        slides.moveSlidesToHeightABS(10, 0.4);
-        sleep(300);
-        fourBar.rotatePos(0.8);
-        sleep(300);
+        slides.moveSlidesToHeightABS(35, 0.4);
         fourBar.closeClaw();
-        sleep(300);
-        fourBar.rotatePos(1.0);
+        fourBar.raiseFourBar();
     }
 }

@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.auto;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.teamcode.Vision.EasyOpenCVVision;
 import org.firstinspires.ftc.teamcode.Vision.dataFromOpenCV;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -20,10 +15,8 @@ import org.firstinspires.ftc.teamcode.drive.teleop.FourBar;
 import org.firstinspires.ftc.teamcode.drive.teleop.Slides;
 import org.firstinspires.ftc.teamcode.drive.teleop.Spintake;
 import org.firstinspires.ftc.teamcode.drive.teleop.TeleOp_Drive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.drive.teleop.TeleOp_DriveArvind;
 import org.openftc.apriltag.AprilTagDetection;
-
-import java.util.ArrayList;
 
 @Autonomous
 public class BlueRight extends LinearOpMode {
@@ -45,7 +38,7 @@ public class BlueRight extends LinearOpMode {
     AprilTagDetection tagOfInterest = null;
 
     public void runOpMode() throws InterruptedException{
-        TeleOp_Drive teleOp_drive = new TeleOp_Drive();
+        TeleOp_DriveArvind teleOp_driveArvind = new TeleOp_DriveArvind();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Spintake spintake = new Spintake(hardwareMap, this);
         SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
@@ -65,6 +58,7 @@ public class BlueRight extends LinearOpMode {
 
         while (opModeInInit()) {
             {
+                spintake.raiseBar();
                 telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
                 telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
                 telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
@@ -150,6 +144,8 @@ public class BlueRight extends LinearOpMode {
             pos = 2;
         if (dataFromOpenCV.AVG3B > dataFromOpenCV.AVG1B && dataFromOpenCV.AVG3B > dataFromOpenCV.AVG2B)
             pos = 3;
+        if (dataFromOpenCV.AVG1B == dataFromOpenCV.AVG2B && dataFromOpenCV.AVG2B == dataFromOpenCV.AVG3B)
+            pos = 3;
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);
         //Creating Autonomous trajectory
@@ -201,7 +197,7 @@ public class BlueRight extends LinearOpMode {
                 .build();*/
 
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .lineToLinearHeading(new Pose2d(65, -68, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(65, 68, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())
@@ -211,7 +207,7 @@ public class BlueRight extends LinearOpMode {
                 .build();
 
         Trajectory traj5A = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(38, -92, Math.toRadians(91)),
+                .lineToLinearHeading(new Pose2d(38, 80, Math.toRadians(-91)),
                         SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -223,23 +219,28 @@ public class BlueRight extends LinearOpMode {
                 .build();
 
         Trajectory traj5C = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(40, -88, Math.toRadians(91)),
+                .lineToLinearHeading(new Pose2d(40, 80, Math.toRadians(-91)),
                         SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+
+        Trajectory traj6A = drive.trajectoryBuilder(traj5A.end())
+                .lineToLinearHeading(new Pose2d(8, 50, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj6B = drive.trajectoryBuilder(traj5B.end())
                 .lineToLinearHeading(new Pose2d(37, 10, Math.toRadians(91)),
                         SampleMecanumDrive.getVelocityConstraint(0.75 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(37, -70), () -> {
-                    slides.moveSlidesToHeightABS(50, 0.6);
-                })
                 .build();
 
         Trajectory traj6C = drive.trajectoryBuilder(traj5C.end())
-                .lineToLinearHeading(new Pose2d(31, -91, Math.toRadians(91)))
+                .lineToLinearHeading(new Pose2d(8, 50, Math.toRadians(-91)))
                 .build();
+        
+        Pose2d Traj6End = traj6C.end();
+        if (pos == 1)
+            Traj6End = traj6A.end();
 
         Trajectory traj7B = drive.trajectoryBuilder(traj6B.end())
                 .lineToLinearHeading(new Pose2d(37, 15, Math.toRadians(91)),
@@ -248,6 +249,16 @@ public class BlueRight extends LinearOpMode {
                 .addSpatialMarker(new Vector2d(37, 16), () -> {
                     spintake.spin(3000);
                 })
+                .build();
+
+        Trajectory traj7 = drive.trajectoryBuilder(Traj6End)
+                .lineToLinearHeading(new Pose2d(8, 0, Math.toRadians(-91)))
+                .build();
+
+        Trajectory traj8C = drive.trajectoryBuilder(traj7.end())
+                .lineToLinearHeading(new Pose2d(37, -32, Math.toRadians(-91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory traj8B = drive.trajectoryBuilder(traj7B.end())
@@ -312,8 +323,6 @@ public class BlueRight extends LinearOpMode {
         sleep(200);
         if (pos == 2)
             drive.followTrajectory(backwardsB);
-        if (pos == 3)
-            drive.followTrajectory(backwards);
         sleep(400);
 
         /* if (pos == 2)
@@ -339,18 +348,24 @@ public class BlueRight extends LinearOpMode {
             drive.followTrajectory(traj4);
             sleep(1000);
             drive.followTrajectory(traj5C);
-            drive.followTrajectory(traj6C);
+            //drive.followTrajectory(traj6C);
         }
 
-        fourBar.closeClaw();
-        sleep(750);
+        /*fourBar.closeClaw();
         fourBar.raiseFourBar();
-        sleep(500);
-        slides.moveSlidesToHeightABS(1500, 0.7);
-        sleep(300);
+        slides.moveSlidesToHeightABS(35, 0.7);
         fourBar.lowerFourBar();
-        sleep(1000);
+        sensorDistance.distanceDetection(hardwareMap,11.8);
         fourBar.openClaw();
+        fourBar.raiseFourBar();*/
+
+        if (pos == 3){
+            drive.followTrajectory(traj6C);
+            drive.followTrajectory(traj7);
+            drive.followTrajectory(traj8C);
+        }
+
+        spintake.spin(700);
 
         if (pos == 2) {
             fourBar.raiseFourBar();
@@ -362,7 +377,9 @@ public class BlueRight extends LinearOpMode {
             drive.followTrajectory(traj8B);
             drive.followTrajectory(traj9B);
 
-            fourBar.closeClaw();
+        }
+
+            /*fourBar.closeClaw();
             sleep(750);
             fourBar.raiseFourBar();
             sleep(500);
@@ -372,12 +389,11 @@ public class BlueRight extends LinearOpMode {
             sleep(1000);
             fourBar.openClaw();
         }
-        /* if (pos == 1) {
+         if (pos == 1) {
             drive.followTrajectory(traj2A);
             spintake.outtake(500);
             sleep(200);
 
-            drive.followTrajectory(traj3A);
         }
         if (pos == 3) {
             drive.followTrajectory(traj2B);
@@ -388,15 +404,14 @@ public class BlueRight extends LinearOpMode {
         }
 
         drive.followTrajectory(traj4);
-        drive.followTrajectory(traj5);
         fourBar.closeClaw();
         sleep(200);
         fourBar.rotatePos(1);
         slides.moveSlidesToHeightABS(2000, 0.75);
         fourBar.rotatePos(0);
         sleep(200);
-        fourBar.openClaw();
-         */
+        fourBar.openClaw();*/
+
 
         webcam1.getWebcam().stopStreaming();
     }

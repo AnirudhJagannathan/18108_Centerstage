@@ -48,7 +48,7 @@ public class RedLeft extends LinearOpMode {
         TeleOp_Drive teleOp_drive = new TeleOp_Drive();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Spintake spintake = new Spintake(hardwareMap, this);
-        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
+        // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
         Webcam webcam1 = new Webcam(hardwareMap, "Webcam 1");
@@ -150,6 +150,8 @@ public class RedLeft extends LinearOpMode {
             pos = 2;
         if (dataFromOpenCV.AVG3R > dataFromOpenCV.AVG1R && dataFromOpenCV.AVG3R > dataFromOpenCV.AVG2R)
             pos = 3;
+        if (dataFromOpenCV.AVG1R == dataFromOpenCV.AVG2R && dataFromOpenCV.AVG2R == dataFromOpenCV.AVG3R)
+            pos = 3;
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);
         //Creating Autonomous trajectory
@@ -189,7 +191,7 @@ public class RedLeft extends LinearOpMode {
             traj2End = backwards.end();
 
         Trajectory traj3 = drive.trajectoryBuilder(traj2End)
-                .lineToLinearHeading(new Pose2d(65, 12, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(63.5, 12, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj3B = drive.trajectoryBuilder(backwardsB.end())
@@ -201,7 +203,7 @@ public class RedLeft extends LinearOpMode {
                 .build();*/
 
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .lineToLinearHeading(new Pose2d(65, -68, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(63.5, -68, Math.toRadians(-91)))
                 .build();
 
         Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())

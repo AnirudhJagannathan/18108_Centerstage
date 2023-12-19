@@ -48,7 +48,7 @@ public class RedRight extends LinearOpMode {
         TeleOp_Drive teleOp_drive = new TeleOp_Drive();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Spintake spintake = new Spintake(hardwareMap, this);
-        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
+        // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
         Slides slides = new Slides(hardwareMap, this);
         FourBar fourBar = new FourBar(hardwareMap, this);
         Webcam webcam1 = new Webcam(hardwareMap, "Webcam 1");
@@ -70,80 +70,10 @@ public class RedRight extends LinearOpMode {
                 telemetry.addData("avg3R:", dataFromOpenCV.AVG3R);
                 telemetry.update();
 
-                /* ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-
-                if(currentDetections.size() != 0)
-                {
-                    boolean tagFound = false;
-
-                    for(AprilTagDetection tag : currentDetections)
-                    {
-                        if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                        {
-                            tagOfInterest = tag;
-                            tagFound = true;
-                            break;
-                        }
-                    }
-
-                    if (tagFound)
-                    {
-                        telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
-                        tagToTelemetry(tagOfInterest);
-                    }
-                    else
-                    {
-                        telemetry.addLine("Don't see tag of interest :(");
-
-                        if(tagOfInterest == null)
-                        {
-                            telemetry.addLine("(The tag has never been seen)");
-                        }
-                        else
-                        {
-                            telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                            tagToTelemetry(tagOfInterest);
-                        }
-                    }
-
-                }
-                else
-                {
-                    telemetry.addLine("Don't see tag of interest :(");
-
-                    if(tagOfInterest == null)
-                    {
-                        telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                        tagToTelemetry(tagOfInterest);
-                    }
-
-                }
-
-                telemetry.update();
-                sleep(20);
-                 */
-
                 slides.resetSlides();
                 fourBar.closeClaw();
             }
         }
-
-        /* if(tagOfInterest != null)
-        {
-            telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
-            telemetry.update();
-        }
-        else
-        {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-            telemetry.update();
-        }
-         */
 
         int pos = 3;
 
@@ -152,6 +82,8 @@ public class RedRight extends LinearOpMode {
         if (dataFromOpenCV.AVG2R > dataFromOpenCV.AVG1R && dataFromOpenCV.AVG2R > dataFromOpenCV.AVG3R)
             pos = 2;
         if (dataFromOpenCV.AVG3R > dataFromOpenCV.AVG1R && dataFromOpenCV.AVG3R > dataFromOpenCV.AVG2R)
+            pos = 3;
+        if (dataFromOpenCV.AVG1R == dataFromOpenCV.AVG2R && dataFromOpenCV.AVG2R == dataFromOpenCV.AVG3R)
             pos = 3;
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);

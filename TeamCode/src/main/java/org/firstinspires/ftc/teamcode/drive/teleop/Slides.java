@@ -43,8 +43,8 @@ public class Slides {
         if (!((pos > 400 && power < 0)  || (pos < -50 && power > 0))) {
             slideLeft.setPower(power);
             slideRight.setPower(-power);
-            opmode.telemetry.addData("powerL:", slideLeft.getPower());
-            opmode.telemetry.addData("powerR:", slideRight.getPower());
+            opmode.telemetry.addData("powerL:", slideLeft.getCurrentPosition());
+            opmode.telemetry.addData("powerR:", slideRight.getCurrentPosition());
             opmode.telemetry.update();
         } else {
             slideLeft.setPower(0);
@@ -53,16 +53,13 @@ public class Slides {
     }
 
     public void moveSlidesToHeightABS(int encoderPos, double power) {
-        slideLeft.setTargetPosition(encoderPos);
-        slideRight.setTargetPosition(encoderPos);
-
-        while (slideLeft.getCurrentPosition() < encoderPos - 10 || slideLeft.getCurrentPosition() > encoderPos + 10) {
-            if (slideLeft.getCurrentPosition() < encoderPos) {
-                slideLeft.setPower(-power);
-                slideRight.setPower(power);
-            } else {
+        while (slideLeft.getCurrentPosition() > -encoderPos || slideLeft.getCurrentPosition() < -encoderPos) {
+            if (slideLeft.getCurrentPosition() < -encoderPos) {
                 slideLeft.setPower(power);
                 slideRight.setPower(-power);
+            } else {
+                slideLeft.setPower(-power);
+                slideRight.setPower(power);
             }
         }
 
@@ -84,6 +81,6 @@ public class Slides {
     }
 
     public double getCurrentPos() {
-        return ((double) (slideRight.getCurrentPosition() + slideLeft.getCurrentPosition())) / 2;
+        return ((double) slideRight.getCurrentPosition() + slideLeft.getCurrentPosition());
     }
 }

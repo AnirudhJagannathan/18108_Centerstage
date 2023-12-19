@@ -37,8 +37,8 @@ public class FourBar {
         opmode.telemetry.addData("Position", fourBar.getPosition());
     }
     public void rotate() {
-        fourBar.setPosition(END_POS);
-        fourBar2.setPosition(END_POS);
+        fourBar.setPosition(0.73);
+        fourBar2.setPosition(0.12);
         opmode.telemetry.addData("Position", fourBar.getPosition());
         // fourBarRight.setPower(1.0);
     }
@@ -75,6 +75,7 @@ public class FourBar {
                 position = 0;// Switch ramp direction
                 position2 = 0.85;
             }
+
         }
         else if(opmode.gamepad2.left_stick_y < 0){
             position += INCREMENT;
@@ -83,6 +84,8 @@ public class FourBar {
                 position = 0.85;// Switch ramp direction
                 position2 = 0;
             }
+            fourBar.setPosition(position);
+            fourBar2.setPosition(position2);
         }
         opmode.telemetry.addData("position:", position);
         opmode.telemetry.addData("position2:", position2);
@@ -92,8 +95,6 @@ public class FourBar {
             fourBar.getController().pwmDisable();
         }
          */
-        fourBar.setPosition(position);
-        fourBar2.setPosition(position2);
     }
 
     public void raiseFourBar() {
@@ -107,5 +108,11 @@ public class FourBar {
         fourBar2.setPosition(0.85);
         position = 0;
         position2 = 0.85;
+    }
+    public void pixelFourBar() {
+        fourBar.setPosition(5);
+        fourBar2.setPosition(0.80);
+        position = 0.05;
+        position2 = 0.80;
     }
 }
