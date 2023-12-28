@@ -13,15 +13,22 @@ public class Spintake {
 
     private DcMotorEx spintake;
     private Servo pixelBar;
+    private Servo pixelStick1;
+    private Servo pixelStick2;
     private LinearOpMode opmode;
     // private Slides slides;
     private final double POWER = 0.8;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
+    private final double STICK_START = 0.15;
+    private final double STICK_MID = 0.475;
+    private final double STICK_END = 0.8;
 
     public Spintake(HardwareMap hardwareMap, LinearOpMode opmode) {
         spintake = hardwareMap.get(DcMotorEx.class, "spintake");
         pixelBar = hardwareMap.get(Servo.class, "pixelBar");
+        pixelStick1 = hardwareMap.get(Servo.class, "pixelStick1");
+        pixelStick2 = hardwareMap.get(Servo.class, "pixelStick2");
         spintake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spintake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         pixelBar.setPosition(BAR_START);
@@ -37,9 +44,9 @@ public class Spintake {
         if (spintake.getCurrent(CurrentUnit.AMPS) > 4.6){
             spintake.setPower(0);
             opmode.sleep(250);
-            spintake.setPower(-POWER * 1);
+            spintake.setPower(-POWER);
         }
-        opmode.telemetry.addData("Spintake", spintake.getCurrentPosition());
+        opmode.telemetry.addData("Spin-take", spintake.getCurrentPosition());
         opmode.telemetry.addData("Current Drawn", spintake.getCurrent(CurrentUnit.AMPS));
     }
     public void stop() {
@@ -50,18 +57,44 @@ public class Spintake {
         spintake.setPower(-POWER);
     }
 
-    public void spin(long time) {
-        spintake.setPower(POWER);
+    public void spin(double power, long time) {
+        spintake.setPower(power);
         // opmode.sleep(time);
     }
 
-    public void outtake(long time) {
-        spintake.setPower(-0.4 * POWER);
+    public void outtake(double power, long time) {
+        spintake.setPower(-power);
         opmode.sleep(time);
     }
 
     public void raiseBar() {
         pixelBar.setPosition(BAR_START);
+    }
+
+    public void stickIn() {
+        pixelStick1.setPosition(1 - STICK_END);
+        pixelStick2.setPosition(STICK_END);
+    }
+
+    public void stickOut() {
+        pixelStick1.setPosition(1 - STICK_START);
+        pixelStick2.setPosition(STICK_START);
+    }
+
+    public void stickIntake() {
+        pixelStick1.setPosition(1 - STICK_END);
+        while (pixelStick1.getPosition() < 1 - STICK_END) {
+
+        }
+        opmode.sleep(300);
+        pixelStick1.setPosition(1 - STICK_MID);
+
+        pixelStick2.setPosition(STICK_END);
+        while (pixelStick2.getPosition() > STICK_END) {
+
+        }
+        opmode.sleep(300);
+        pixelStick2.setPosition(STICK_MID);
     }
 
     public double getPixelBarPos() {

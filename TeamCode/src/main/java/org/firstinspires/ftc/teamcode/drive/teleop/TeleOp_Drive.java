@@ -18,6 +18,7 @@ public class TeleOp_Drive extends LinearOpMode {
 
     private SampleMecanumDrive drive;
     private CenterstageBot csBot;
+    private TankDrive tankDrive;
     private Launcher launcher;
     private Spintake spintake;
     private Slides slides;
@@ -29,6 +30,7 @@ public class TeleOp_Drive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         drive = new SampleMecanumDrive(hardwareMap);
         csBot = new CenterstageBot(hardwareMap, this);
+        tankDrive = new TankDrive(hardwareMap, this);
         launcher = new Launcher(hardwareMap, this);
         spintake = new Spintake(hardwareMap, this);
         slides = new Slides(hardwareMap, this);
@@ -45,13 +47,15 @@ public class TeleOp_Drive extends LinearOpMode {
             slides.resetSlides();
             launcher.resetPos();
             fourBar.closeClaw();
+            spintake.stickOut();
+            // spintake.raiseBar();
         }
 
         waitForStart();
 
         while (!isStopRequested()) {
             boolean spintakeOn = false;
-              /* drive.setWeightedDrivePower(n
+              /* drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
@@ -62,39 +66,28 @@ public class TeleOp_Drive extends LinearOpMode {
 
             csBot.mecanumDriving();
 
-            if (slides.getCurrentPos() > 120) {
-                if (gamepad2.left_bumper)
-                    spintake.spin();
-                spintakeOn = true;
-            }
+            if (gamepad2.left_bumper)
+                spintake.spin();
 
-            if (slides.getCurrentPos() > 25 && slides.getCurrentPos() < 150)
-                fourBar.raiseFourBar();
-            else
-                fourBar.manualControl(spintakeOn);
-
-            if (slides.getCurrentPos() < 120) {
+            if (slides.getCurrentPos() < 150) {
                 // slides.moveSlides(true);
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
-                spintakeOn = false;
             }
-            if (gamepad2.x)
-                spintake.stop();
             if (gamepad2.right_bumper)
                 spintake.outtake();
+            if (gamepad2.x)
+                spintake.stop();
 
             slides.moveSlides(false);
 
-            if (gamepad1.a)
+            if (gamepad1.x)
                 slides.resetSlides();
             if (gamepad1.y)
                 launcher.launch();
             if (gamepad1.b)
                 launcher.resetPos();
-            if (gamepad2.dpad_up)
-                fourBar.rotate();
             if (gamepad1.left_trigger > 0.1)
                 hanging.lift();
             if (gamepad1.right_trigger > 0.1)
@@ -110,6 +103,20 @@ public class TeleOp_Drive extends LinearOpMode {
                 fourBar.raiseFourBar();
             if (gamepad2.dpad_left)
                 fourBar.pixelFourBar();
+            if (gamepad2.dpad_right)
+                collectPixel();
+
+            if (gamepad2.left_trigger > 0.1) {
+                spintake.stickIn();
+                sleep(250);
+            }
+            if (gamepad2.right_trigger > 0.1) {
+                spintake.stickOut();
+                sleep(250);
+            }
+
+            if (gamepad2.start)
+                spintake.stickIntake();
         }
     }
 
@@ -127,14 +134,14 @@ public class TeleOp_Drive extends LinearOpMode {
     }
 
 
-    public void collectPixel(){
-        spintake.raiseBar();
-        slides.moveSlidesToHeightABS(10, 0.4);
+    public void collectPixel() throws InterruptedException {
+        fourBar.openClaw();
+        fourBar.raiseFourBar();
         sleep(300);
-        fourBar.rotatePos(0.8);
+        slides.moveSlidesToHeightABS(25, 0.5);
         sleep(300);
+        fourBar.lowerFourBar();
+        sleep(500);
         fourBar.closeClaw();
-        sleep(300);
-        fourBar.rotatePos(1.0);
     }
 }

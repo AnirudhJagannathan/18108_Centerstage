@@ -90,6 +90,8 @@ public class TeleOp_DriveArvind extends LinearOpMode {
                     spintake.stop();
                 if (gamepad2.left_bumper && slides.getCurrentPos() > 120)
                     spintake.spin();
+                else if (gamepad2.left_bumper && slides.getCurrentPos() < 120)
+                    slides.moveSlidesToHeightABS(130, 0.7);
                 if (gamepad2.right_bumper)
                     spintake.outtake();
 
@@ -116,10 +118,13 @@ public class TeleOp_DriveArvind extends LinearOpMode {
                 if (gamepad2.b)
                     fourBar.openClaw();
                 if (gamepad1.dpad_left)
-                    ManualControl = true;
+                    spintake.stickOut();
+                if (gamepad1.dpad_right)
+                    spintake.stickIn();
+                if (sensorDistance.lengthDetection() < 6){
+                    drive.setMotorPowers(0,0,0,0);
+                }
             }
-            if (gamepad1.dpad_right)
-                ManualControl = false;
         }
     }
 

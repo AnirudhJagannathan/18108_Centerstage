@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -25,8 +26,9 @@ import org.openftc.apriltag.AprilTagDetection;
 
 import java.util.ArrayList;
 
+@Disabled
 @Autonomous
-public class BlueLeft extends LinearOpMode {
+public class RedRightOld extends LinearOpMode {
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 578.272;
@@ -64,35 +66,27 @@ public class BlueLeft extends LinearOpMode {
         // FtcDashboard.getInstance().startCameraStream(webcam2.getWebcam(), 30);
 
         while (opModeInInit()) {
-            telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
-            telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
-            telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
-            telemetry.update();
+            {
+                telemetry.addData("avg1R:", dataFromOpenCV.AVG1R);
+                telemetry.addData("avg2R:", dataFromOpenCV.AVG2R);
+                telemetry.addData("avg3R:", dataFromOpenCV.AVG3R);
+                telemetry.update();
 
-            slides.resetSlides();
-            fourBar.closeClaw();
+                slides.resetSlides();
+                fourBar.closeClaw();
+            }
         }
 
-        webcam1.setPipeline(new EasyOpenCVVision());
-
         int pos = 3;
-        double avg1 = dataFromOpenCV.AVG1B;
-        double avg2  = dataFromOpenCV.AVG2B;
-        double avg3 = dataFromOpenCV.AVG3B;
 
-        if (avg1 > avg2 && avg1 > avg3)
+        if (dataFromOpenCV.AVG1R > dataFromOpenCV.AVG2R && dataFromOpenCV.AVG1R > dataFromOpenCV.AVG3R)
             pos = 1;
-        if (avg2 > avg1 && avg2 > avg3)
+        if (dataFromOpenCV.AVG2R > dataFromOpenCV.AVG1R && dataFromOpenCV.AVG2R > dataFromOpenCV.AVG3R)
             pos = 2;
-        if (avg3 > avg1 && avg3 > avg2)
+        if (dataFromOpenCV.AVG3R > dataFromOpenCV.AVG1R && dataFromOpenCV.AVG3R > dataFromOpenCV.AVG2R)
             pos = 3;
-        if (dataFromOpenCV.AVG1B == dataFromOpenCV.AVG2B && dataFromOpenCV.AVG2B == dataFromOpenCV.AVG3B)
+        if (dataFromOpenCV.AVG1R == dataFromOpenCV.AVG2R && dataFromOpenCV.AVG2R == dataFromOpenCV.AVG3R)
             pos = 3;
-
-        telemetry.addData("avg1B:", dataFromOpenCV.AVG1B);
-        telemetry.addData("avg2B:", dataFromOpenCV.AVG2B);
-        telemetry.addData("avg3B:", dataFromOpenCV.AVG3B);
-        telemetry.update();
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);
         //Creating Autonomous trajectory
@@ -110,14 +104,14 @@ public class BlueLeft extends LinearOpMode {
                 .build();
 
         Trajectory traj2A = drive.trajectoryBuilder(traj1.end())
-                .lineToLinearHeading(new Pose2d(40, -10, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(40, -8, Math.toRadians(90)))
                 .build();
 
         Trajectory traj2B = drive.trajectoryBuilder(traj1.end())
                 .lineToLinearHeading(new Pose2d(40, 8, Math.toRadians(-90)))
                 .build();
 
-        Trajectory backwards = drive.trajectoryBuilder(traj2A.end())
+        Trajectory backwards = drive.trajectoryBuilder(traj2B.end())
                 .lineToLinearHeading(new Pose2d(35, 5, Math.toRadians(-90)))
                 .build();
 
@@ -127,47 +121,42 @@ public class BlueLeft extends LinearOpMode {
 
         Pose2d traj2End = traj1.end();
         if (pos == 1)
-            traj2End = backwards.end();
+            traj2End = traj2A.end();
         if (pos == 3)
-            traj2End = traj2B.end();
+            traj2End = backwards.end();
 
         Trajectory traj3 = drive.trajectoryBuilder(traj2End)
-                .lineToLinearHeading(new Pose2d(32, 5, Math.toRadians(-91)))
+                .lineToLinearHeading(new Pose2d(32, -5, Math.toRadians(91)))
                 .build();
 
-        TrajectorySequence traj3A = drive.trajectorySequenceBuilder(traj2A.end())
-                .lineToLinearHeading(new Pose2d(24, -7, Math.toRadians(91)))
+        TrajectorySequence traj3C = drive.trajectorySequenceBuilder(backwards.end())
+                .lineToLinearHeading(new Pose2d(24, 5, Math.toRadians(91)))
                 //.turn(Math.toRadians(180))
                 .build();
 
-        Pose2d traj3End = traj3.end();
-        if (pos == 3)
-            traj3End = traj2End;
-
-        Trajectory traj4 = drive.trajectoryBuilder(traj3End)
-                .lineToLinearHeading(new Pose2d(35, 40, Math.toRadians(-91)))
+        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
+                .lineToLinearHeading(new Pose2d(35, -40, Math.toRadians(91)))
                 .build();
 
-        Trajectory traj4A = drive.trajectoryBuilder(traj3A.end())
-                .lineToLinearHeading(new Pose2d(21, 35, Math.toRadians(-91)))
+        Trajectory traj4C = drive.trajectoryBuilder(traj3C.end())
+                .lineToLinearHeading(new Pose2d(20, -35, Math.toRadians(91)))
                 .build();
 
-
-        Trajectory traj5A = drive.trajectoryBuilder(traj4A.end())
-                .lineToLinearHeading(new Pose2d(31, 42, Math.toRadians(-91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+        Trajectory traj5A = drive.trajectoryBuilder(traj4.end())
+                .lineToLinearHeading(new Pose2d(38, -42, Math.toRadians(91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory traj5B = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(36, 42, Math.toRadians(-91)),
+                .lineToLinearHeading(new Pose2d(36, -42, Math.toRadians(91)),
                         SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory traj5C = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(45, 42, Math.toRadians(-91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(31, -42, Math.toRadians(91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -188,20 +177,17 @@ public class BlueLeft extends LinearOpMode {
         sleep(200);
         if (pos == 2)
             drive.followTrajectory(backwardsB);
-
-
-
+        /*if (pos == 3)
+            drive.followTrajectory(backwards);*/
         sleep(400);
 
-        if (pos == 2) {
+        if (pos == 1 || pos == 2) {
             drive.followTrajectory(traj3);
             drive.followTrajectory(traj4);
         }
-        else if (pos == 3)
-            drive.followTrajectory(traj4);
         else {
-            drive.followTrajectorySequence(traj3A);
-            drive.followTrajectory(traj4A);
+            drive.followTrajectorySequence(traj3C);
+            drive.followTrajectory(traj4C);
         }
         sleep(1000);
 

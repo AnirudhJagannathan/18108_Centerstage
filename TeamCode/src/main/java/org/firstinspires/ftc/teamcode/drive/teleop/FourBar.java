@@ -73,15 +73,15 @@ public class FourBar {
             position2 += INCREMENT;
             if (position <= 0.5 && position2 >= 0.5) {
                 position = 0;// Switch ramp direction
-                position2 = 0.85;
+                position2 = 0.88;
             }
 
         }
         else if(opmode.gamepad2.left_stick_y < 0){
             position += INCREMENT;
             position2 -= INCREMENT;
-            if (position >= 0.85 && position2 <= 0) {
-                position = 0.85;// Switch ramp direction
+            if (position >= 0.88 && position2 <= 0) {
+                position = 0.88;// Switch ramp direction
                 position2 = 0;
             }
             fourBar.setPosition(position);

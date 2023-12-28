@@ -243,7 +243,7 @@ public class RedLeftArvind extends LinearOpMode {
         if (pos == 3)
             drive.followTrajectory(traj2B);
 
-        spintake.outtake(100);
+        spintake.outtake(0.4, 100);
         if (pos == 3)
             drive.followTrajectory(backwards);
         sleep(400);

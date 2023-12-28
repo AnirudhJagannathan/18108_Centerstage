@@ -93,120 +93,238 @@ public class RedRight extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory traj1 = drive.trajectoryBuilder(startPose)
+        /** -------------------------------------------------------------------------------------
+                                            POS = 1
+         ------------------------------------------------------------------------------------- */
+        Trajectory traj1A = drive.trajectoryBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(0)))
                 .build();
 
+        Trajectory traj2A = drive.trajectoryBuilder(traj1A.end())
+                .lineToLinearHeading(new Pose2d(40, -8, Math.toRadians(90)))
+                .build();
+
+        Trajectory traj3A = drive.trajectoryBuilder(traj2A.end())
+                .lineToLinearHeading(new Pose2d(32, -5, Math.toRadians(91)))
+                .build();
+
+        Trajectory traj4A = drive.trajectoryBuilder(traj3A.end())
+                .lineToLinearHeading(new Pose2d(35, -40, Math.toRadians(91)))
+                .build();
+
+        Trajectory traj5A = drive.trajectoryBuilder(traj4A.end())
+                .lineToLinearHeading(new Pose2d(40, -42, Math.toRadians(91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        /** -------------------------------------------------------------------------------------
+                                            POS = 2
+            ------------------------------------------------------------------------------------- */
         Trajectory traj1B = drive.trajectoryBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(26, 0, Math.toRadians(0)))
                 .build();
 
-        Trajectory traj2A = drive.trajectoryBuilder(traj1.end())
-                .lineToLinearHeading(new Pose2d(40, -8, Math.toRadians(90)))
+        Trajectory traj2B = drive.trajectoryBuilder(traj1B.end())
+                .lineToLinearHeading(new Pose2d(19, -3, Math.toRadians(0)))
                 .build();
 
-        Trajectory traj2B = drive.trajectoryBuilder(traj1.end())
+        Trajectory traj3B = drive.trajectoryBuilder(traj2B.end())
+                .lineToLinearHeading(new Pose2d(32, -7, Math.toRadians(91)))
+                .build();
+
+        Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())
+                .lineToLinearHeading(new Pose2d(35, -39, Math.toRadians(91)))
+                .build();
+
+        Trajectory traj5B = drive.trajectoryBuilder(traj4B.end())
+                .lineToLinearHeading(new Pose2d(37.5, -41.5, Math.toRadians(91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+
+        Trajectory traj6B = drive.trajectoryBuilder(traj5B.end())
+                .lineToLinearHeading(new Pose2d(37, -7, Math.toRadians(91)))
+                .addSpatialMarker(new Vector2d(37, -37), () -> {
+                    slides.moveSlidesToHeightABS(50, 0.6);
+                    spintake.stickIn();
+                })
+                .build();
+
+        Trajectory traj7B = drive.trajectoryBuilder(traj6B.end())
+                .lineToLinearHeading(new Pose2d(40, 50, Math.toRadians(92)))
+                .addSpatialMarker(new Vector2d(40, 35), () -> {
+                    spintake.stickOut();
+                    fourBar.raiseFourBar();
+                    slides.moveSlidesToHeightABS(550, 0.8);
+                })
+                .build();
+
+        Trajectory traj8B = drive.trajectoryBuilder(traj7B.end())
+                .lineToLinearHeading(new Pose2d(47.5, 60.75, Math.toRadians(92)),
+                        SampleMecanumDrive.getVelocityConstraint(0.4 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addSpatialMarker(new Vector2d(40, 50), spintake::spin)
+                .build();
+
+        Trajectory traj9B = drive.trajectoryBuilder(traj8B.end())
+                .lineToLinearHeading(new Pose2d(40, 50, Math.toRadians(92)))
+                .addSpatialMarker(new Vector2d(40, 42), spintake::raiseBar)
+                .addSpatialMarker(new Vector2d(40, 35), () -> {
+                    fourBar.openClaw();
+                    slides.moveSlidesToHeightABS(50, 0.3);
+                })
+                .build();
+
+        Trajectory traj10B = drive.trajectoryBuilder(traj9B.end())
+                .lineToLinearHeading(new Pose2d(37, -39, Math.toRadians(92)))
+                .addDisplacementMarker(fourBar::lowerFourBar)
+                .build();
+
+        Trajectory traj11B = drive.trajectoryBuilder(traj10B.end())
+                .lineToLinearHeading(new Pose2d(37, -43, Math.toRadians(92)))
+                .build();
+
+
+        /** -------------------------------------------------------------------------------------
+                                            POS = 3
+         ------------------------------------------------------------------------------------- */
+        Trajectory traj1C = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(0)))
+                .build();
+
+        Trajectory traj2C = drive.trajectoryBuilder(traj1C.end())
                 .lineToLinearHeading(new Pose2d(40, 8, Math.toRadians(-90)))
                 .build();
 
-        Trajectory backwards = drive.trajectoryBuilder(traj2B.end())
-                .lineToLinearHeading(new Pose2d(35, 5, Math.toRadians(-90)))
-                .build();
-
-        Trajectory backwardsB = drive.trajectoryBuilder(traj1B.end())
-                .lineToLinearHeading(new Pose2d(20, 0, Math.toRadians(0)))
-                .build();
-
-        Pose2d traj2End = traj1.end();
-        if (pos == 1)
-            traj2End = traj2A.end();
-        if (pos == 3)
-            traj2End = backwards.end();
-
-        Trajectory traj3 = drive.trajectoryBuilder(traj2End)
-                .lineToLinearHeading(new Pose2d(32, -5, Math.toRadians(91)))
-                .build();
-
-        TrajectorySequence traj3C = drive.trajectorySequenceBuilder(backwards.end())
+        TrajectorySequence traj3C = drive.trajectorySequenceBuilder(traj2C.end())
                 .lineToLinearHeading(new Pose2d(24, 5, Math.toRadians(91)))
                 //.turn(Math.toRadians(180))
-                .build();
-
-        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .lineToLinearHeading(new Pose2d(35, -40, Math.toRadians(91)))
                 .build();
 
         Trajectory traj4C = drive.trajectoryBuilder(traj3C.end())
                 .lineToLinearHeading(new Pose2d(20, -35, Math.toRadians(91)))
                 .build();
 
-        Trajectory traj5A = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(38, -42, Math.toRadians(91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-
-        Trajectory traj5B = drive.trajectoryBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(36, -42, Math.toRadians(91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-
-        Trajectory traj5C = drive.trajectoryBuilder(traj4.end())
+        Trajectory traj5C = drive.trajectoryBuilder(traj4C.end())
                 .lineToLinearHeading(new Pose2d(31, -42, Math.toRadians(91)),
                         SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
+
         waitForStart();
 
-        if (pos == 1 || pos == 3)
-            drive.followTrajectory(traj1);
-        else
+        spintake.stickOut();
+
+        if (pos == 1) {
+            drive.followTrajectory(traj1A);
+            drive.followTrajectory(traj2A);
+
+            spintake.outtake(0.3, 500);
+            spintake.stop();
+            sleep(400);
+
+            drive.followTrajectory(traj3A);
+            drive.followTrajectory(traj4A);
+
+            sleep(750);
+
+            fourBar.closeClaw();
+            sleep(750);
+            fourBar.raiseFourBar();
+            sleep(500);
+            slides.moveSlidesToHeightABS(1150, 0.7);
+            sleep(300);
+            fourBar.lowerFourBar();
+            sleep(1000);
+
+            drive.followTrajectory(traj5A);
+
+            fourBar.openClaw();
+        } else if (pos == 2) {
             drive.followTrajectory(traj1B);
 
-        if (pos == 1)
-            drive.followTrajectory(traj2A);
-        if (pos == 3)
+            spintake.outtake(0.4, 500);
+            spintake.stop();
+            sleep(200);
+
             drive.followTrajectory(traj2B);
 
-        spintake.outtake(500);
-        spintake.stop();
-        sleep(200);
-        if (pos == 2)
-            drive.followTrajectory(backwardsB);
-        /*if (pos == 3)
-            drive.followTrajectory(backwards);*/
-        sleep(400);
+            sleep(400);
 
-        if (pos == 1 || pos == 2) {
-            drive.followTrajectory(traj3);
-            drive.followTrajectory(traj4);
-        }
-        else {
+            drive.followTrajectory(traj3B);
+            drive.followTrajectory(traj4B);
+
+            sleep(500);
+
+            fourBar.closeClaw();
+            sleep(500);
+            fourBar.raiseFourBar();
+            sleep(300);
+            slides.moveSlidesToHeightABS(1000, 0.7);
+            sleep(300);
+            fourBar.lowerFourBar();
+            sleep(500);
+
+            drive.followTrajectory(traj5B);
+
+            fourBar.openClaw();
+
+            fourBar.raiseFourBar();
+            sleep(300);
+
+            drive.followTrajectory(traj6B);
+            drive.followTrajectory(traj7B);
+            drive.followTrajectory(traj8B);
+
+            spintake.stickIntake();
+            sleep(300);
+            // spintake.stickIntake();
+            drive.followTrajectory(traj9B);
+            drive.followTrajectory(traj10B);
+
+            fourBar.closeClaw();
+            sleep(500);
+            fourBar.raiseFourBar();
+            sleep(300);
+            slides.moveSlidesToHeightABS(1000, 0.7);
+            sleep(300);
+            fourBar.lowerFourBar();
+            sleep(500);
+
+             drive.followTrajectory(traj11B);
+
+             fourBar.openClaw();
+        } else {
+            drive.followTrajectory(traj1C);
+            drive.followTrajectory(traj2C);
+
+            spintake.outtake(0.4, 500);
+            spintake.stop();
+            sleep(400);
+
             drive.followTrajectorySequence(traj3C);
             drive.followTrajectory(traj4C);
-        }
-        sleep(1000);
 
-        fourBar.closeClaw();
-        sleep(750);
-        fourBar.raiseFourBar();
-        sleep(500);
-        slides.moveSlidesToHeightABS(1250, 0.7);
-        sleep(300);
-        fourBar.lowerFourBar();
-        sleep(1000);
-        // slides.moveSlidesToHeightABS(180, 0.4);
+            sleep(750);
 
-        if (pos == 1)
-            drive.followTrajectory(traj5A);
-        if (pos == 2)
-            drive.followTrajectory(traj5B);
-        if (pos == 3)
+            fourBar.closeClaw();
+            sleep(750);
+            fourBar.raiseFourBar();
+            sleep(500);
+            slides.moveSlidesToHeightABS(1150, 0.7);
+            sleep(300);
+            fourBar.lowerFourBar();
+            sleep(1000);
+
             drive.followTrajectory(traj5C);
 
-        fourBar.openClaw();
+            fourBar.openClaw();
+        }
+
+        fourBar.raiseFourBar();
+        sleep(750);
+        slides.moveSlidesToHeightABS(0, 0.7);
 
         webcam1.getWebcam().stopStreaming();
     }
