@@ -9,6 +9,7 @@ public class Hanging {
     private Servo hangerRight;
     private LinearOpMode opMode;
     private final double START_POS = 0.0;
+    private final double MID_POS = 0.5;
     private final double END_POS = 1.0;
 
     public Hanging(HardwareMap hardwareMap, LinearOpMode opMode){
@@ -23,5 +24,10 @@ public class Hanging {
     public void lower(){
         hangerLeft.setPosition(END_POS);
         hangerRight.setPosition(START_POS);
+    }
+
+    public void smallerLift() {
+        hangerLeft.setPosition(MID_POS);
+        hangerRight.setPosition(MID_POS);
     }
 }

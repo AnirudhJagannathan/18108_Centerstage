@@ -77,8 +77,10 @@ public class TeleOp_Drive extends LinearOpMode {
             }
             if (gamepad2.right_bumper)
                 spintake.outtake();
-            if (gamepad2.x)
+            if (gamepad2.x) {
                 spintake.stop();
+                spintake.stickIn();
+            }
 
             slides.moveSlides(false);
 
@@ -92,6 +94,8 @@ public class TeleOp_Drive extends LinearOpMode {
                 hanging.lift();
             if (gamepad1.right_trigger > 0.1)
                 hanging.lower();
+            if (gamepad1.left_bumper)
+                hanging.smallerLift();
             if (gamepad2.a)
                 fourBar.closeClaw();
             if (gamepad2.b)
@@ -103,20 +107,21 @@ public class TeleOp_Drive extends LinearOpMode {
                 fourBar.raiseFourBar();
             if (gamepad2.dpad_left)
                 fourBar.pixelFourBar();
-            if (gamepad2.dpad_right)
+            if (gamepad2.back)
                 collectPixel();
 
             if (gamepad2.left_trigger > 0.1) {
                 spintake.stickIn();
-                sleep(250);
             }
             if (gamepad2.right_trigger > 0.1) {
                 spintake.stickOut();
+            }
+
+            if (gamepad2.start) {
+                spintake.stickIntake();
                 sleep(250);
             }
 
-            if (gamepad2.start)
-                spintake.stickIntake();
         }
     }
 
