@@ -48,22 +48,11 @@ public class TeleOp_Drive extends LinearOpMode {
             launcher.resetPos();
             fourBar.closeClaw();
             spintake.stickOut();
-            // spintake.raiseBar();
         }
 
         waitForStart();
 
         while (!isStopRequested()) {
-            boolean spintakeOn = false;
-              /* drive.setWeightedDrivePower(
-                    new Pose2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x
-                    )
-              );
-               */
-
             csBot.mecanumDriving();
 
             if (gamepad2.left_bumper)

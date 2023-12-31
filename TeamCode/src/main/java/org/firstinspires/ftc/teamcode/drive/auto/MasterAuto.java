@@ -8,6 +8,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous
 public class MasterAuto extends LinearOpMode {
+    BlueLeft blueLeft = new BlueLeft();
+    BlueRight blueRight = new BlueRight();
+    RedLeft redLeft = new RedLeft();
+    RedRight redRight = new RedRight();
 
     public void runOpMode() throws InterruptedException{
         short code = -1;
@@ -29,18 +33,24 @@ public class MasterAuto extends LinearOpMode {
 
         while (opModeIsActive())
             if (code == 0) {
+                blueRight.BlueRightAuto();
                 telemetry.addData("BlueRight", "BlueRight program is playing now");
-                telemetry.update();}
+                telemetry.update();
+            }
             else if (code == 1) {
+                blueLeft.BlueLeftAuto();
                 telemetry.addData("BlueLeft", "BlueLeft program is playing now");
                 telemetry.update();
             }
             else if (code == 2) {
+                redLeft.RedLeftAuto();
                 telemetry.addData("RedLeft", "RedLeft program is playing now");
-                telemetry.update();}
+                telemetry.update();
+            }
             else if (code == 3) {
+                redRight.RedRightAuto();
                 telemetry.addData("RedRight", "RedRight program is playing now");
-                telemetry.update();}
-
+                telemetry.update();
+            }
     }
 }

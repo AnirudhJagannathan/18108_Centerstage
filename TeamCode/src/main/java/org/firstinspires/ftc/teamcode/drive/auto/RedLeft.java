@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.auto;
 
+import android.hardware.Sensor;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -27,6 +29,13 @@ public class RedLeft extends LinearOpMode {
     double cx = 402.145;
     double cy = 221.506;
 
+    private SampleMecanumDrive drive;
+    private Spintake spintake;
+    private SensorDistance sensorDistance;
+    private Slides slides;
+    private FourBar fourBar;
+    private Webcam webcam1;
+
     // UNITS ARE METERS
     double tagsize = 0.166;
 
@@ -39,12 +48,12 @@ public class RedLeft extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
         TeleOp_DriveArvind teleOp_driveArvind = new TeleOp_DriveArvind();
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Spintake spintake = new Spintake(hardwareMap, this);
-        SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
-        Slides slides = new Slides(hardwareMap, this);
-        FourBar fourBar = new FourBar(hardwareMap, this);
-        Webcam webcam1 = new Webcam(hardwareMap, "Webcam 1");
+        drive = new SampleMecanumDrive(hardwareMap);
+        spintake = new Spintake(hardwareMap, this);
+        sensorDistance = new SensorDistance(hardwareMap, this);
+        slides = new Slides(hardwareMap, this);
+        fourBar = new FourBar(hardwareMap, this);
+        webcam1 = new Webcam(hardwareMap, "Webcam 1");
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         //Webcam webcam2 = new Webcam(hardwareMap, "Webcam 2");
 
@@ -483,6 +492,15 @@ public class RedLeft extends LinearOpMode {
 
 
         webcam1.getWebcam().stopStreaming();
+    }
+
+    public void RedLeftAuto(){
+        waitForStart();
+
+        drive.setMotorPowers(0.1, 0.1,0.1, 0.1);
+        sleep(250);
+        drive.setMotorPowers(0,0,0,0);
+
     }
 
     private Object dataFromOpenCV() {

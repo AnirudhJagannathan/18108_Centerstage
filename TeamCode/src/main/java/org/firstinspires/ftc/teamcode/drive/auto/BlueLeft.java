@@ -34,6 +34,12 @@ public class BlueLeft extends LinearOpMode {
     double cx = 402.145;
     double cy = 221.506;
 
+    private SampleMecanumDrive drive;
+    private Spintake spintake;
+    private Slides slides;
+    private FourBar fourBar;
+    private Webcam webcam1;
+
     // UNITS ARE METERS
     double tagsize = 0.166;
 
@@ -46,12 +52,12 @@ public class BlueLeft extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
         TeleOp_Drive teleOp_drive = new TeleOp_Drive();
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Spintake spintake = new Spintake(hardwareMap, this);
+        drive = new SampleMecanumDrive(hardwareMap);
+        spintake = new Spintake(hardwareMap, this);
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
-        Slides slides = new Slides(hardwareMap, this);
-        FourBar fourBar = new FourBar(hardwareMap, this);
-        Webcam webcam1 = new Webcam(hardwareMap, "Webcam 1");
+        slides = new Slides(hardwareMap, this);
+        fourBar = new FourBar(hardwareMap, this);
+        webcam1 = new Webcam(hardwareMap, "Webcam 1");
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         //Webcam webcam2 = new Webcam(hardwareMap, "Webcam 2");
 
@@ -225,6 +231,15 @@ public class BlueLeft extends LinearOpMode {
         fourBar.openClaw();
 
         webcam1.getWebcam().stopStreaming();
+    }
+
+    public void BlueLeftAuto(){
+        waitForStart();
+
+        drive.setMotorPowers(0.1, 0.1,0.1, 0.1);
+        sleep(250);
+        drive.setMotorPowers(0,0,0,0);
+
     }
 
     private Object dataFromOpenCV() {
