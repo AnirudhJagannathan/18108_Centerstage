@@ -13,7 +13,7 @@ public class MasterAuto extends LinearOpMode {
     RedLeft redLeft = new RedLeft();
     RedRight redRight = new RedRight();
 
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         short code = -1;
         while (opModeInInit()){
             if (gamepad1.a)

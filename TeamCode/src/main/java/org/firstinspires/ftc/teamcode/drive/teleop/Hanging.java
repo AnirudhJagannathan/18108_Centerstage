@@ -8,9 +8,9 @@ public class Hanging {
     private Servo hangerLeft;
     private Servo hangerRight;
     private LinearOpMode opMode;
-    private final double START_POS = 0.0;
+    private final double START_POS = 0.04;
     private final double MID_POS = 0.5;
-    private final double END_POS = 1.0;
+    private final double END_POS = 0.98;
 
     public Hanging(HardwareMap hardwareMap, LinearOpMode opMode){
         hangerLeft = hardwareMap.get(Servo.class, "hanger2");

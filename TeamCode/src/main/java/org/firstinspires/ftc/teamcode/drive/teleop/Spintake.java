@@ -38,8 +38,8 @@ public class Spintake {
     }
 
     public void spin() {
-        spintake.setPower(POWER);
         pixelBar.setPosition(BAR_END);
+        spintake.setPower(POWER);
         // when pixel gets stuck
         if (spintake.getCurrent(CurrentUnit.AMPS) > 4.6){
             spintake.setPower(0);
