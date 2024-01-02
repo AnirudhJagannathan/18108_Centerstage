@@ -59,7 +59,6 @@ public class TeleOp_Drive extends LinearOpMode {
                 spintake.spin();
 
             if (slides.getCurrentPos() < 150) {
-                // slides.moveSlides(true);
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
@@ -95,9 +94,10 @@ public class TeleOp_Drive extends LinearOpMode {
             if (gamepad2.dpad_up)
                 fourBar.raiseFourBar();
             if (gamepad2.dpad_left)
-                fourBar.pixelFourBar();
-            if (gamepad2.back)
-                collectPixel();
+                spintake.raiseBar();
+            if (gamepad2.dpad_right)
+                spintake.lowerBar();
+
 
             if (gamepad2.left_trigger > 0.1) {
                 spintake.stickIn();

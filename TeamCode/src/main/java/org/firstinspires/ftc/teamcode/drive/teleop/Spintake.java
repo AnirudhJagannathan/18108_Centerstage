@@ -31,23 +31,13 @@ public class Spintake {
         pixelStick2 = hardwareMap.get(Servo.class, "pixelStick2");
         spintake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spintake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pixelBar.setPosition(BAR_START);
         this.opmode = opmode;
-
-        // slides = new Slides(hardwareMap, this.opmode);
     }
 
     public void spin() {
         pixelBar.setPosition(BAR_END);
         spintake.setPower(POWER);
         // when pixel gets stuck
-        if (spintake.getCurrent(CurrentUnit.AMPS) > 4.6){
-            spintake.setPower(0);
-            opmode.sleep(250);
-            spintake.setPower(-POWER);
-        }
-        opmode.telemetry.addData("Spin-take", spintake.getCurrentPosition());
-        opmode.telemetry.addData("Current Drawn", spintake.getCurrent(CurrentUnit.AMPS));
     }
     public void stop() {
         spintake.setPower(0);
@@ -69,6 +59,10 @@ public class Spintake {
 
     public void raiseBar() {
         pixelBar.setPosition(BAR_START);
+    }
+
+    public void lowerBar() {
+        pixelBar.setPosition(BAR_END);
     }
 
     public void stickIn() {

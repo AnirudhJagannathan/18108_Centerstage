@@ -47,7 +47,6 @@ public class RedLeft extends LinearOpMode {
     AprilTagDetection tagOfInterest = null;
 
     public void runOpMode() throws InterruptedException{
-        TeleOp_DriveArvind teleOp_driveArvind = new TeleOp_DriveArvind();
         drive = new SampleMecanumDrive(hardwareMap);
         spintake = new Spintake(hardwareMap, this);
         sensorDistance = new SensorDistance(hardwareMap, this);
