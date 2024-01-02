@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive.auto;
-
+//anirudh is incredibly stupid and unintelligent
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilderKt;
