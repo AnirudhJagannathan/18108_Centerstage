@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -33,6 +34,8 @@ public class Launcher {
         launcher.setPosition(LAUNCHER_START_POS);
         opmode.telemetry.addData("LauncherPos: ", placeHolder.getPosition());
         opmode.telemetry.update();
+
+        ((PwmControl) placeHolder).setPwmDisable();
     }
 
     public void launch() {
@@ -43,4 +46,11 @@ public class Launcher {
         opmode.telemetry.update();
     }
 
+    public Servo getLauncher() {
+        return launcher;
+    }
+
+    public Servo getPlaceHolder() {
+        return placeHolder;
+    }
 }

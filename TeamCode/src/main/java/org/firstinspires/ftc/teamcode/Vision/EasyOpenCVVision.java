@@ -26,7 +26,7 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     final int NONE_SHIP_THRESHOLD = 50;
 
     // Upper-left point of the rectangle where shipping element will be defined
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(125, 375);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 375);
     // The width of the rectangle where the sh. el. will be defined
     static final int REGION_WIDTH = 190;
     // The height of the rectangle where the sh. el. will be defined
@@ -73,7 +73,7 @@ public class EasyOpenCVVision extends OpenCvPipeline {
 
 
     // Upper-left point of the rectangle where shipping elemnt will be defined
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(575, 275);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(530, 275);
     // The width of the rectangle where the sh. el. will be defined
     static final int REGION2_WIDTH = 175;
     // The height of the rectangle where the sh. el. will be defined
@@ -89,7 +89,7 @@ public class EasyOpenCVVision extends OpenCvPipeline {
             REGION2_TOPLEFT_ANCHOR_POINT.y + REGION2_HEIGHT);
 
     // Upper-left point of the rectangle where shipping elemnt will be defined
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(975, 375);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(925, 375);
     // The width of the rectangle where the sh. el. will be defined
     static final int REGION3_WIDTH = 190;
     // The height of the rectangle where the sh. el. will be defined

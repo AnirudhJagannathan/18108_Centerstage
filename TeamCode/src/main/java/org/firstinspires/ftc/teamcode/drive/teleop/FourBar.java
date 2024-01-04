@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -63,7 +64,7 @@ public class FourBar {
         // fourBarRight.setPower(1.0);
     }
     public void openClaw() {
-        claw.setPosition(0.57);
+        claw.setPosition(0.59);
     }
 
     public void manualControl(boolean spintakeOn) {
@@ -114,5 +115,23 @@ public class FourBar {
         fourBar2.setPosition(0.80);
         position = 0.05;
         position2 = 0.80;
+    }
+
+    public void cutPower() {
+        ((PwmControl) claw).setPwmDisable();
+        ((PwmControl) fourBar).setPwmDisable();
+        ((PwmControl) fourBar2).setPwmDisable();
+    }
+
+    public Servo getClaw() {
+        return claw;
+    }
+
+    public Servo getFourBar() {
+        return fourBar;
+    }
+
+    public Servo getFourBar2() {
+        return fourBar2;
     }
 }

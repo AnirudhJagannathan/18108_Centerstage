@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hanging {
@@ -20,6 +21,9 @@ public class Hanging {
     public void lift(){
         hangerLeft.setPosition(START_POS);
         hangerRight.setPosition(END_POS);
+
+        ((PwmControl) hangerLeft).setPwmDisable();
+        ((PwmControl) hangerRight).setPwmDisable();
     }
     public void lower(){
         hangerLeft.setPosition(END_POS);
@@ -29,5 +33,13 @@ public class Hanging {
     public void smallerLift() {
         hangerLeft.setPosition(MID_POS);
         hangerRight.setPosition(MID_POS);
+    }
+
+    public Servo getHangerLeft() {
+        return hangerLeft;
+    }
+
+    public Servo getHangerRight() {
+        return hangerRight;
     }
 }

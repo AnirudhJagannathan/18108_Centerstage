@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -37,7 +38,7 @@ public class Spintake {
     public void spin() {
         pixelBar.setPosition(BAR_END);
         spintake.setPower(POWER);
-        // when pixel gets stuck
+        stickOut();
     }
     public void stop() {
         spintake.setPower(0);
@@ -93,5 +94,17 @@ public class Spintake {
 
     public double getPixelBarPos() {
         return pixelBar.getPosition();
+    }
+
+    public Servo getPixelBar() {
+        return pixelBar;
+    }
+
+    public Servo getPixelStick1() {
+        return pixelStick1;
+    }
+
+    public Servo getPixelStick2() {
+        return pixelStick2;
     }
 }

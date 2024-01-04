@@ -80,8 +80,10 @@ public class TeleOp_Drive extends LinearOpMode {
                 launcher.resetPos();
             if (gamepad1.left_trigger > 0.1)
                 hanging.lift();
-            if (gamepad1.right_trigger > 0.1)
+            if (gamepad1.right_trigger > 0.1) {
                 hanging.lower();
+                fourBar.cutPower();
+            }
             if (gamepad1.left_bumper)
                 hanging.smallerLift();
             if (gamepad2.a)
@@ -99,12 +101,10 @@ public class TeleOp_Drive extends LinearOpMode {
                 spintake.lowerBar();
 
 
-            if (gamepad2.left_trigger > 0.1) {
+            if (gamepad2.left_trigger > 0.1)
                 spintake.stickIn();
-            }
-            if (gamepad2.right_trigger > 0.1) {
+            if (gamepad2.right_trigger > 0.1)
                 spintake.stickOut();
-            }
 
             if (gamepad2.start) {
                 spintake.stickIntake();
