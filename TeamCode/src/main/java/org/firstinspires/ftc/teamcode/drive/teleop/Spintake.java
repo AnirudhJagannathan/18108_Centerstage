@@ -46,6 +46,7 @@ public class Spintake {
 
     public void outtake() {
         spintake.setPower(-POWER);
+        stickOut();
     }
 
     public void spin(double power, long time) {

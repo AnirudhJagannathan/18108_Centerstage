@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.teleop;
 import android.hardware.Sensor;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Disabled
 @TeleOp
 public class TeleOp_DriveArvind extends LinearOpMode {
 

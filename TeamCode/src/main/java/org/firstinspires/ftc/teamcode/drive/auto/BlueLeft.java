@@ -111,27 +111,27 @@ public class BlueLeft extends LinearOpMode {
          ------------------------------------------------------------------------------------- */
 
         Trajectory traj1A = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(20, 13, Math.toRadians(25)))
+                .lineToLinearHeading(new Pose2d(20, 12, Math.toRadians(25)))
                 .addSpatialMarker(new Vector2d(30, 20), () -> {
                     fourBar.raiseFourBar();
                 })
                 .build();
 
         Trajectory traj2A = drive.trajectoryBuilder(traj1A.end())
-                .lineToLinearHeading(new Pose2d(31, 38, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(31, 36, Math.toRadians(-90)))
                 .addSpatialMarker(new Vector2d(20, 16), () -> {
-                    slides.moveSlidesToHeightABS(1050, 0.8);
+                    slides.moveSlidesToHeightABS(950, 0.8);
                 })
                 .build();
 
         Trajectory traj3A = drive.trajectoryBuilder(traj2A.end())
-                .lineToLinearHeading(new Pose2d(31, 41.5, Math.toRadians(-90)),
-                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(31, 41, Math.toRadians(-90)),
+                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         Trajectory traj4A = drive.trajectoryBuilder(traj3A.end())
-                .lineToLinearHeading(new Pose2d(67, 25, Math.toRadians(-88)))
+                .lineToLinearHeading(new Pose2d(63, 25, Math.toRadians(-90)))
                 .addSpatialMarker(new Vector2d(31, 41), () -> {
                     fourBar.raiseFourBar(); fourBar.openClaw();
                 })
@@ -141,63 +141,63 @@ public class BlueLeft extends LinearOpMode {
                 .build();
 
         Trajectory traj5A = drive.trajectoryBuilder(traj4A.end())
-                .lineToLinearHeading(new Pose2d(67, -43, Math.toRadians(-88)),
+                .lineToLinearHeading(new Pose2d(61, -43, Math.toRadians(-90)),
                         SampleMecanumDrive.getVelocityConstraint(0.7 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(67, -20), () -> {
+                .addSpatialMarker(new Vector2d(63, -20), () -> {
                     fourBar.raiseFourBar(); spintake.stickOut();
                 })
                 .build();
 
         Trajectory traj6A = drive.trajectoryBuilder(traj5A.end())
-                .lineToLinearHeading(new Pose2d(62.5, -59.5, Math.toRadians(-88)),
+                .lineToLinearHeading(new Pose2d(53, -62, Math.toRadians(-90)),
                         SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(67, -43), () -> {
+                .addSpatialMarker(new Vector2d(63, -43), () -> {
                     slides.moveSlidesToHeightABS(500, 0.9);
                 })
-                .addSpatialMarker(new Vector2d(63, -50), () -> {
+                .addSpatialMarker(new Vector2d(60, -50), () -> {
                     spintake.spin();
                 })
                 .build();
 
         Trajectory traj7A = drive.trajectoryBuilder(traj6A.end())
-                .lineToLinearHeading(new Pose2d(67, -30, Math.toRadians(-88)))
-                .addSpatialMarker(new Vector2d(63, -57), () -> {
+                .lineToLinearHeading(new Pose2d(62, -30, Math.toRadians(-90)))
+                .addSpatialMarker(new Vector2d(60.5, -55), () -> {
                     spintake.raiseBar();
                 })
-                .addSpatialMarker(new Vector2d(63.5, -50), () -> {
+                .addSpatialMarker(new Vector2d(60.5, -50), () -> {
                     fourBar.openClaw();
                     slides.moveSlidesToHeightABS(0, 0.8);
                 })
                 .build();
 
         Trajectory traj8A = drive.trajectoryBuilder(traj7A.end())
-                .lineToLinearHeading(new Pose2d(67, 30, Math.toRadians(-88)))
-                .addSpatialMarker(new Vector2d(67, -30), () -> {
+                .lineToLinearHeading(new Pose2d(62, 34, Math.toRadians(-90)))
+                .addSpatialMarker(new Vector2d(62, -30), () -> {
                     fourBar.lowerFourBar();
                     spintake.stickIn();
                 })
-                .addSpatialMarker(new Vector2d(67, 0), () -> {
+                .addSpatialMarker(new Vector2d(62, 0), () -> {
                     fourBar.closeClaw();
                 })
                 .build();
 
         Trajectory traj9A = drive.trajectoryBuilder(traj8A.end())
-                .lineToLinearHeading(new Pose2d(35, 37, Math.toRadians(-88)),
+                .lineToLinearHeading(new Pose2d(35, 36.5, Math.toRadians(-90)),
                         SampleMecanumDrive.getVelocityConstraint(0.4 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(67, 20), () -> {
+                .addSpatialMarker(new Vector2d(62, 20), () -> {
                     fourBar.raiseFourBar();
                 })
-                .addSpatialMarker(new Vector2d(62, 25), () -> {
-                    slides.moveSlidesToHeightABS(1150, 1.0);
+                .addSpatialMarker(new Vector2d(59, 25), () -> {
+                    slides.moveSlidesToHeightABS(1050, 1.0);
                 })
                 .build();
 
         Trajectory traj10A = drive.trajectoryBuilder(traj9A.end())
-                .lineToLinearHeading(new Pose2d(35, 40.5, Math.toRadians(-88)),
-                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(35, 40.75, Math.toRadians(-90)),
+                        SampleMecanumDrive.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -266,7 +266,7 @@ public class BlueLeft extends LinearOpMode {
                 .build();
 
         Trajectory traj11B = drive.trajectoryBuilder(traj10B.end())
-                .lineToLinearHeading(new Pose2d(35, 41, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(35, 40.5, Math.toRadians(-90)))
                 .build();
 
 
@@ -274,64 +274,64 @@ public class BlueLeft extends LinearOpMode {
                                                 POS = 3
          ------------------------------------------------------------------------------------- */
         Trajectory traj1C = drive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(24, 0, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(24, 2, Math.toRadians(-25)))
                 .build();
 
-        Trajectory traj2C = drive.trajectoryBuilder(traj1A.end())
-                .lineToLinearHeading(new Pose2d(34.5, 7, Math.toRadians(-90)))
+        Trajectory traj2C = drive.trajectoryBuilder(traj1C.end())
+                .lineToLinearHeading(new Pose2d(34.5, 8, Math.toRadians(-90)))
                 .build();
 
-        Trajectory traj3C = drive.trajectoryBuilder(traj2A.end())
-                .lineToLinearHeading(new Pose2d(38, 38, Math.toRadians(-91)))
+        Trajectory traj3C = drive.trajectoryBuilder(traj2C.end())
+                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(-91)))
                 .build();
 
-        Trajectory traj4C = drive.trajectoryBuilder(traj3A.end())
-                .lineToLinearHeading(new Pose2d(43, 40.5, Math.toRadians(-91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+        Trajectory traj4C = drive.trajectoryBuilder(traj3C.end())
+                .lineToLinearHeading(new Pose2d(45, 40, Math.toRadians(-91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.4 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
-        Trajectory traj5C = drive.trajectoryBuilder(traj4A.end())
-                .lineToLinearHeading(new Pose2d(64, 12, Math.toRadians(-91)),
-                        SampleMecanumDrive.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+        Trajectory traj5C = drive.trajectoryBuilder(traj4C.end())
+                .lineToLinearHeading(new Pose2d(64, 0, Math.toRadians(-91)),
+                        SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(52, 30), () -> {
+                .addSpatialMarker(new Vector2d(47, 35), () -> {
                     slides.moveSlidesToHeightABS(50, 0.7);
                 })
                 .build();
 
-        Trajectory traj6C = drive.trajectoryBuilder(traj5A.end())
-                .lineToLinearHeading(new Pose2d(64, -43, Math.toRadians(-91)))
-                .addSpatialMarker(new Vector2d(64, -20), () -> {
+        Trajectory traj6C = drive.trajectoryBuilder(traj5C.end())
+                .lineToLinearHeading(new Pose2d(61.5, -43, Math.toRadians(-91)))
+                .addSpatialMarker(new Vector2d(63, -20), () -> {
                     fourBar.raiseFourBar();
                     spintake.stickOut();
                 })
                 .build();
 
-        Trajectory traj7C = drive.trajectoryBuilder(traj6A.end())
-                .lineToLinearHeading(new Pose2d(59.5, -59.5, Math.toRadians(-91)),
+        Trajectory traj7C = drive.trajectoryBuilder(traj6C.end())
+                .lineToLinearHeading(new Pose2d(52.5, -61.75, Math.toRadians(-91)),
                         SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addSpatialMarker(new Vector2d(64, -43), () -> {
+                .addSpatialMarker(new Vector2d(62, -43), () -> {
                     slides.moveSlidesToHeightABS(500, 0.9);
                 })
-                .addSpatialMarker(new Vector2d(60, 50), () -> {
+                .addSpatialMarker(new Vector2d(59, 50), () -> {
                     spintake.spin();
                 })
                 .build();
 
-        Trajectory traj8C = drive.trajectoryBuilder(traj7A.end())
+        Trajectory traj8C = drive.trajectoryBuilder(traj7C.end())
                 .lineToLinearHeading(new Pose2d(64, -30, Math.toRadians(-91)))
-                .addSpatialMarker(new Vector2d(59.5, -57), () -> {
+                .addSpatialMarker(new Vector2d(57, -57), () -> {
                     spintake.raiseBar();
                 })
-                .addSpatialMarker(new Vector2d(60.5, -50), () -> {
+                .addSpatialMarker(new Vector2d(61, -50), () -> {
                     fourBar.openClaw();
                     slides.moveSlidesToHeightABS(0, 0.8);
                 })
                 .build();
 
-        Trajectory traj9C = drive.trajectoryBuilder(traj8A.end())
+        Trajectory traj9C = drive.trajectoryBuilder(traj8C.end())
                 .lineToLinearHeading(new Pose2d(64, 20, Math.toRadians(-91)))
                 .addSpatialMarker(new Vector2d(64, -30), () -> {
                     fourBar.lowerFourBar();
@@ -341,7 +341,7 @@ public class BlueLeft extends LinearOpMode {
                 })
                 .build();
 
-        Trajectory traj10C = drive.trajectoryBuilder(traj9A.end())
+        Trajectory traj10C = drive.trajectoryBuilder(traj9C.end())
                 .lineToLinearHeading(new Pose2d(46, 37, Math.toRadians(-91)),
                         SampleMecanumDrive.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -353,8 +353,8 @@ public class BlueLeft extends LinearOpMode {
                 })
                 .build();
 
-        Trajectory traj11C = drive.trajectoryBuilder(traj10A.end())
-                .lineToLinearHeading(new Pose2d(46, 40.5, Math.toRadians(-91)),
+        Trajectory traj11C = drive.trajectoryBuilder(traj10C.end())
+                .lineToLinearHeading(new Pose2d(44, 40.5, Math.toRadians(-91)),
                         SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -451,13 +451,11 @@ public class BlueLeft extends LinearOpMode {
 
             drive.followTrajectory(traj3C);
 
-            sleep(750);
-
             fourBar.closeClaw();
             sleep(500);
             fourBar.raiseFourBar();
             sleep(300);
-            slides.moveSlidesToHeightABS(1050, 0.7);
+            slides.moveSlidesToHeightABS(950, 0.7);
             sleep(300);
             fourBar.lowerFourBar();
             sleep(750);
@@ -472,7 +470,8 @@ public class BlueLeft extends LinearOpMode {
             sleep(750);
 
             drive.followTrajectory(traj5C);
-            /* spintake.stickOut();
+
+            spintake.stickOut();
             drive.followTrajectory(traj6C);
             drive.followTrajectory(traj7C);
 
@@ -491,7 +490,6 @@ public class BlueLeft extends LinearOpMode {
             sleep(350);
 
             fourBar.openClaw();
-             */
         }
 
         fourBar.raiseFourBar();

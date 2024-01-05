@@ -111,10 +111,10 @@ public class FourBar {
         position2 = 0.85;
     }
     public void pixelFourBar() {
-        fourBar.setPosition(5);
-        fourBar2.setPosition(0.80);
-        position = 0.05;
-        position2 = 0.80;
+        fourBar.setPosition(0.07);
+        fourBar2.setPosition(0.78);
+        position = 0.07;
+        position2 = 0.78;
     }
 
     public void cutPower() {
