@@ -71,7 +71,6 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     //Mat Cb2 = new Mat();
     int avg3B; // The amount of blue in the specified rectangle
 
-
     // Upper-left point of the rectangle where shipping elemnt will be defined
     static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(530, 275);
     // The width of the rectangle where the sh. el. will be defined
@@ -103,11 +102,6 @@ public class EasyOpenCVVision extends OpenCvPipeline {
     Point region3_pointB = new Point(
             REGION3_TOPLEFT_ANCHOR_POINT.x + REGION3_WIDTH,
             REGION3_TOPLEFT_ANCHOR_POINT.y + REGION3_HEIGHT);
-
-
-
-
-
 
     // Variable where the number of rings will be stored at the moment
     public volatile ShipPosition position = ShipPosition.NONE;
@@ -178,7 +172,6 @@ public class EasyOpenCVVision extends OpenCvPipeline {
 
         position = ShipPosition.NONE; // Record our analysis
 
-
         if (avg1R>avg2R&avg1R>avg3R || avg1B>avg2B&avg1B>avg3B) {
             position = ShipPosition.LEFT;
         }
@@ -188,30 +181,6 @@ public class EasyOpenCVVision extends OpenCvPipeline {
         if (avg3R>avg1R&avg3R>avg2R || avg3B>avg1B&avg3B>avg2B) {
             position = ShipPosition.NONE;
         }
-
-/*
-            if (NONE_SHIP_THRESHOLD > avg1) {
-                if (NONE_SHIP_THRESHOLD > avg2) {position = ShipPosition.NONE;}
-            }
-        if (avg1 > avg2) {
-            if (avg1 > ONE_SHIP_THRESHOLD) {
-                position = ShipPosition.LEFT;
-            }
-        }
-        if (avg2 > avg1) {
-            if (avg2 > ONE_SHIP_THRESHOLD) {
-                position = ShipPosition.CENTER;
-            }
-        }*/
-        // else if (NONE_SHIP_THRESHOLD > avg1 > avg2) {
-        //   position = ShipPosition.NONE; }
-
-//        Imgproc.rectangle(
-//                input, // Buffer to draw on
-//                region1_pointA, // First point which defines the rectangle
-//                region1_pointB, // Second point which defines the rectangle
-//                GREEN, // The color the rectangle is drawn in
-//                -1); // Negative thickness means solid fill
 
         return input;
     }
