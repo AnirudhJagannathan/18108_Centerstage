@@ -22,6 +22,7 @@ public class FourBar {
     private final double POS_END = 0;
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
+    private double CLAW_OPEN_POS = 0.59;
 
     double position = 0.88;
     double position2 = 0;
@@ -64,7 +65,7 @@ public class FourBar {
         // fourBarRight.setPower(1.0);
     }
     public void openClaw() {
-        claw.setPosition(0.59);
+        claw.setPosition(CLAW_OPEN_POS);
     }
 
     public void manualControl(boolean spintakeOn) {
@@ -134,4 +135,14 @@ public class FourBar {
     public Servo getFourBar2() {
         return fourBar2;
     }
+
+    public void setCLAW_OPEN_POS(double pos) {
+        CLAW_OPEN_POS = pos;
+    }
+
+    /* public double getCurrentDraw() {
+        return
+    }
+
+     */
 }

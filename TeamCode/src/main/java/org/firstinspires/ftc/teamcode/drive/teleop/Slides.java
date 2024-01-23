@@ -40,6 +40,7 @@ public class Slides {
         }
 
          */
+
         if (!((pos > 400 && power < 0)  || (pos < -50 && power > 0))) {
             slideLeft.setPower(power);
             slideRight.setPower(-power);

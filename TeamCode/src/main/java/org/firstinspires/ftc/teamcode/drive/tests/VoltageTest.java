@@ -1,21 +1,24 @@
-     package org.firstinspires.ftc.teamcode.drive.teleop;
+package org.firstinspires.ftc.teamcode.drive.tests;
 
-import android.hardware.Sensor;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.checkerframework.checker.units.qual.C;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
-import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
-import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.drive.teleop.CenterstageBot;
+import org.firstinspires.ftc.teamcode.drive.teleop.FourBar;
+import org.firstinspires.ftc.teamcode.drive.teleop.Hanging;
+import org.firstinspires.ftc.teamcode.drive.teleop.Launcher;
+import org.firstinspires.ftc.teamcode.drive.teleop.Slides;
+import org.firstinspires.ftc.teamcode.drive.teleop.Spintake;
+import org.firstinspires.ftc.teamcode.drive.teleop.TankDrive;
 
 @TeleOp
-public class TeleOp_Drive extends LinearOpMode {
-
+public class VoltageTest extends LinearOpMode {
     private SampleMecanumDrive drive;
     private CenterstageBot csBot;
     private TankDrive tankDrive;
@@ -25,6 +28,7 @@ public class TeleOp_Drive extends LinearOpMode {
     private FourBar fourBar;
     private Hanging hanging;
     private SensorDistance sensorDistance;
+    private FtcDashboard dashboard = FtcDashboard.getInstance();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,6 +42,8 @@ public class TeleOp_Drive extends LinearOpMode {
         hanging = new Hanging(hardwareMap, this);
 
         sensorDistance = new SensorDistance(hardwareMap, this);
+
+        Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
 
@@ -104,12 +110,18 @@ public class TeleOp_Drive extends LinearOpMode {
             if (gamepad2.left_trigger > 0.1)
                 spintake.stickIn();
             if (gamepad2.right_trigger > 0.1)
+
                 spintake.stickOut();
 
             if (gamepad2.start) {
                 spintake.stickIntake();
                 sleep(250);
             }
+
+            double currentVoltage = hardwareMap.voltageSensor.get("Control Hub").getVoltage();
+            telemetry.addData("VoltageMitigation:", currentVoltage);
+            // telemetry.addData("VoltageRaw:", currentVoltage + Math.pow(-1, Math.round(Math.random())) * 0.45 * Math.random() - Math.random());
+            telemetry.update();
         }
     }
 

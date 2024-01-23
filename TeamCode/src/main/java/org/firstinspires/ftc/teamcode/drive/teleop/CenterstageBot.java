@@ -36,6 +36,7 @@ public class CenterstageBot {
             v2 = Range.clip(-drive - strafe - turn, -1, 1);
             v3 = Range.clip(-drive + strafe - turn, -1, 1);
             v4 = Range.clip(-drive - strafe + turn, -1, 1);
+
         }
         leftFront.setPower(v1);
         rightFront.setPower(v2);

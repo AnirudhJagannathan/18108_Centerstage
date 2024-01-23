@@ -18,7 +18,7 @@ public class Spintake {
     private Servo pixelStick2;
     private LinearOpMode opmode;
     // private Slides slides;
-    private final double POWER = 0.8;
+    private final double POWER = 1.0;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
     private final double STICK_START = 0.15;

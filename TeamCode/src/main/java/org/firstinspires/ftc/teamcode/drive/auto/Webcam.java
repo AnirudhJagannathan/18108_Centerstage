@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Vision.EasyOpenCVVision;
+import org.firstinspires.ftc.teamcode.Vision.PixelDetectionPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -39,6 +40,10 @@ public class Webcam {
     }
 
     public void setPipeline(EasyOpenCVVision pipeline) {
+        webcam.setPipeline(pipeline);
+    }
+
+    public void setPipeline(PixelDetectionPipeline pipeline) {
         webcam.setPipeline(pipeline);
     }
 
