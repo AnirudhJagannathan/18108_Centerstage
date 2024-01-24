@@ -22,7 +22,10 @@ public class FourBar {
     private final double POS_END = 0;
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
-    private double CLAW_OPEN_POS = 0.59;
+    private double CLAW_OPEN_POS = 0.49;
+
+    private double FOUR_BAR_COLLECT_POS = 0;
+    private double FOUR_BAR2_COLLECT_POS = 0.85;
 
     double position = 0.88;
     double position2 = 0;
@@ -61,7 +64,7 @@ public class FourBar {
         }
     }
     public void closeClaw() {
-        claw.setPosition(0.7);
+        claw.setPosition(0.61);
         // fourBarRight.setPower(1.0);
     }
     public void openClaw() {
@@ -106,11 +109,12 @@ public class FourBar {
         position2 = 0;
     }
     public void lowerFourBar() {
-        fourBar.setPosition(0);
-        fourBar2.setPosition(0.85);
-        position = 0;
-        position2 = 0.85;
+        fourBar.setPosition(FOUR_BAR_COLLECT_POS);
+        fourBar2.setPosition(FOUR_BAR2_COLLECT_POS);
+        position = FOUR_BAR_COLLECT_POS;
+        position2 = FOUR_BAR2_COLLECT_POS;
     }
+
     public void pixelFourBar() {
         fourBar.setPosition(0.07);
         fourBar2.setPosition(0.78);
@@ -138,6 +142,11 @@ public class FourBar {
 
     public void setCLAW_OPEN_POS(double pos) {
         CLAW_OPEN_POS = pos;
+    }
+
+    public void setCollectPos(double pos, double pos2) {
+        FOUR_BAR_COLLECT_POS = pos;
+        FOUR_BAR2_COLLECT_POS = pos2;
     }
 
     /* public double getCurrentDraw() {

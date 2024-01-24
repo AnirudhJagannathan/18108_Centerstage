@@ -55,14 +55,20 @@ public class TeleOp_Drive extends LinearOpMode {
         while (!isStopRequested()) {
             csBot.mecanumDriving();
 
-            if (gamepad2.left_bumper)
+            if (gamepad2.left_bumper) {
+                launcher.trayStickOut();
                 spintake.spin();
-
+            }
             if (slides.getCurrentPos() < 150) {
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
+                fourBar.setCollectPos(0.53, 0.32);
             }
+            else {
+                fourBar.setCollectPos(0, 0.85);
+            }
+
             if (gamepad2.right_bumper)
                 spintake.outtake();
             if (gamepad2.x) {
@@ -84,12 +90,24 @@ public class TeleOp_Drive extends LinearOpMode {
                 hanging.lower();
                 fourBar.cutPower();
             }
-            if (gamepad1.left_bumper)
-                hanging.smallerLift();
+
+            if (gamepad1.dpad_up)
+                launcher.trayStickIn();
+            if (gamepad1.dpad_down)
+                launcher.trayStickOut();
+
             if (gamepad2.a)
                 fourBar.closeClaw();
             if (gamepad2.b)
                 fourBar.openClaw();
+
+            if (gamepad2.left_stick_y < 0){
+                launcher.trayStickIn();
+            }
+
+            if (gamepad2.left_stick_y > 0){
+                launcher.trayStickOut();
+            }
 
             if (gamepad2.dpad_down)
                 fourBar.lowerFourBar();

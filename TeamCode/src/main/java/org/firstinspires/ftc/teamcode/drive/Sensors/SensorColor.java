@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class SensorColor {
     private ColorSensor color;
     private LinearOpMode opMode;
-    public SensorColor(HardwareMap hardwareMap, LinearOpMode opMode){
+    public SensorColor(HardwareMap hardwareMap, LinearOpMode opMode) {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         color = hardwareMap.get(ColorSensor.class, "colorSensor");
 

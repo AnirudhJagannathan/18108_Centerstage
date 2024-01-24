@@ -29,8 +29,8 @@ public class Launcher {
     }
 
     public void resetPos() {
-        placeHolder.setPosition(PLACEHOLDER_HOLD);
-        opmode.sleep(1000);
+        // placeHolder.setPosition(PLACEHOLDER_HOLD);
+        // opmode.sleep(1000);
         launcher.setPosition(LAUNCHER_START_POS);
         opmode.telemetry.addData("LauncherPos: ", placeHolder.getPosition());
         opmode.telemetry.update();
@@ -39,11 +39,19 @@ public class Launcher {
     }
 
     public void launch() {
-        placeHolder.setPosition(PLACEHOLDER_RELEASE);
-        opmode.sleep(1000);
+        // placeHolder.setPosition(PLACEHOLDER_RELEASE);
+        // opmode.sleep(1000);
         launcher.setPosition(LAUNCHER_END_POS);
         opmode.telemetry.addData("LauncherPos: ", placeHolder.getPosition());
         opmode.telemetry.update();
+    }
+
+    public void trayStickIn() {
+        placeHolder.setPosition(PLACEHOLDER_HOLD);
+    }
+
+    public void trayStickOut() {
+        placeHolder.setPosition(PLACEHOLDER_RELEASE);
     }
 
     public Servo getLauncher() {

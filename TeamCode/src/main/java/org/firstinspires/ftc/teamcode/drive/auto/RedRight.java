@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Vision.dataFromOpenCV;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.teleop.FourBar;
+import org.firstinspires.ftc.teamcode.drive.teleop.Launcher;
 import org.firstinspires.ftc.teamcode.drive.teleop.Slides;
 import org.firstinspires.ftc.teamcode.drive.teleop.Spintake;
 import org.firstinspires.ftc.teamcode.drive.teleop.TeleOp_Drive;
@@ -32,6 +33,7 @@ public class RedRight extends LinearOpMode {
     private Slides slides;
     private FourBar fourBar;
     private Webcam webcam1;
+    private Launcher launcher;
 
     // UNITS ARE METERS
     double tagsize = 0.166;
@@ -50,6 +52,7 @@ public class RedRight extends LinearOpMode {
         slides = new Slides(hardwareMap, this);
         fourBar = new FourBar(hardwareMap, this);
         webcam1 = new Webcam(hardwareMap, "Webcam 1");
+        launcher = new Launcher(hardwareMap, this);
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         //Webcam webcam2 = new Webcam(hardwareMap, "Webcam 2");
 
@@ -217,11 +220,15 @@ public class RedRight extends LinearOpMode {
             spintake.stickIntake();
             sleep(300);
 
+            launcher.trayStickIn();
+
             drive.followTrajectory(traj8A);
+            fourBar.setCollectPos(0.56, 0.29);
             drive.followTrajectory(traj9A);
 
             drive.followTrajectory(traj10A);
 
+            fourBar.setCollectPos(0, 0.85);
             fourBar.lowerFourBar();
             sleep(300);
 
@@ -282,10 +289,10 @@ public class RedRight extends LinearOpMode {
 
             Trajectory traj9B = drive.trajectoryBuilder(traj8B.end())
                     .lineToLinearHeading(new Pose2d(40, 50, Math.toRadians(90)))
-                    .addSpatialMarker(new Vector2d(40, 42), spintake::raiseBar)
-                    .addSpatialMarker(new Vector2d(40, 35), () -> {
+                    .addSpatialMarker(new Vector2d(40, 56), spintake::raiseBar)
+                    .addSpatialMarker(new Vector2d(40, 53), () -> {
                         fourBar.openClaw();
-                        slides.moveSlidesToHeightABS(0, 0.3);
+                        slides.moveSlidesToHeightABS(0, 0.4);
                     })
                     .build();
 
@@ -332,10 +339,14 @@ public class RedRight extends LinearOpMode {
 
             spintake.stickIntake();
             sleep(300);
+
+            launcher.trayStickIn();
             // spintake.stickIntake();
             drive.followTrajectory(traj9B);
+            fourBar.setCollectPos(0.56, 0.29);
             drive.followTrajectory(traj10B);
 
+            fourBar.setCollectPos(0, 0.85);
             fourBar.lowerFourBar();
             sleep(400);
             fourBar.closeClaw();
@@ -467,11 +478,15 @@ public class RedRight extends LinearOpMode {
             spintake.stickIntake();
             sleep(300);
 
+            launcher.trayStickIn();
+
             drive.followTrajectory(traj7C);
+            fourBar.setCollectPos(0.56, 0.29);
             drive.followTrajectory(traj8C);
 
             drive.followTrajectory(traj9C);
 
+            fourBar.setCollectPos(0, 0.85);
             fourBar.lowerFourBar();
             sleep(300);
 
