@@ -1,18 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.teleop;
 
-import android.hardware.Sensor;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
-import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @Disabled
 @TeleOp
@@ -26,7 +19,7 @@ public class TeleOp_DriveArvind extends LinearOpMode {
     private FourBar fourBar;
     private Hanging hanging;
     private SensorDistance sensorDistance;
-    private boolean ManualControl;
+    private boolean distance;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,7 +41,7 @@ public class TeleOp_DriveArvind extends LinearOpMode {
             slides.resetSlides();
             launcher.resetPos();
             fourBar.closeClaw();
-            ManualControl = false;
+            distance = true;
         }
 
         waitForStart();
@@ -84,7 +77,7 @@ public class TeleOp_DriveArvind extends LinearOpMode {
                     }
                     spintakeOn = false;
                 }*/
-            while (!(ManualControl)) {
+            while (!(isStopRequested())) {
                 csBot.mecanumDriving();
                 fourBar.manualControl(true);
 
@@ -123,9 +116,15 @@ public class TeleOp_DriveArvind extends LinearOpMode {
                     spintake.stickOut();
                 if (gamepad1.dpad_right)
                     spintake.stickIn();
-                if (sensorDistance.lengthDetection() < 6){
-                    drive.setMotorPowers(0,0,0,0);
+                if (distance) {
+                    if (sensorDistance.lengthDetection() < 6) {
+                        drive.setMotorPowers(0.5, 0.5, 0.5, 0.5);
+                    }
                 }
+                if (gamepad1.x && distance)
+                    distance = false;
+                if (gamepad1.x && !(distance))
+                    distance = true;
             }
         }
     }

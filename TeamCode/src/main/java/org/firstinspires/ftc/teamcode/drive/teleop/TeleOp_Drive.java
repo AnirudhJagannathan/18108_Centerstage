@@ -1,10 +1,15 @@
      package org.firstinspires.ftc.teamcode.drive.teleop;
 
+import android.graphics.Color;
 import android.hardware.Sensor;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.Range;
 
 import org.checkerframework.checker.units.qual.C;
@@ -25,6 +30,13 @@ public class TeleOp_Drive extends LinearOpMode {
     private FourBar fourBar;
     private Hanging hanging;
     private SensorDistance sensorDistance;
+    private NormalizedColorSensor colorSensor;
+    private NormalizedColorSensor colorSensor2;
+
+    private RevBlinkinLedDriver blinkinLedDriver;
+    private RevBlinkinLedDriver.BlinkinPattern pattern;
+    private RevBlinkinLedDriver.BlinkinPattern patternOff;
+    private RevBlinkinLedDriver.BlinkinPattern pattern2;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,6 +49,27 @@ public class TeleOp_Drive extends LinearOpMode {
         fourBar = new FourBar(hardwareMap, this);
         hanging = new Hanging(hardwareMap, this);
 
+
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+        patternOff = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+        pattern2 = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+        colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor2");
+
+        if (colorSensor instanceof SwitchableLight) {
+            ((SwitchableLight)colorSensor).enableLight(true);
+        }
+
+        if (colorSensor2 instanceof SwitchableLight) {
+            ((SwitchableLight)colorSensor2).enableLight(true);
+        }
+
+        final float[] hsvValues = new float[3];
+        final float[] hsvValues2 = new float[3];
+
+
         sensorDistance = new SensorDistance(hardwareMap, this);
 
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
@@ -48,11 +81,35 @@ public class TeleOp_Drive extends LinearOpMode {
             launcher.resetPos();
             fourBar.closeClaw();
             spintake.stickOut();
+            colorSensor.setGain(2);
+            colorSensor2.setGain(2);
         }
 
         waitForStart();
 
         while (!isStopRequested()) {
+
+            NormalizedRGBA colors = colorSensor.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+
+            NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
+            Color.colorToHSV(colors2.toColor(), hsvValues2);
+
+            if (hsvValues[2] < 0.002 && hsvValues2[2] < 0.002) {
+                telemetry.addData("color", "black");
+                blinkinLedDriver.setPattern(patternOff);
+                // blinkinLedDriver.close();
+            }
+            else if (hsvValues[2] >= 0.002 && hsvValues2[2] >= 0.002){
+                telemetry.addData("color", "green");
+                blinkinLedDriver.setPattern(pattern2);
+            }
+
+            else{
+                telemetry.addData("color", "blue");
+                blinkinLedDriver.setPattern(pattern);
+            }
+
             csBot.mecanumDriving();
 
             if (gamepad2.left_bumper) {

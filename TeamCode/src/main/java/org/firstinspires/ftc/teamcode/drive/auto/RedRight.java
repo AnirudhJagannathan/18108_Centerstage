@@ -163,6 +163,9 @@ public class RedRight extends LinearOpMode {
                     .addSpatialMarker(new Vector2d(64, 30), () -> {
                         fourBar.lowerFourBar();
                     })
+                    .addSpatialMarker(new Vector2d(64, 20), () -> {
+                        launcher.trayStickOut();
+                    })
                     .addSpatialMarker(new Vector2d(64, 0), () -> {
                         fourBar.closeClaw();
                     })
@@ -223,7 +226,7 @@ public class RedRight extends LinearOpMode {
             launcher.trayStickIn();
 
             drive.followTrajectory(traj8A);
-            fourBar.setCollectPos(0.56, 0.29);
+            fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj9A);
 
             drive.followTrajectory(traj10A);
@@ -242,7 +245,7 @@ public class RedRight extends LinearOpMode {
              POS = 2
              ------------------------------------------------------------------------------------- */
             Trajectory traj1B = drive.trajectoryBuilder(startPose)
-                    .lineToLinearHeading(new Pose2d(28, 0, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(28.5, 0, Math.toRadians(0)))
                     .build();
 
             Trajectory traj2B = drive.trajectoryBuilder(traj1B.end())
@@ -282,7 +285,8 @@ public class RedRight extends LinearOpMode {
 
             Trajectory traj8B = drive.trajectoryBuilder(traj7B.end())
                     .lineToLinearHeading(new Pose2d(44.5, 60.5, Math.toRadians(90)),
-                            SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                            SampleMecanumDrive.getVelocityConstraint(
+                                    0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addSpatialMarker(new Vector2d(40, 50), spintake::spin)
                     .build();
@@ -343,12 +347,14 @@ public class RedRight extends LinearOpMode {
             launcher.trayStickIn();
             // spintake.stickIntake();
             drive.followTrajectory(traj9B);
-            fourBar.setCollectPos(0.56, 0.29);
+            fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj10B);
 
             fourBar.setCollectPos(0, 0.85);
             fourBar.lowerFourBar();
             sleep(400);
+            launcher.trayStickOut();
+            sleep(250);
             fourBar.closeClaw();
             sleep(500);
             fourBar.raiseFourBar();
@@ -435,6 +441,9 @@ public class RedRight extends LinearOpMode {
                         fourBar.lowerFourBar();
                         spintake.stickIn();
                     })
+                    .addSpatialMarker(new Vector2d(64, 20), () -> {
+                        launcher.trayStickOut();
+                    })
                     .addSpatialMarker(new Vector2d(63, 0), () -> {
                         fourBar.closeClaw();
                     })
@@ -481,7 +490,7 @@ public class RedRight extends LinearOpMode {
             launcher.trayStickIn();
 
             drive.followTrajectory(traj7C);
-            fourBar.setCollectPos(0.56, 0.29);
+            fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj8C);
 
             drive.followTrajectory(traj9C);

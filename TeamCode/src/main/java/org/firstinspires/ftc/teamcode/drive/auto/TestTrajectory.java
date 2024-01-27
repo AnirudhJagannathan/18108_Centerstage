@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.drive.auto;
 //anirudh is incredibly stupid and unintelligent
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,14 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Vision.EasyOpenCVVision;
 import org.firstinspires.ftc.teamcode.Vision.PixelDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Vision.dataFromOpenCV;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
 import org.firstinspires.ftc.teamcode.drive.teleop.FourBar;
 import org.firstinspires.ftc.teamcode.drive.teleop.Slides;
 import org.firstinspires.ftc.teamcode.drive.teleop.Spintake;
 import org.openftc.apriltag.AprilTagDetection;
-
-import java.util.Arrays;
 
 @Autonomous
 public class TestTrajectory extends LinearOpMode {
@@ -34,6 +31,7 @@ public class TestTrajectory extends LinearOpMode {
     private FourBar fourBar;
     private Webcam webcam1;
     PixelDetectionPipeline pipeline = new PixelDetectionPipeline();
+    private SensorDistance distance;
 
     // UNITS ARE METERS
     double tagsize = 0.166;
@@ -62,6 +60,7 @@ public class TestTrajectory extends LinearOpMode {
         fourBar = new FourBar(hardwareMap, this);
         webcam1 = new Webcam(hardwareMap, "Webcam 1");
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        distance = new SensorDistance(hardwareMap, this);
         //Webcam webcam2 = new Webcam(hardwareMap, "Webcam 2");
 
         webcam1.setPipeline(new EasyOpenCVVision());
@@ -146,6 +145,9 @@ public class TestTrajectory extends LinearOpMode {
                     }
                 case done:
                     break;
+            }
+            if (distance.lengthDetection() < 11.8){
+                traj = trajectory.done;
             }
         }
 
