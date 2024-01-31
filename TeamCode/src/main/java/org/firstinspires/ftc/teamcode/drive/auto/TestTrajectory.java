@@ -146,9 +146,10 @@ public class TestTrajectory extends LinearOpMode {
                 case done:
                     break;
             }
-            if (distance.lengthDetection() < 11.8){
+            if (distance.lengthDetection() <= 11.8){
                 traj = trajectory.done;
             }
+            drive.update();
         }
 
         webcam1.getWebcam().stopStreaming();

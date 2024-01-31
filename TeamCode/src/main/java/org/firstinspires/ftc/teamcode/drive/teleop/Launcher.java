@@ -14,8 +14,8 @@ public class Launcher {
     private Servo launcher;
     private Servo placeHolder;
     private LinearOpMode opmode;
-    private final double LAUNCHER_START_POS = 0.615;
-    private final double LAUNCHER_END_POS = 0.485;
+    private final double LAUNCHER_START_POS = 0.485;
+    private final double LAUNCHER_END_POS = 0.800;
     private final double PLACEHOLDER_HOLD = 0.1;
     private final double PLACEHOLDER_RELEASE = 0.4;
 

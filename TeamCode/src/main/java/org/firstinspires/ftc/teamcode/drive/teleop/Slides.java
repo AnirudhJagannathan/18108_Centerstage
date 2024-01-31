@@ -41,7 +41,7 @@ public class Slides {
 
          */
 
-        if (!((pos > 400 && power < 0)  || (pos < -50 && power > 0))) {
+        if (!((pos > 370 && power < 0)  || (pos < -50 && power > 0))) {
             slideLeft.setPower(power);
             slideRight.setPower(-power);
             opmode.telemetry.addData("powerL:", slideLeft.getCurrentPosition());

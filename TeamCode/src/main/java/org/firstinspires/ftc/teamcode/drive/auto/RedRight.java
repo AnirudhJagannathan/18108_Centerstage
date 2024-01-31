@@ -214,6 +214,7 @@ public class RedRight extends LinearOpMode {
             sleep(300);
 
             fourBar.raiseFourBar();
+            sleep(300);
 
             drive.followTrajectory(traj5A);
             spintake.stickOut();
@@ -226,6 +227,7 @@ public class RedRight extends LinearOpMode {
             launcher.trayStickIn();
 
             drive.followTrajectory(traj8A);
+            launcher.trayStickIn();
             fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj9A);
 
@@ -242,23 +244,34 @@ public class RedRight extends LinearOpMode {
 
         } else if (pos == 2) {
             /** -------------------------------------------------------------------------------------
-             POS = 2
+                                                    POS = 2
              ------------------------------------------------------------------------------------- */
             Trajectory traj1B = drive.trajectoryBuilder(startPose)
-                    .lineToLinearHeading(new Pose2d(28.5, 0, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(29, 0, Math.toRadians(0)))
+                    .addSpatialMarker(new Vector2d(0, 0), fourBar::closeClaw)
                     .build();
 
             Trajectory traj2B = drive.trajectoryBuilder(traj1B.end())
                     .lineToLinearHeading(new Pose2d(19, -3, Math.toRadians(0)))
+                    .addSpatialMarker(new Vector2d(29, 0), fourBar::raiseFourBar)
                     .addSpatialMarker(new Vector2d(18, -2), spintake::stickIn)
                     .build();
 
             Trajectory traj3B = drive.trajectoryBuilder(traj2B.end())
                     .lineToLinearHeading(new Pose2d(32, -7, Math.toRadians(91)))
+                    .addSpatialMarker(new Vector2d(23, -5), () -> {
+                        slides.moveSlidesToHeightABS(500, 0.9);
+                    })
                     .build();
 
             Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())
                     .lineToLinearHeading(new Pose2d(35, -39, Math.toRadians(91)))
+                    .addSpatialMarker(new Vector2d(32, -7), () -> {
+                        slides.moveSlidesToHeightABS(900, 0.9);
+                    })
+                    .addSpatialMarker(new Vector2d(34, -28), () -> {
+                        fourBar.lowerFourBar();
+                    })
                     .build();
 
             Trajectory traj5B = drive.trajectoryBuilder(traj4B.end())
@@ -319,7 +332,7 @@ public class RedRight extends LinearOpMode {
             drive.followTrajectory(traj3B);
             drive.followTrajectory(traj4B);
 
-            sleep(500);
+            /* sleep(500);
 
             fourBar.closeClaw();
             sleep(500);
@@ -329,6 +342,7 @@ public class RedRight extends LinearOpMode {
             sleep(300);
             fourBar.lowerFourBar();
             sleep(500);
+             */
 
             drive.followTrajectory(traj5B);
 
@@ -344,9 +358,9 @@ public class RedRight extends LinearOpMode {
             spintake.stickIntake();
             sleep(300);
 
-            launcher.trayStickIn();
             // spintake.stickIntake();
             drive.followTrajectory(traj9B);
+            launcher.trayStickIn();
             fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj10B);
 
@@ -364,9 +378,9 @@ public class RedRight extends LinearOpMode {
             fourBar.lowerFourBar();
             sleep(750);
 
-             drive.followTrajectory(traj11B);
+            drive.followTrajectory(traj11B);
 
-             fourBar.openClaw();
+            fourBar.openClaw();
         } else {
             /** -------------------------------------------------------------------------------------
              POS = 3
@@ -487,9 +501,8 @@ public class RedRight extends LinearOpMode {
             spintake.stickIntake();
             sleep(300);
 
-            launcher.trayStickIn();
-
             drive.followTrajectory(traj7C);
+            launcher.trayStickIn();
             fourBar.setCollectPos(0.53, 0.32);
             drive.followTrajectory(traj8C);
 

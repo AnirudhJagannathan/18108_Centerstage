@@ -1,4 +1,4 @@
-     package org.firstinspires.ftc.teamcode.drive.teleop;
+package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.Range;
 
@@ -53,7 +54,7 @@ public class TeleOp_Drive extends LinearOpMode {
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         patternOff = RevBlinkinLedDriver.BlinkinPattern.BLACK;
-        pattern2 = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+        pattern2 = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
 
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
         colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor2");
@@ -83,6 +84,11 @@ public class TeleOp_Drive extends LinearOpMode {
             spintake.stickOut();
             colorSensor.setGain(2);
             colorSensor2.setGain(2);
+            ((PwmControl) blinkinLedDriver).setPwmEnable();
+            blinkinLedDriver.setPattern(patternOff);
+
+            telemetry.addData("LED Info:", blinkinLedDriver.getConnectionInfo());
+            telemetry.update();
         }
 
         waitForStart();
