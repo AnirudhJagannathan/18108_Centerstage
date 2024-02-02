@@ -101,7 +101,7 @@ public class RedRight extends LinearOpMode {
              POS = 1
              ------------------------------------------------------------------------------------- */
             Trajectory traj1A = drive.trajectoryBuilder(startPose)
-                    .lineToLinearHeading(new Pose2d(24, 0, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(24, -4, Math.toRadians(30)))
                     .build();
 
             Trajectory traj2A = drive.trajectoryBuilder(traj1A.end())
@@ -113,7 +113,7 @@ public class RedRight extends LinearOpMode {
                     .build();
 
             Trajectory traj4A = drive.trajectoryBuilder(traj3A.end())
-                    .lineToLinearHeading(new Pose2d(44.5, -41.5, Math.toRadians(91)),
+                    .lineToLinearHeading(new Pose2d(44, -41, Math.toRadians(91)),
                             SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .build();
@@ -184,7 +184,7 @@ public class RedRight extends LinearOpMode {
                     .build();
 
             Trajectory traj11A = drive.trajectoryBuilder(traj10A.end())
-                    .lineToLinearHeading(new Pose2d(46, -40.5, Math.toRadians(91)),
+                    .lineToLinearHeading(new Pose2d(42, -40.5, Math.toRadians(91)),
                             SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .build();
@@ -223,8 +223,6 @@ public class RedRight extends LinearOpMode {
 
             spintake.stickIntake();
             sleep(300);
-
-            launcher.trayStickIn();
 
             drive.followTrajectory(traj8A);
             launcher.trayStickIn();
@@ -361,7 +359,7 @@ public class RedRight extends LinearOpMode {
             // spintake.stickIntake();
             drive.followTrajectory(traj9B);
             launcher.trayStickIn();
-            fourBar.setCollectPos(0.53, 0.32);
+            fourBar.setCollectPos(0.54, 0.31);
             drive.followTrajectory(traj10B);
 
             fourBar.setCollectPos(0, 0.85);
@@ -383,7 +381,7 @@ public class RedRight extends LinearOpMode {
             fourBar.openClaw();
         } else {
             /** -------------------------------------------------------------------------------------
-             POS = 3
+                                                    POS = 3
              ------------------------------------------------------------------------------------- */
             Trajectory traj1C = drive.trajectoryBuilder(startPose)
                     .lineToLinearHeading(new Pose2d(20, -13, Math.toRadians(-25)))

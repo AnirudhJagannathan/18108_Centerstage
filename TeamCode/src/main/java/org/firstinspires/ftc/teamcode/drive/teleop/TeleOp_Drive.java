@@ -54,7 +54,7 @@ public class TeleOp_Drive extends LinearOpMode {
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         patternOff = RevBlinkinLedDriver.BlinkinPattern.BLACK;
-        pattern2 = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+        pattern2 = RevBlinkinLedDriver.BlinkinPattern.GREEN;
 
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
         colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor2");
@@ -70,7 +70,6 @@ public class TeleOp_Drive extends LinearOpMode {
         final float[] hsvValues = new float[3];
         final float[] hsvValues2 = new float[3];
 
-
         sensorDistance = new SensorDistance(hardwareMap, this);
 
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
@@ -81,12 +80,13 @@ public class TeleOp_Drive extends LinearOpMode {
             slides.resetSlides();
             launcher.resetPos();
             fourBar.closeClaw();
+            fourBar.closeClaw();
             spintake.stickOut();
             colorSensor.setGain(2);
             colorSensor2.setGain(2);
-            ((PwmControl) blinkinLedDriver).setPwmEnable();
             blinkinLedDriver.setPattern(patternOff);
 
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             telemetry.addData("LED Info:", blinkinLedDriver.getConnectionInfo());
             telemetry.update();
         }
@@ -126,7 +126,7 @@ public class TeleOp_Drive extends LinearOpMode {
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
-                fourBar.setCollectPos(0.53, 0.32);
+                fourBar.setCollectPos(0.52, 0.33);
             }
             else {
                 fourBar.setCollectPos(0, 0.85);
