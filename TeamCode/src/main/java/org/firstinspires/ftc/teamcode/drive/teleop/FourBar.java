@@ -27,7 +27,7 @@ public class FourBar {
     private double FOUR_BAR_COLLECT_POS = 0;
     private double FOUR_BAR2_COLLECT_POS = 0.85;
 
-    double position = 0.88;
+    double position = 0.85;
     double position2 = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
         fourBar = hardwareMap.get(Servo.class, "fourBar");
@@ -113,6 +113,13 @@ public class FourBar {
         fourBar2.setPosition(FOUR_BAR2_COLLECT_POS);
         position = FOUR_BAR_COLLECT_POS;
         position2 = FOUR_BAR2_COLLECT_POS;
+    }
+
+    public void lowerFourBarAuto() {
+        fourBar.setPosition(0.53);
+        fourBar2.setPosition(0.32);
+        position = 0.53;
+        position2 = 0.32;
     }
 
     public void pixelFourBar() {

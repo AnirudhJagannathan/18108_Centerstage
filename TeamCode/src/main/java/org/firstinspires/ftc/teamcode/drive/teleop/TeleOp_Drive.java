@@ -60,11 +60,11 @@ public class TeleOp_Drive extends LinearOpMode {
         colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor2");
 
         if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
+            ((SwitchableLight) colorSensor).enableLight(true);
         }
 
         if (colorSensor2 instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor2).enableLight(true);
+            ((SwitchableLight) colorSensor2).enableLight(true);
         }
 
         final float[] hsvValues = new float[3];

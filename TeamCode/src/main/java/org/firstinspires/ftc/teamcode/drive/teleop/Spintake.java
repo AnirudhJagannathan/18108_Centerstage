@@ -93,6 +93,24 @@ public class Spintake {
         pixelStick2.setPosition(STICK_MID);
     }
 
+    public void leftIntake() {
+        pixelStick1.setPosition(1 - STICK_END);
+        while (pixelStick1.getPosition() < 1 - STICK_END) {
+
+        }
+        opmode.sleep(300);
+        pixelStick1.setPosition(1 - STICK_MID);
+    }
+
+    public void rightIntake() {
+        pixelStick2.setPosition(STICK_END);
+        while (pixelStick2.getPosition() > STICK_END) {
+
+        }
+        opmode.sleep(300);
+        pixelStick2.setPosition(STICK_MID);
+    }
+
     public double getPixelBarPos() {
         return pixelBar.getPosition();
     }
