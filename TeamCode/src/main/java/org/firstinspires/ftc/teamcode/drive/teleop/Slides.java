@@ -10,12 +10,14 @@ public class Slides {
 
     private DcMotorEx slideLeft;
     private DcMotorEx slideRight;
+    private DcMotorEx HSlides;
     private LinearOpMode opmode;
     // private Spintake spintake;
 
     public Slides(HardwareMap hardwareMap, LinearOpMode opmode) {
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
         slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
+        HSlides = hardwareMap.get(DcMotorEx.class, "spintake");
 
         // slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
         slideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,6 +73,16 @@ public class Slides {
     public void stop() {
         slideLeft.setPower(0);
         slideRight.setPower(0);
+    }
+
+    public void horizontalSlides() {
+        double power = opmode.gamepad2.right_stick_y*0.5;
+        double pos = HSlides.getCurrentPosition();
+        if (!((pos > 370 && power < 0) || (pos < -50 && power > 0))) {
+            HSlides.setPower(power);
+        } else {
+            HSlides.setPower(0);;
+        }
     }
 
     public void resetSlides() {

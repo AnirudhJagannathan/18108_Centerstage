@@ -476,7 +476,7 @@ public class BlueRight extends LinearOpMode {
 
             fourBar.setCollectPos(0, 0.85);
             fourBar.lowerFourBar();
-            sleep(300);
+            sleep(600);
 
             drive.followTrajectory(traj8C);
             sleep(350);

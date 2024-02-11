@@ -18,7 +18,7 @@ public class Spintake {
     private Servo pixelStick2;
     private LinearOpMode opmode;
     // private Slides slides;
-    private final double POWER = 0.8;
+    private final double POWER = 0.85;
     private final double BAR_START = 1;
     private final double BAR_END = 0.3;
     private final double STICK_START = 0.15;
@@ -82,14 +82,18 @@ public class Spintake {
         while (pixelStick1.getPosition() < 1 - STICK_END) {
 
         }
-        opmode.sleep(300);
+        double eaglederpCookadoodledoo = System.currentTimeMillis() + 300;
+        while (System.currentTimeMillis() > eaglederpCookadoodledoo){
+        }
         pixelStick1.setPosition(1 - STICK_MID);
 
         pixelStick2.setPosition(STICK_END);
         while (pixelStick2.getPosition() > STICK_END) {
 
         }
-        opmode.sleep(300);
+        double eaglederpCookadoodledoo2 = System.currentTimeMillis() + 300;
+        while (System.currentTimeMillis() > eaglederpCookadoodledoo2){
+        }
         pixelStick2.setPosition(STICK_MID);
     }
 

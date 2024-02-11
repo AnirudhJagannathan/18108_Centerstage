@@ -40,6 +40,9 @@ public class CameraFusedPID extends LinearOpMode {
     static double cX = 0;
     static double cY = 0;
     static double width = 0;
+    static double cX2 = 0;
+    static double cY2 = 0;
+    static double width2 = 0;
 
     private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
     /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
@@ -48,7 +51,7 @@ public class CameraFusedPID extends LinearOpMode {
     private static final double FOV = 46.4;
 
     // Calculate the distance using the formula
-    public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
+    public static final double objectWidthInRealWorldUnits = 3;  // Replace with the actual width of the object in real-world units
     public static final double focalLength = 1425;  // Replace with the focal length of the camera in pixels
 
     @Override
@@ -117,15 +120,17 @@ public class CameraFusedPID extends LinearOpMode {
 
             // Find the largest yellow contour (blob)
             MatOfPoint largestContour = findLargestContour(contours);
+            MatOfPoint nextLargestContour = findNextLargestContour(contours);
 
             if (largestContour != null) {
                 // Draw a red outline around the largest detected object
                 Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
                 // Calculate the width of the bounding box
+
                 width = calculateWidth(largestContour);
 
                 // Display the width next to the label
-                String widthLabel = "Width: " + (int) width + " pixels";
+                String widthLabel = "Width1: " + (int) width + " pixels";
                 Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
                 //Display the Distance
                 String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
@@ -139,7 +144,30 @@ public class CameraFusedPID extends LinearOpMode {
                 String label = "(" + (int) cX + ", " + (int) cY + ")";
                 Imgproc.putText(input, label, new Point(cX + 10, cY), Imgproc.FONT_HERSHEY_COMPLEX, 0.5, new Scalar(0, 255, 0), 2);
                 Imgproc.circle(input, new Point(cX, cY), 5, new Scalar(0, 255, 0), -1);
+            }
 
+            if (nextLargestContour != null) {
+                // Draw a red outline around the largest detected object
+                Imgproc.drawContours(input, contours, contours.indexOf(nextLargestContour), new Scalar(255, 0, 0), 2);
+                // Calculate the width of the bounding box
+
+                width2 = calculateWidth(nextLargestContour);
+
+                // Display the width next to the label
+                String widthLabel = "Width2: " + (int) width2 + " pixels";
+                Imgproc.putText(input, widthLabel, new Point(cX2 + 10, cY2 + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+                //Display the Distance
+                String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width2)) + " inches";
+                Imgproc.putText(input, distanceLabel, new Point(cX2 + 10, cY2 + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+                // Calculate the centroid of the largest contour
+                Moments moments = Imgproc.moments(nextLargestContour);
+                cX2 = moments.get_m10() / moments.get_m00();
+                cY2 = moments.get_m01() / moments.get_m00();
+
+                // Draw a dot at the centroid
+                String label = "(" + (int) cX2 + ", " + (int) cY2 + ")";
+                Imgproc.putText(input, label, new Point(cX2 + 10, cY2), Imgproc.FONT_HERSHEY_COMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+                Imgproc.circle(input, new Point(cX2, cY2), 5, new Scalar(0, 255, 0), -1);
             }
 
             return input;
@@ -149,8 +177,12 @@ public class CameraFusedPID extends LinearOpMode {
             Mat hsvFrame = new Mat();
             Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
-            Scalar lowerYellow = new Scalar(100, 100, 100);
+            /* Scalar lowerYellow = new Scalar(100, 100, 100);
             Scalar upperYellow = new Scalar(180, 255, 255);
+             */
+
+            Scalar lowerYellow = new Scalar(0, 0, 230);
+            Scalar upperYellow = new Scalar(255, 25, 255);
 
 
             Mat yellowMask = new Mat();
@@ -177,6 +209,24 @@ public class CameraFusedPID extends LinearOpMode {
 
             return largestContour;
         }
+
+        public static MatOfPoint findNextLargestContour(List<MatOfPoint> contours) {
+            double maxArea = 0;
+            MatOfPoint largestContour = null;
+            MatOfPoint nextLargestContour = null;
+
+            for (MatOfPoint contour : contours) {
+                double area = Imgproc.contourArea(contour);
+                if (area > maxArea) {
+                    maxArea = area;
+                    nextLargestContour = largestContour;
+                    largestContour = contour;
+                }
+            }
+
+            return nextLargestContour;
+        }
+
         public static double calculateWidth(MatOfPoint contour) {
             Rect boundingRect = Imgproc.boundingRect(contour);
             return boundingRect.width;

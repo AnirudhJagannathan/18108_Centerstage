@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Vision.EasyOpenCVVision;
 import org.firstinspires.ftc.teamcode.Vision.PixelDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Vision.PixelTriangulationPipeline;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.Arrays;
 
@@ -14,15 +16,15 @@ public class PixelDetectionTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        PixelDetectionPipeline pipeline = new PixelDetectionPipeline();
+        PixelTriangulationPipeline pipeline = new PixelTriangulationPipeline();
         Webcam webcam = new Webcam(hardwareMap, "Webcam 1");
+
+        webcam.getWebcam().openCameraDevice();
 
         webcam.setPipeline(pipeline);
 
         while (opModeInInit() && !isStopRequested()) {
-            telemetry.addData("position:", pipeline.position);
-            telemetry.addData("vals:", Arrays.toString(pipeline.vals));
-            telemetry.update();
+            // webcam.getWebcam().startStreaming(pipeline.getRows(), pipeline.getCols(), OpenCvCameraRotation.UPRIGHT);
         }
 
         waitForStart();

@@ -46,7 +46,9 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
              waitForStart();
 
              while (!isStopRequested()) {
-                 csBot.mecanumDriving();
+                 // csBot.mecanumDriving();
+                 tankDrive.tankDriving();
+                 slides.horizontalSlides();
 
                  if (gamepad2.left_bumper)
                      spintake.spin();

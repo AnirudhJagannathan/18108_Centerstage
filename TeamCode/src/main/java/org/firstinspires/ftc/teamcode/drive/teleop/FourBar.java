@@ -11,6 +11,7 @@ public class FourBar {
     private Servo fourBar;
     private Servo fourBar2;
     private Servo claw;
+    private Servo claw2;
 
     static final double INCREMENT = 0.02;
 
@@ -23,6 +24,7 @@ public class FourBar {
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
     private double CLAW_OPEN_POS = 0.50;
+    private double CLAW_CLOSE_POS = 0.70;
 
     private double FOUR_BAR_COLLECT_POS = 0;
     private double FOUR_BAR2_COLLECT_POS = 0.85;
@@ -33,6 +35,7 @@ public class FourBar {
         fourBar = hardwareMap.get(Servo.class, "fourBar");
         fourBar2 = hardwareMap.get(Servo.class, "fourBar2");
         claw = hardwareMap.get(Servo.class, "claw");
+        claw2 = hardwareMap.get(Servo.class, "claw2");
         // fourBarRight = hardwareMap.get(CRServo.class, "fourBarRight");
         this.opmode = opmode;
     }
@@ -47,6 +50,7 @@ public class FourBar {
         opmode.telemetry.addData("Position", fourBar.getPosition());
         // fourBarRight.setPower(1.0);
     }
+
     public void rotatePos(double pos) {
         while (pos < fourBar.getPosition()) {
             position -= INCREMENT;
@@ -63,12 +67,15 @@ public class FourBar {
             fourBar.setPosition(pos);
         }
     }
+
     public void closeClaw() {
-        claw.setPosition(0.61);
-        // fourBarRight.setPower(1.0);
+        // claw.setPosition(0.63);
+        claw.setPosition(CLAW_CLOSE_POS);
+        claw2.setPosition(CLAW_OPEN_POS);
     }
     public void openClaw() {
         claw.setPosition(CLAW_OPEN_POS);
+        claw2.setPosition(CLAW_CLOSE_POS);
     }
 
     public void manualControl(boolean spintakeOn) {

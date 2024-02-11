@@ -50,6 +50,6 @@ public class TankDrive {
         leftFront.setPower(v0);
         rightFront.setPower(v1);
         leftBack.setPower(v2);
-        rightBack.setPower(v3);
+        rightBack.setPower(-v3);
     }
 }

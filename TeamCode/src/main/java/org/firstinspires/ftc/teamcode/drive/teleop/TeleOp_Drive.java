@@ -126,7 +126,7 @@ public class TeleOp_Drive extends LinearOpMode {
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
-                fourBar.setCollectPos(0.52, 0.33);
+                fourBar.setCollectPos(0.53, 0.32);
             }
             else {
                 fourBar.setCollectPos(0, 0.85);
@@ -189,7 +189,6 @@ public class TeleOp_Drive extends LinearOpMode {
 
             if (gamepad2.start) {
                 spintake.stickIntake();
-                sleep(250);
             }
         }
     }

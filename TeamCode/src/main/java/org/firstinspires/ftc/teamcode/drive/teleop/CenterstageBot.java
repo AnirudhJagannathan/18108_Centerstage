@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
@@ -16,6 +17,8 @@ public class CenterstageBot {
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
         leftBack = hardwareMap.get(DcMotorEx.class, "backLeft");
         rightBack = hardwareMap.get(DcMotorEx.class, "backRight");
+
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void mecanumDriving() {
@@ -36,11 +39,11 @@ public class CenterstageBot {
             v2 = Range.clip(-drive - strafe - turn, -1, 1);
             v3 = Range.clip(-drive + strafe - turn, -1, 1);
             v4 = Range.clip(-drive - strafe + turn, -1, 1);
-
         }
+
         leftFront.setPower(v1);
         rightFront.setPower(v2);
         leftBack.setPower(v3);
-        rightBack.setPower(v4);
+        rightBack.setPower(-v4);
     }
 }
