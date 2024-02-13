@@ -67,7 +67,7 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
                      spintake.outtake();
                  }
 
-                 slides.moveSlides(false);
+                 slides.moveSlides_Tanay(false);
 
                  if (gamepad1.x)
                      slides.resetSlides();
@@ -87,7 +87,6 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
                      fourBar.closeClaw();
                  if (gamepad2.b)
                      fourBar.openClaw();
-
                  if (gamepad2.dpad_down)
                      fourBar.lowerFourBar();
                  if (gamepad2.dpad_up)

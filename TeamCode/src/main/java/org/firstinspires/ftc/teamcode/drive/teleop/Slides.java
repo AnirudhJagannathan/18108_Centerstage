@@ -17,7 +17,7 @@ public class Slides {
     public Slides(HardwareMap hardwareMap, LinearOpMode opmode) {
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
         slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
-        HSlides = hardwareMap.get(DcMotorEx.class, "spintake");
+        HSlides = hardwareMap.get(DcMotorEx.class, "HSlides");
 
         // slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
         slideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -55,6 +55,29 @@ public class Slides {
         }
     }
 
+    public void moveSlides_Tanay(boolean belowLim) {
+        double power = -opmode.gamepad2.right_stick_y;
+        if (belowLim)
+            power = 0.15;
+        double pos = (slideLeft.getCurrentPosition());
+        opmode.telemetry.addData("slides: ", pos);
+        opmode.telemetry.update();
+        /* if (getCurrentPos() < 700 && spintake.getPixelBarPos() < 0.3) {
+            spintake.raiseBar();
+        }
+
+         */
+
+        if (!((pos > 370 && power < 0)  || (pos < -50 && power > 0))) {
+            slideLeft.setPower(power);
+            opmode.telemetry.addData("powerL:", slideLeft.getCurrentPosition());
+            opmode.telemetry.addData("powerR:", slideRight.getCurrentPosition());
+            opmode.telemetry.update();
+        } else {
+            slideLeft.setPower(0);
+        }
+    }
+
     public void moveSlidesToHeightABS(int encoderPos, double power) {
         while (slideLeft.getCurrentPosition() > -encoderPos || slideLeft.getCurrentPosition() < -encoderPos) {
             if (slideLeft.getCurrentPosition() < -encoderPos) {
@@ -76,13 +99,14 @@ public class Slides {
     }
 
     public void horizontalSlides() {
-        double power = opmode.gamepad2.right_stick_y*0.5;
+        double power = opmode.gamepad2.left_stick_y;
         double pos = HSlides.getCurrentPosition();
-        if (!((pos > 370 && power < 0) || (pos < -50 && power > 0))) {
+        if (!((pos > 200 && power < 0)  || (pos < 0 && power > 0))) {
             HSlides.setPower(power);
         } else {
-            HSlides.setPower(0);;
+            HSlides.setPower(0);
         }
+        opmode.telemetry.addData("Horizontal Slides", pos);
     }
 
     public void resetSlides() {
