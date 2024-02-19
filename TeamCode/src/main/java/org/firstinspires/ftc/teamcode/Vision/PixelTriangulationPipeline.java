@@ -1,12 +1,28 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.teamcode.drive.PIDConstants;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
@@ -14,153 +30,240 @@ import java.util.List;
 
 public class PixelTriangulationPipeline extends OpenCvPipeline
 {
-    private int valMid;
-    private int valLeft;
-    private int valRight;
+    double integralSum = 0;
+    double Kp = PIDConstants.Kp;
+    double Ki = PIDConstants.Ki;
+    double Kd = PIDConstants.Kd;
 
-    float rectHeight = 6f/8f;
-    float rectWidth = 2f/8f;
 
-    private static float offsetX = 3f/8f;//changing this moves the three rects and the three circles left or right, range : (-2, 2) not inclusive
-    private static float offsetY = 3f/8f;//changing this moves the three rects and circles up or down, range: (-4, 4) not inclusive
+    ElapsedTime timer = new ElapsedTime();
+    private double lastError = 0;
 
-    private static float[] midPos = {0f/8f+offsetX, 0f/8f+offsetY};//0 = col, 1 = row
-    //moves all rectangles right or left by amount. units are in ratio to monitor
+    private BNO055IMU imu;
+    static double cX = 0;
+    static double cY = 0;
+    static double width = 0;
+    static double cX2 = 0;
+    static double cY2 = 0;
+    static double width2 = 0;
 
-    private int rows;
-    private int cols;
+    Mat yellowMask;
+    List<MatOfPoint> contours;
+    Mat hierarchy = null;
+    MatOfPoint largestContour = null;
+    MatOfPoint nextLargestContour = null;
+    /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
+    public static final int CAMERA_WIDTH = 1920; // width  of wanted camera resolution
+    public static final int CAMERA_HEIGHT = 1080; // height of wanted camera resolution
+    private static final double FOV = 46.4;
 
-    public PixelTriangulationPipeline() {
-        valMid = -1;
-        valLeft = -1;
-        valRight = -1;
-        cols = 640;
-        rows = 480;
-    }
+    // Calculate the distance using the formula
+    public static final double objectWidthInRealWorldUnits = 3;  // Replace with the actual width of the object in real-world units
+    public static final double focalLength = 1425;  // Replace with the focal length of the camera in pixels
 
-    OpenCvCamera phoneCam;
-    Mat yCbCrChan2Mat = new Mat();
-    Mat thresholdMat = new Mat();
-    Mat all = new Mat();
-    List<MatOfPoint> contoursList = new ArrayList<>();
+    Scalar GREEN = new Scalar(0, 0, 255);
 
-    enum Stage
-    {//color difference. greyscale
-        detection,//includes outlines
-        THRESHOLD,//b&w
-        RAW_IMAGE,//displays raw view
-    }
+    Mat region1;
+    Mat region2;
 
-    private Stage stageToRenderToViewport = Stage.detection;
-    private Stage[] stages = Stage.values();
+    Point point1A = new Point(225, 400);
+    Point point1B = new Point(350, 500);
 
-    public int getValMid() {
-        return valMid;
-    }
+    Point point2A = new Point(550, 400);
+    Point point2B = new Point(675, 500);
 
-    public int getValLeft() {
-        return valLeft;
-    }
+    Mat hsv = new Mat();
 
-    public int getValRight(){
-        return valRight;
-    }
+    double avg1, avg2;
 
-    public int getRows(){
-        return cols;
-    }
+    @Override
+    public void init(Mat firstFrame) {
+        Imgproc.cvtColor(firstFrame, hsv, Imgproc.COLOR_RGB2HSV);
 
-    public int getCols(){
-        return rows;
-    }
-
-    public void setValMid(int n) {
-        valMid = n;
+        region1 = hsv.submat(new Rect(point1A, point1B));
+        region2 = hsv.submat(new Rect(point2A, point2B));
     }
 
     @Override
-    public void onViewportTapped()
-    {
+    public Mat processFrame(Mat input) {
+        // Preprocess the frame to detect white regions
+
+        // yellowMask = preprocessFrame(input);
+
+        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2BGR);
+
+        avg1 = Math.sqrt(Math.pow(Core.mean(region1).val[0], 2) + Math.pow(Core.mean(region1).val[1], 2) + Math.pow(Core.mean(region1).val[2], 2));
+        avg2 = Math.sqrt(Math.pow(Core.mean(region2).val[0], 2) + Math.pow(Core.mean(region2).val[1], 2) + Math.pow(Core.mean(region2).val[2], 2));
+
+        dataFromOpenCV.AVG1W = avg1;
+        dataFromOpenCV.AVG2W = avg2;
+
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                point1A, // First point which defines the rectangle
+                point1B, // Second point which defines the rectangle
+                GREEN, // The color the rectangle is drawn in
+                3); // Thickness of the rectangle lines
+
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                point2A, // First point which defines the rectangle
+                point2B, // Second point which defines the rectangle
+                GREEN, // The color the rectangle is drawn in
+                3); // Thickness of the rectangle lines
+
+
+        // Find contours of the detected yellow regions
+
         /*
-         * Note that this method is invoked from the UI thread
-         * so whatever we do here, we must do quickly.
-         */
+        contours = new ArrayList<>();
+        hierarchy = new Mat();
+        Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        int currentStageNum = stageToRenderToViewport.ordinal();
+        // Find the largest yellow contour (blob)
+        largestContour = findLargestContour(contours);
+        nextLargestContour = findNextLargestContour(contours);
 
-        int nextStageNum = currentStageNum + 1;
+        if (largestContour != null) {
+            // Draw a red outline around the largest detected object
+            Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
+            // Calculate the width of the bounding box
 
-        if(nextStageNum >= stages.length)
-        {
-            nextStageNum = 0;
+            width = 1.2533*calculateWidth(largestContour);
+
+            // Display the width next to the label
+            String widthLabel = "Width1: " + (int) width + " pixels";
+            Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            //Display the Distance
+            String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
+            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            // Calculate the centroid of the largest contour
+            Moments moments = Imgproc.moments(largestContour);
+            cX = moments.get_m10() / moments.get_m00();
+            cY = moments.get_m01() / moments.get_m00();
+
+            // Draw a dot at the centroid
+            String label = "(" + (int) cX + ", " + (int) cY + ")";
+            Imgproc.putText(input, label, new Point(cX + 10, cY), Imgproc.FONT_HERSHEY_COMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            Imgproc.circle(input, new Point(cX, cY), 5, new Scalar(0, 255, 0), -1);
         }
 
-        stageToRenderToViewport = stages[nextStageNum];
+        if (nextLargestContour != null) {
+            // Draw a red outline around the largest detected object
+            Imgproc.drawContours(input, contours, contours.indexOf(nextLargestContour), new Scalar(255, 0, 0), 2);
+            // Calculate the width of the bounding box
+
+            width2 = 1.2533*calculateWidth(nextLargestContour);
+
+            // Display the width next to the label
+            String widthLabel = "Width2: " + (int) width2 + " pixels";
+            Imgproc.putText(input, widthLabel, new Point(cX2 + 10, cY2 + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            //Display the Distance
+            String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width2)) + " inches";
+            Imgproc.putText(input, distanceLabel, new Point(cX2 + 10, cY2 + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            // Calculate the centroid of the largest contour
+            Moments moments = Imgproc.moments(nextLargestContour);
+            cX2 = moments.get_m10() / moments.get_m00();
+            cY2 = moments.get_m01() / moments.get_m00();
+
+            // Draw a dot at the centroid
+            String label = "(" + (int) cX2 + ", " + (int) cY2 + ")";
+            Imgproc.putText(input, label, new Point(cX2 + 10, cY2), Imgproc.FONT_HERSHEY_COMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            Imgproc.circle(input, new Point(cX2, cY2), 5, new Scalar(0, 255, 0), -1);
+        }
+         */
+
+        return input;
     }
 
-    @Override
-    public Mat processFrame(Mat input)
-    {
-        contoursList.clear();
-        /*
-         * This pipeline finds the contours of yellow blobs such as the Gold Mineral
-         * from the Rover Ruckus game.
-         */
+    private Mat preprocessFrame(Mat frame) {
+        Mat hsvFrame = new Mat();
+        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
-        //color diff cb.
-        //lower cb = more blue = skystone = white
-        //higher cb = less blue = yellow stone = grey
-        Imgproc.cvtColor(input, yCbCrChan2Mat, Imgproc.COLOR_RGB2YCrCb);//converts rgb to ycrcb
-        Core.extractChannel(yCbCrChan2Mat, yCbCrChan2Mat, 2);//takes cb difference and stores
+            /* Scalar lowerYellow = new Scalar(100, 100, 100);
+            Scalar upperYellow = new Scalar(180, 255, 255);
+             */
 
-        //b&w
-        Imgproc.threshold(yCbCrChan2Mat, thresholdMat, 102, 255, Imgproc.THRESH_BINARY_INV);
-
-        //outline/contour
-        Imgproc.findContours(thresholdMat, contoursList, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-        yCbCrChan2Mat.copyTo(all);//copies mat object
-        //Imgproc.drawContours(all, contoursList, -1, new Scalar(255, 0, 0), 3, 8);//draws blue contours
+        Scalar lowerYellow = new Scalar(0, 0, 240);
+        Scalar upperYellow = new Scalar(255, 15, 255);
 
 
-        //get values from frame
-        double[] pixMid = thresholdMat.get((int)(input.rows()* midPos[1]), (int)(input.cols()* midPos[0]));//gets value at circle
-        valMid = (int)pixMid[0];
+        Mat yellowMask = new Mat();
+        Core.inRange(hsvFrame, lowerYellow, upperYellow, yellowMask);
 
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_OPEN, kernel);
+        Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_CLOSE, kernel);
 
-        //create three points
-        Point pointMid = new Point((int)(input.cols()* midPos[0]), (int)(input.rows()* midPos[1]));
+        return yellowMask;
+    }
 
-        //draw circles on those points
-        Imgproc.circle(all, pointMid,50, new Scalar( 255, 0, 0 ),1 );//draws circle
+    public static MatOfPoint findLargestContour(List<MatOfPoint> contours) {
+        double maxArea = 0;
+        MatOfPoint largestContour = null;
 
-        //draw 3 rectangles
-        Imgproc.rectangle(//3-5
-                all,
-                new Point(
-                        input.cols()*(midPos[0]-rectWidth/2),
-                        input.rows()*(midPos[1]-rectHeight/2)),
-                new Point(
-                        input.cols()*(midPos[0]+rectWidth/2),
-                        input.rows()*(midPos[1]+rectHeight/2)),
-                new Scalar(0, 255, 0), 3);
-
-        switch (stageToRenderToViewport)
-        {
-            case THRESHOLD:
-            {
-                return thresholdMat;
-            }
-
-            case detection:
-            {
-                return all;
-            }
-
-            default:
-            {
-                return input;
+        for (MatOfPoint contour : contours) {
+            double area = Imgproc.contourArea(contour);
+            if (area > maxArea) {
+                maxArea = area;
+                largestContour = contour;
             }
         }
+
+        return largestContour;
+    }
+
+    public static MatOfPoint findNextLargestContour(List<MatOfPoint> contours) {
+        double maxArea = 0;
+        MatOfPoint largestContour = null;
+        MatOfPoint nextLargestContour = null;
+
+        for (MatOfPoint contour : contours) {
+            double area = Imgproc.contourArea(contour);
+            if (area > maxArea) {
+                maxArea = area;
+                nextLargestContour = largestContour;
+                largestContour = contour;
+            }
+        }
+
+        return nextLargestContour;
+    }
+
+    public static double calculateWidth(MatOfPoint contour) {
+        Rect boundingRect = Imgproc.boundingRect(contour);
+        return boundingRect.width;
+    }
+
+    private static double getAngleTarget(double objMidpoint){
+        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
+        return midpoint;
+    }
+    public static double getDistance(double width){
+        double distance = (objectWidthInRealWorldUnits * focalLength) / width;
+        return distance;
+    }
+    public double PIDControl(double refrence, double state) {
+        double error = angleWrap(refrence - state);
+        integralSum += error * timer.seconds();
+        double derivative = (error - lastError) / (timer.seconds());
+        lastError = error;
+        timer.reset();
+        double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
+        return output;
+    }
+    public double angleWrap(double radians){
+        while(radians > Math.PI){
+            radians -= 2 * Math.PI;
+        }
+        while(radians < -Math.PI){
+            radians += 2 * Math.PI;
+        }
+        return radians;
+    }
+
+    public static double getWidth() {
+        return width;
     }
 
 }

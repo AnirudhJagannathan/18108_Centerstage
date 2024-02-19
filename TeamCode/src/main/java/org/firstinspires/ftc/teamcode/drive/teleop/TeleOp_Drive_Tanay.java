@@ -50,7 +50,7 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
                  tankDrive.tankDriving();
                  slides.horizontalSlides();
 
-                 if (gamepad2.left_bumper)
+                 /**if (gamepad2.left_bumper)
                      spintake.spin();
 
                  if (slides.getCurrentPos() < 150) {
@@ -65,9 +65,9 @@ import org.firstinspires.ftc.teamcode.drive.Sensors.SensorDistance;
                  }
                  if (gamepad2.x) {
                      spintake.outtake();
-                 }
+                 }*/
 
-                 slides.moveSlides(false);
+                 slides.moveSlides2(false);
 
                  if (gamepad1.x)
                      slides.resetSlides();

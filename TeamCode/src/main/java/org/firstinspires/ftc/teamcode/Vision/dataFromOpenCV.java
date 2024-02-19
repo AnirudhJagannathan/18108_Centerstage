@@ -17,4 +17,7 @@ public class dataFromOpenCV {
     public static int WHITE6;
     public static int WHITE7;
     public static int WHITE8;
+
+    public static double AVG1W;
+    public static double AVG2W;
 }

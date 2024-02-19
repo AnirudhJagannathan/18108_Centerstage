@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.opmode;
+package org.firstinspires.ftc.teamcode.Vision;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -70,15 +70,30 @@ public class CameraFusedPID extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
 
+        while (opModeInInit()) {
+            telemetry.addData("Target IMU Angle", getAngleTarget(cX));
+            telemetry.addData("Current IMU Angle", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+            // double power = PIDControl(Math.toRadians(0 + getAngleTarget(cX)), imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
+            // drive.power(power);
+            telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+            telemetry.addData("Coordinate2", "(" + (int) cX2 + ", " + (int) cY2 + ")");
+            telemetry.addData("Distance in Inch", (getDistance(width)));
+            telemetry.addData("Distance2 in Inch", (getDistance(width2)));
+            telemetry.update();
+        }
+
+
         waitForStart();
 
         while (opModeIsActive()) {
             telemetry.addData("Target IMU Angle", getAngleTarget(cX));
             telemetry.addData("Current IMU Angle", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
-            double power = PIDControl(Math.toRadians(0 + getAngleTarget(cX)), imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
-            drive.power(power);
+            // double power = PIDControl(Math.toRadians(0 + getAngleTarget(cX)), imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
+            // drive.power(power);
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+            telemetry.addData("Coordinate2", "(" + (int) cX2 + ", " + (int) cY2 + ")");
             telemetry.addData("Distance in Inch", (getDistance(width)));
+            telemetry.addData("Distance2 in Inch", (getDistance(width2)));
             telemetry.update();
 
             // The OpenCV pipeline automatically processes frames and handles detection
@@ -106,28 +121,31 @@ public class CameraFusedPID extends LinearOpMode {
     static class YellowBlobDetectionPipeline extends OpenCvPipeline {
         Mat yellowMask;
         List<MatOfPoint> contours;
+        Mat hierarchy = null;
+        MatOfPoint largestContour = null;
+        MatOfPoint nextLargestContour = null;
 
         @Override
         public Mat processFrame(Mat input) {
-            // Preprocess the frame to detect yellow regions
+            // Preprocess the frame to detect white regions
 
             yellowMask = preprocessFrame(input);
 
             // Find contours of the detected yellow regions
             contours = new ArrayList<>();
-            Mat hierarchy = new Mat();
+            hierarchy = new Mat();
             Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
             // Find the largest yellow contour (blob)
-            MatOfPoint largestContour = findLargestContour(contours);
-            MatOfPoint nextLargestContour = findNextLargestContour(contours);
+            largestContour = findLargestContour(contours);
+            nextLargestContour = findNextLargestContour(contours);
 
             if (largestContour != null) {
                 // Draw a red outline around the largest detected object
                 Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
                 // Calculate the width of the bounding box
 
-                width = calculateWidth(largestContour);
+                width = 1.2533*calculateWidth(largestContour);
 
                 // Display the width next to the label
                 String widthLabel = "Width1: " + (int) width + " pixels";
@@ -151,7 +169,7 @@ public class CameraFusedPID extends LinearOpMode {
                 Imgproc.drawContours(input, contours, contours.indexOf(nextLargestContour), new Scalar(255, 0, 0), 2);
                 // Calculate the width of the bounding box
 
-                width2 = calculateWidth(nextLargestContour);
+                width2 = 1.2533*calculateWidth(nextLargestContour);
 
                 // Display the width next to the label
                 String widthLabel = "Width2: " + (int) width2 + " pixels";
@@ -181,8 +199,8 @@ public class CameraFusedPID extends LinearOpMode {
             Scalar upperYellow = new Scalar(180, 255, 255);
              */
 
-            Scalar lowerYellow = new Scalar(0, 0, 230);
-            Scalar upperYellow = new Scalar(255, 25, 255);
+            Scalar lowerYellow = new Scalar(0, 0, 240);
+            Scalar upperYellow = new Scalar(255, 15, 255);
 
 
             Mat yellowMask = new Mat();

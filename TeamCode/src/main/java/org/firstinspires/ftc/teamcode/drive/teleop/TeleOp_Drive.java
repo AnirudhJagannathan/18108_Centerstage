@@ -126,7 +126,7 @@ public class TeleOp_Drive extends LinearOpMode {
                 while (spintake.getPixelBarPos() < 0.9) {
                     spintake.raiseBar();
                 }
-                fourBar.setCollectPos(0.53, 0.32);
+                fourBar.setCollectPos(0.49, 0.36);
             }
             else {
                 fourBar.setCollectPos(0, 0.85);
