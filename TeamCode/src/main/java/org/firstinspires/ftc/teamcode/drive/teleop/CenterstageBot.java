@@ -21,7 +21,7 @@ public class CenterstageBot {
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void mecanumDriving() {
+    public void mecanumDriving(double maxSpeed) {
         double drive = opmode.gamepad1.left_stick_y;
         double strafe = opmode.gamepad1.right_stick_x;
         double turn = opmode.gamepad1.left_stick_x;
@@ -35,10 +35,10 @@ public class CenterstageBot {
         }
 
         else {
-            v1 = Range.clip(-drive + strafe + turn, -1, 1);
-            v2 = Range.clip(-drive - strafe - turn, -1, 1);
-            v3 = Range.clip(-drive + strafe - turn, -1, 1);
-            v4 = Range.clip(-drive - strafe + turn, -1, 1);
+            v1 = Range.clip(-drive + strafe + turn, -maxSpeed, maxSpeed);
+            v2 = Range.clip(-drive - strafe - turn, -maxSpeed, maxSpeed);
+            v3 = Range.clip(-drive + strafe - turn, -maxSpeed, maxSpeed);
+            v4 = Range.clip(-drive - strafe + turn, -maxSpeed, maxSpeed);
         }
 
         leftFront.setPower(v1);

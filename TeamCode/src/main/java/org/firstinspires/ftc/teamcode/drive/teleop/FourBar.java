@@ -26,10 +26,10 @@ public class FourBar {
     private double CLAW_OPEN_POS = 0.60;
     private double CLAW_CLOSE_POS = 0.78;
 
-    private double FOUR_BAR_COLLECT_POS = 0;
-    private double FOUR_BAR2_COLLECT_POS = 0.85;
+    private double FOUR_BAR_COLLECT_POS = 0.90;
+    private double FOUR_BAR2_COLLECT_POS = 0;
 
-    double position = 0.85;
+    double position = 1.0;
     double position2 = 0;
     public FourBar(HardwareMap hardwareMap, LinearOpMode opmode) {
         fourBar = hardwareMap.get(Servo.class, "fourBar");
@@ -72,8 +72,9 @@ public class FourBar {
     public void openClaw() {
         // claw.setPosition(0.63);
         claw.setPosition(CLAW_CLOSE_POS);
-        claw2.setPosition(CLAW_OPEN_POS - 0.12);
+        claw2.setPosition(CLAW_OPEN_POS);
     }
+
     public void closeClaw() {
         claw.setPosition(CLAW_OPEN_POS);
         claw2.setPosition(CLAW_CLOSE_POS);
@@ -93,8 +94,8 @@ public class FourBar {
         else if(opmode.gamepad2.left_stick_y < 0){
             position += INCREMENT;
             position2 -= INCREMENT;
-            if (position >= 0.88 && position2 <= 0) {
-                position = 0.88;// Switch ramp direction
+            if (position >= 1.0 && position2 <= 0) {
+                position = 1.0;// Switch ramp direction
                 position2 = 0;
             }
             fourBar.setPosition(position);
@@ -111,11 +112,12 @@ public class FourBar {
     }
 
     public void raiseFourBar() {
-        fourBar.setPosition(0.85);
-        fourBar2.setPosition(0);
-        position = 0.85;
-        position2 = 0;
+        fourBar.setPosition(0.00);
+        fourBar2.setPosition(0.90);
+        position = 0.05;
+        position2 = 0.90;
     }
+
     public void lowerFourBar() {
         fourBar.setPosition(FOUR_BAR_COLLECT_POS);
         fourBar2.setPosition(FOUR_BAR2_COLLECT_POS);
@@ -124,10 +126,10 @@ public class FourBar {
     }
 
     public void lowerFourBarAuto() {
-        fourBar.setPosition(0.53);
-        fourBar2.setPosition(0.32);
-        position = 0.53;
-        position2 = 0.32;
+        fourBar.setPosition(0.32);
+        fourBar2.setPosition(0.53);
+        position = 0.32;
+        position2 = 0.53;
     }
 
     public void pixelFourBar() {
@@ -138,7 +140,7 @@ public class FourBar {
     }
 
     public void cutPower() {
-        ((PwmControl) claw).setPwmDisable();
+        // ((PwmControl) claw).setPwmDisable();
         ((PwmControl) fourBar).setPwmDisable();
         ((PwmControl) fourBar2).setPwmDisable();
     }

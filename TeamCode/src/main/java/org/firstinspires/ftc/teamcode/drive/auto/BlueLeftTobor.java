@@ -162,7 +162,7 @@ public class BlueLeftTobor extends LinearOpMode {
                         slides.moveSlidesToHeightABS(500, 0.9);
                     })
                     .addSpatialMarker(new Vector2d(60, -50), () -> {
-                        spintake.spin();
+                        spintake.spin(true);
                     })
                     .build();
 
@@ -294,7 +294,9 @@ public class BlueLeftTobor extends LinearOpMode {
                     .lineToLinearHeading(new Pose2d(42, -59.75, Math.toRadians(-90)),
                             SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                    .addSpatialMarker(new Vector2d(40, -50), spintake::spin)
+                    .addSpatialMarker(new Vector2d(40, -50), () -> {
+                        spintake.spin(true);
+                    })
                     .build();
 
             Trajectory traj9B = drive.trajectoryBuilder(traj8B.end())
@@ -427,7 +429,7 @@ public class BlueLeftTobor extends LinearOpMode {
                         slides.moveSlidesToHeightABS(500, 0.9);
                     })
                     .addSpatialMarker(new Vector2d(59, 50), () -> {
-                        spintake.spin();
+                        spintake.spin(true);
                     })
                     .build();
 

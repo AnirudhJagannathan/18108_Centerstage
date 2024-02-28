@@ -205,7 +205,7 @@ public class BlueRight extends LinearOpMode {
                             SampleMecanumDrive.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addSpatialMarker(new Vector2d(43.5, -10), () -> {
-                        spintake.spin();
+                        spintake.spin(true);
                     })
                     .build();
 
@@ -307,7 +307,9 @@ public class BlueRight extends LinearOpMode {
                             SampleMecanumDrive.getVelocityConstraint(
                                     0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                    .addSpatialMarker(new Vector2d(38, -2), spintake::spin)
+                    .addSpatialMarker(new Vector2d(38, -2), () -> {
+                        spintake.spin(true);
+                    })
                     .build();
 
             Trajectory traj4B = drive.trajectoryBuilder(traj3B.end())
@@ -405,7 +407,7 @@ public class BlueRight extends LinearOpMode {
                             SampleMecanumDrive.getVelocityConstraint(0.5 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addSpatialMarker(new Vector2d(62.5, 12), () -> {
-                        spintake.spin();
+                        spintake.spin(true);
                     })
                     .build();
 

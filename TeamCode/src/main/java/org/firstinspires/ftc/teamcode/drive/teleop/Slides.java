@@ -43,8 +43,8 @@ public class Slides {
 
          */
 
-        if (!((pos > 370 && power < 0)  || (pos < -50 && power > 0))) {
-            slideLeft.setPower(power);
+        if (!((pos > 2700 && power < 0)  || (pos < -35 && power > 0))) {
+            slideLeft.setPower(-power);
             slideRight.setPower(-power);
             opmode.telemetry.addData("powerL:", slideLeft.getCurrentPosition());
             opmode.telemetry.addData("powerR:", slideRight.getCurrentPosition());
@@ -65,7 +65,6 @@ public class Slides {
         /* if (getCurrentPos() < 700 && spintake.getPixelBarPos() < 0.3) {
             spintake.raiseBar();
         }
-
          */
 
         if (!((pos > 370 && power < 0)  || (pos < -50 && power > 0))) {
@@ -79,13 +78,13 @@ public class Slides {
     }
 
     public void moveSlidesToHeightABS(int encoderPos, double power) {
-        while (slideLeft.getCurrentPosition() > -encoderPos || slideLeft.getCurrentPosition() < -encoderPos) {
-            if (slideLeft.getCurrentPosition() < -encoderPos) {
+        while (slideLeft.getCurrentPosition() > encoderPos || slideLeft.getCurrentPosition() < encoderPos) {
+            if (slideLeft.getCurrentPosition() < encoderPos) {
                 slideLeft.setPower(power);
-                slideRight.setPower(-power);
+                slideRight.setPower(power);
             } else {
                 slideLeft.setPower(-power);
-                slideRight.setPower(power);
+                slideRight.setPower(-power);
             }
         }
 

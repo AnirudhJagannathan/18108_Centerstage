@@ -59,10 +59,10 @@ public class VoltageTest extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested()) {
-            csBot.mecanumDriving();
+            csBot.mecanumDriving(1);
 
             if (gamepad2.left_bumper)
-                spintake.spin();
+                spintake.spin(false);
 
             if (slides.getCurrentPos() < 150) {
                 while (spintake.getPixelBarPos() < 0.9) {

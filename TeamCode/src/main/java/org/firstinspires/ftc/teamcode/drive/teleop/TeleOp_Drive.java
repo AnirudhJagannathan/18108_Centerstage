@@ -38,6 +38,9 @@ public class TeleOp_Drive extends LinearOpMode {
     private RevBlinkinLedDriver.BlinkinPattern pattern;
     private RevBlinkinLedDriver.BlinkinPattern patternOff;
     private RevBlinkinLedDriver.BlinkinPattern pattern2;
+    private double tEAGLEDERPDUMB = 0;
+
+    double currentVoltage = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -95,6 +98,8 @@ public class TeleOp_Drive extends LinearOpMode {
 
         while (!isStopRequested()) {
 
+            currentVoltage = hardwareMap.voltageSensor.get("Control Hub").getVoltage();
+
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
 
@@ -116,21 +121,27 @@ public class TeleOp_Drive extends LinearOpMode {
                 blinkinLedDriver.setPattern(pattern);
             }
 
-            csBot.mecanumDriving();
+            if (currentVoltage < 11)
+                csBot.mecanumDriving(0.85);
+            else
+                csBot.mecanumDriving(1);
 
             if (gamepad2.left_bumper) {
                 launcher.trayStickOut();
-                spintake.spin();
+                spintake.spin(false);
             }
-            if (slides.getCurrentPos() < 150) {
-                while (spintake.getPixelBarPos() < 0.9) {
-                    spintake.raiseBar();
-                }
-                fourBar.setCollectPos(0.49, 0.36);
+            if (slides.getCurrentPos() < 500) {
+                if (gamepad2.dpad_down)
+                    fourBar.cutPower();
             }
             else {
-                fourBar.setCollectPos(0, 0.85);
+                fourBar.setCollectPos(0.90, 0);
+                if (gamepad2.dpad_down)
+                    fourBar.lowerFourBar();
             }
+
+            if (gamepad2.dpad_up)
+                fourBar.raiseFourBar();
 
             if (gamepad2.right_bumper)
                 spintake.outtake();
@@ -144,7 +155,11 @@ public class TeleOp_Drive extends LinearOpMode {
             if (gamepad1.x)
                 slides.resetSlides();
             if (gamepad1.y)
+                tEAGLEDERPDUMB = System.currentTimeMillis();
                 launcher.launch();
+            if (System.currentTimeMillis() >= tEAGLEDERPDUMB + 4000){
+                launcher.resetPos();
+            }
             if (gamepad1.b)
                 launcher.resetPos();
             if (gamepad1.left_trigger > 0.1)
@@ -172,10 +187,6 @@ public class TeleOp_Drive extends LinearOpMode {
                 launcher.trayStickOut();
             }
 
-            if (gamepad2.dpad_down)
-                fourBar.lowerFourBar();
-            if (gamepad2.dpad_up)
-                fourBar.raiseFourBar();
             if (gamepad2.dpad_left)
                 spintake.raiseBar();
             if (gamepad2.dpad_right)

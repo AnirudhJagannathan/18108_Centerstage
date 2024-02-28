@@ -35,10 +35,13 @@ public class Spintake {
         this.opmode = opmode;
     }
 
-    public void spin() {
+    public void spin(boolean auto) {
         pixelBar.setPosition(BAR_END);
         spintake.setPower(POWER);
-        stickOut();
+        if (!auto)
+            stickOut();
+        else
+            stickIntake();
     }
     public void stop() {
         spintake.setPower(0);
@@ -78,22 +81,7 @@ public class Spintake {
     }
 
     public void stickIntake() {
-        pixelStick1.setPosition(1 - STICK_END);
-        while (pixelStick1.getPosition() < 1 - STICK_END) {
-
-        }
-        double eaglederpCookadoodledoo = System.currentTimeMillis() + 300;
-        while (System.currentTimeMillis() > eaglederpCookadoodledoo){
-        }
         pixelStick1.setPosition(1 - STICK_MID);
-
-        pixelStick2.setPosition(STICK_END);
-        while (pixelStick2.getPosition() > STICK_END) {
-
-        }
-        double eaglederpCookadoodledoo2 = System.currentTimeMillis() + 300;
-        while (System.currentTimeMillis() > eaglederpCookadoodledoo2){
-        }
         pixelStick2.setPosition(STICK_MID);
     }
 
