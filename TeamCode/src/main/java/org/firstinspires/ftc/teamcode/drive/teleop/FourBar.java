@@ -80,6 +80,16 @@ public class FourBar {
         claw2.setPosition(CLAW_CLOSE_POS);
     }
 
+    public void openLeft() {
+        claw2.setPosition(CLAW_OPEN_POS);
+    }
+
+    public void openRight() {
+        claw.setPosition(CLAW_CLOSE_POS);
+    }
+
+
+
     public void manualControl(boolean spintakeOn) {
         if (opmode.gamepad2.left_stick_y > 0) {
             // Keep stepping up until we hit the max value.

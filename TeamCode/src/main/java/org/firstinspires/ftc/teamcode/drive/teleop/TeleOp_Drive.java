@@ -179,6 +179,11 @@ public class TeleOp_Drive extends LinearOpMode {
             if (gamepad2.b)
                 fourBar.openClaw();
 
+            if (gamepad2.dpad_left)
+                fourBar.openLeft();
+            if (gamepad2.dpad_right)
+                fourBar.openRight();
+
             if (gamepad2.left_stick_y < 0){
                 launcher.trayStickIn();
             }
@@ -186,11 +191,6 @@ public class TeleOp_Drive extends LinearOpMode {
             if (gamepad2.left_stick_y > 0){
                 launcher.trayStickOut();
             }
-
-            if (gamepad2.dpad_left)
-                spintake.raiseBar();
-            if (gamepad2.dpad_right)
-                spintake.lowerBar();
 
 
             if (gamepad2.left_trigger > 0.1)
