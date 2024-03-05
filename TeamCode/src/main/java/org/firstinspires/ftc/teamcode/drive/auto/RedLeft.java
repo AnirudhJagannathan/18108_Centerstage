@@ -105,7 +105,7 @@ public class RedLeft extends LinearOpMode {
 
                 if (pos == 1 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                     POS = 1
+                                                            POS = 1
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(24, -1.75, Math.toRadians(30)))
@@ -113,7 +113,6 @@ public class RedLeft extends LinearOpMode {
                                 launcher.trayStickOut();
                             })
                             .build();
-
 
                     traj2 = drive.trajectoryBuilder(traj1.end())
                             .lineToLinearHeading(new Pose2d(34.5, -7.75, Math.toRadians(90)))
@@ -161,7 +160,7 @@ public class RedLeft extends LinearOpMode {
                             .build();
 
                     traj6 = drive.trajectoryBuilder(traj5.end())
-                            .lineToLinearHeading(new Pose2d(44.75, -92.75, Math.toRadians(91)))
+                            .lineToLinearHeading(new Pose2d(41.5, -92.75, Math.toRadians(91)))
                             .addSpatialMarker(new Vector2d(48, -70), () -> {
                                 fourBar.lowerFourBar();
                                 spintake.stop();
@@ -208,7 +207,7 @@ public class RedLeft extends LinearOpMode {
                             .build();
 
                     traj10 = drive.trajectoryBuilder(traj9.end())
-                            .lineToLinearHeading(new Pose2d(44.75, -92.75, Math.toRadians(91)))
+                            .lineToLinearHeading(new Pose2d(37, -92.75, Math.toRadians(91)))
                             .addSpatialMarker(new Vector2d(48, -70), () -> {
                                 fourBar.lowerFourBar();
                                 spintake.stop();
@@ -216,7 +215,7 @@ public class RedLeft extends LinearOpMode {
                             .build();
                 } else if (pos == 2 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                     POS = 2
+                     `                                      POS = 2
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(24, -1.75, Math.toRadians(30)))
@@ -327,7 +326,7 @@ public class RedLeft extends LinearOpMode {
                             .build();
                 } else if (pos == 3 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                     POS = 3
+                                                            POS = 3
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(24, 1.75, Math.toRadians(-30)))
@@ -459,8 +458,6 @@ public class RedLeft extends LinearOpMode {
             spintake.stickIn();
             sleep(250);
             spintake.stickIntake();
-            sleep(250);
-            spintake.stickOut();
 
             drive.followTrajectory(traj5);
             drive.followTrajectory(traj6);
@@ -477,11 +474,6 @@ public class RedLeft extends LinearOpMode {
             spintake.stickOut();
             drive.followTrajectory(traj8);
 
-            sleep(250);
-            spintake.stickIn();
-            sleep(250);
-            spintake.stickIntake();
-            sleep(250);
             spintake.stickIn();
             sleep(250);
             spintake.stickIntake();

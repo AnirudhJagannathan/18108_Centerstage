@@ -116,14 +116,16 @@ public class RedRight extends LinearOpMode {
                             .build();
 
                     traj2 = drive.trajectoryBuilder(traj1.end())
-                            .lineToLinearHeading(new Pose2d(34.5, -8, Math.toRadians(90)))
+                            .lineToLinearHeading(new Pose2d(34, -10, Math.toRadians(90)),
+                                    SampleMecanumDrive.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                             .addSpatialMarker(new Vector2d(26, -4), () -> {
-                                slides.moveSlidesToHeightABS(900, 1.0);
+                                slides.moveSlidesToHeightABS(1000, 1.0);
                             })
                             .build();
 
                     traj3 = drive.trajectoryBuilder(traj2.end())
-                            .lineToLinearHeading(new Pose2d(43.5, -44, Math.toRadians(91)))
+                            .lineToLinearHeading(new Pose2d(45, -44, Math.toRadians(91)))
                             .addSpatialMarker(new Vector2d(36, -15), () -> {
                                 fourBar.lowerFourBar();
                             })
@@ -131,14 +133,14 @@ public class RedRight extends LinearOpMode {
 
                     traj4 = drive.trajectoryBuilder(traj3.end())
                             .lineToLinearHeading(new Pose2d(62, -10, Math.toRadians(91)),
-                                    SampleMecanumDrive.getVelocityConstraint(1.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                                    SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                                     SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                            .addSpatialMarker(new Vector2d(31, -41), () -> {
-                                fourBar.raiseFourBar();
+                            .addSpatialMarker(new Vector2d(44, -42), () -> {
+                                // fourBar.raiseFourBar();
                                 fourBar.closeClaw();
                             })
-                            .addSpatialMarker(new Vector2d(40, -30), () -> {
-                                slides.moveSlidesToHeightABS(0, 0.7);
+                            .addSpatialMarker(new Vector2d(50, -25), () -> {
+                                slides.moveSlidesToHeightABS(0, 0.8);
                                 spintake.stickIntake();
                             })
                             .build();
@@ -170,7 +172,7 @@ public class RedRight extends LinearOpMode {
                             })
                             .addSpatialMarker(new Vector2d(61, 0), () -> {
                                 fourBar.raiseFourBar();
-                                slides.moveSlidesToHeightABS(950, 1.0);
+                                slides.moveSlidesToHeightABS(1000, 1.0);
                             })
                             .build();
 
@@ -197,7 +199,7 @@ public class RedRight extends LinearOpMode {
                     traj2 = drive.trajectoryBuilder(trajSeq1.end())
                             .lineToLinearHeading(new Pose2d(32, -7, Math.toRadians(91)))
                             .addSpatialMarker(new Vector2d(21, -4), () -> {
-                                slides.moveSlidesToHeightABS(900, 1.0);
+                                slides.moveSlidesToHeightABS(950, 1.0);
                             })
                             .build();
 
@@ -274,7 +276,7 @@ public class RedRight extends LinearOpMode {
                     traj2 = drive.trajectoryBuilder(traj1.end())
                             .lineToLinearHeading(new Pose2d(31, -36, Math.toRadians(90)))
                             .addSpatialMarker(new Vector2d(20, -16), () -> {
-                                slides.moveSlidesToHeightABS(900, 0.8);
+                                slides.moveSlidesToHeightABS(950, 0.8);
                             })
                             .build();
 
@@ -316,6 +318,9 @@ public class RedRight extends LinearOpMode {
                             .lineToLinearHeading(new Pose2d(62, -34, Math.toRadians(91)),
                                     SampleMecanumDrive.getVelocityConstraint(0.7 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                                     SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                            .addSpatialMarker(new Vector2d(62, 45), () -> {
+                                spintake.outtake();
+                            })
                             .addSpatialMarker(new Vector2d(59, 25), () -> {
                                 launcher.trayStickIn();
                             })
@@ -350,6 +355,9 @@ public class RedRight extends LinearOpMode {
             fourBar.openClaw();
             sleep(350);
 
+            fourBar.raiseFourBar();
+            sleep(200);
+
             drive.followTrajectory(traj4);
             spintake.stickOut();
             drive.followTrajectory(traj5);
@@ -369,6 +377,9 @@ public class RedRight extends LinearOpMode {
 
             fourBar.openClaw();
             sleep(350);
+
+            fourBar.raiseFourBar();
+            sleep(200);
 
             drive.followTrajectory(traj4);
             spintake.stickOut();
@@ -394,8 +405,12 @@ public class RedRight extends LinearOpMode {
             drive.followTrajectory(traj2);
 
             drive.followTrajectory(traj3);
+
             fourBar.openClaw();
             sleep(350);
+
+            fourBar.raiseFourBar();
+            sleep(200);
 
             drive.followTrajectory(traj4);
             drive.followTrajectory(traj5);
@@ -414,6 +429,8 @@ public class RedRight extends LinearOpMode {
             fourBar.openClaw();
             sleep(350);
 
+            fourBar.raiseFourBar();
+            sleep(200);
 
             drive.followTrajectory(traj4);
             spintake.stickOut();
@@ -443,12 +460,17 @@ public class RedRight extends LinearOpMode {
             fourBar.openClaw();
             sleep(350);
 
+            fourBar.raiseFourBar();
+            sleep(200);
+
             drive.followTrajectory(traj4);
             spintake.stickOut();
             drive.followTrajectory(traj5);
 
             spintake.stickIn();
+            sleep(250);
             spintake.stickIntake();
+            sleep(250);
             spintake.stickIn();
 
             drive.followTrajectory(traj6);
@@ -459,14 +481,18 @@ public class RedRight extends LinearOpMode {
             fourBar.openClaw();
             sleep(350);
 
+            fourBar.raiseFourBar();
+            sleep(200);
+
             drive.followTrajectory(traj4);
             spintake.stickOut();
             drive.followTrajectory(traj5);
 
             spintake.stickIn();
+            sleep(250);
             spintake.stickIntake();
+            sleep(250);
             spintake.stickIn();
-            spintake.stickIntake();
 
             drive.followTrajectory(traj6);
             drive.followTrajectory(traj7);

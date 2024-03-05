@@ -34,8 +34,6 @@ public class Launcher {
         launcher.setPosition(LAUNCHER_START_POS);
         opmode.telemetry.addData("LauncherPos: ", placeHolder.getPosition());
         opmode.telemetry.update();
-
-        ((PwmControl) placeHolder).setPwmDisable();
     }
 
     public void launch() {
