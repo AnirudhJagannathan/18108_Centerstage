@@ -121,10 +121,12 @@ public class TeleOp_Drive extends LinearOpMode {
                 blinkinLedDriver.setPattern(pattern);
             }
 
-            if (currentVoltage < 11)
+            /* if (currentVoltage < 11)
                 csBot.mecanumDriving(0.85);
             else
-                csBot.mecanumDriving(1);
+             */
+            csBot.mecanumDriving(1);
+
 
             if (gamepad2.left_bumper) {
                 launcher.trayStickOut();
