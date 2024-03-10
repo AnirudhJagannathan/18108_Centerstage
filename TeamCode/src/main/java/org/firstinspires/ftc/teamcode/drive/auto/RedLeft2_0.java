@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 
 @Autonomous
-public class RedLeft extends LinearOpMode {
+public class RedLeft2_0 extends LinearOpMode {
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 578.272;
@@ -119,7 +119,7 @@ public class RedLeft extends LinearOpMode {
 
                 if (pos == 1 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                                                            POS = 1
+                     POS = 1
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(24, -1.75, Math.toRadians(30)))
@@ -275,7 +275,7 @@ public class RedLeft extends LinearOpMode {
                                     SampleMecanumDrive.getAccelerationConstraint(0.9 * DriveConstants.MAX_ACCEL))
                             .addSpatialMarker(new Vector2d(62, 2), () -> {
                                 spintake.spin(true);
-                                spintake.stickIn();
+                                spintake.stickIntake();
                             })
                             .addSpatialMarker(new Vector2d(61, -30), () -> {
                                 launcher.trayStickIn();
@@ -327,7 +327,7 @@ public class RedLeft extends LinearOpMode {
                                     SampleMecanumDrive.getAccelerationConstraint(0.9 * DriveConstants.MAX_ACCEL))
                             .addSpatialMarker(new Vector2d(62, 8), () -> {
                                 spintake.spin(true);
-                                spintake.stickIn();
+                                spintake.stickIntake();
                             })
                             .addSpatialMarker(new Vector2d(61, -30), () -> {
                                 launcher.trayStickIn();
@@ -353,7 +353,7 @@ public class RedLeft extends LinearOpMode {
                             .build();
                 } else if (pos == 3 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                                                            POS = 3
+                     POS = 3
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(24, 2.75, Math.toRadians(-30)))
@@ -707,3 +707,4 @@ public class RedLeft extends LinearOpMode {
          */
     }
 }
+

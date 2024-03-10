@@ -23,8 +23,11 @@ public class FourBar {
     private final double POS_END = 0;
     // private final double WRIST_END = 0.6;
     // private final double WRIST_START = 1.0;
-    private double CLAW_OPEN_POS = 0.60;
-    private double CLAW_CLOSE_POS = 0.78;
+    private double CLAW_OPEN_POS = 0.78;
+    private double CLAW_CLOSE_POS = 0.58;
+
+    private double CLAW2_OPEN_POS = 0.60;
+    private double CLAW2_CLOSE_POS = 0.80;
 
     private double FOUR_BAR_COLLECT_POS = 0.90;
     private double FOUR_BAR2_COLLECT_POS = 0;
@@ -71,21 +74,21 @@ public class FourBar {
 
     public void openClaw() {
         // claw.setPosition(0.63);
-        claw.setPosition(CLAW_CLOSE_POS);
-        claw2.setPosition(CLAW_OPEN_POS);
+        claw.setPosition(CLAW_OPEN_POS);
+        claw2.setPosition(CLAW2_OPEN_POS);
     }
 
     public void closeClaw() {
-        claw.setPosition(CLAW_OPEN_POS);
-        claw2.setPosition(CLAW_CLOSE_POS);
+        claw.setPosition(CLAW_CLOSE_POS);
+        claw2.setPosition(CLAW2_CLOSE_POS);
     }
 
     public void openLeft() {
-        claw2.setPosition(CLAW_OPEN_POS);
+        claw2.setPosition(CLAW2_OPEN_POS);
     }
 
     public void openRight() {
-        claw.setPosition(CLAW_CLOSE_POS);
+        claw.setPosition(CLAW_OPEN_POS);
     }
 
 

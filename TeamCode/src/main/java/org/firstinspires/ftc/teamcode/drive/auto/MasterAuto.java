@@ -16,16 +16,16 @@ public class MasterAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         short code = -1;
         while (opModeInInit()){
-            if (gamepad1.a)
+            if (gamepad1.x)
                 code = 0;
 
-            if (gamepad1.b)
+            else if (gamepad1.y)
                 code = 1;
 
-            if (gamepad1.x)
+            else if (gamepad1.a)
                 code = 2;
 
-            if (gamepad1.y)
+            else if (gamepad1.b)
                 code = 3;
         }
 
@@ -33,23 +33,27 @@ public class MasterAuto extends LinearOpMode {
 
         while (opModeIsActive())
             if (code == 0) {
-                blueRight.BlueRightAuto();
+                //blueRight.BlueRightAuto();
                 telemetry.addData("BlueRight", "BlueRight program is playing now");
                 telemetry.update();
             }
             else if (code == 1) {
-                blueLeft.BlueLeftAuto();
+                //blueLeft.BlueLeftAuto();
                 telemetry.addData("BlueLeft", "BlueLeft program is playing now");
                 telemetry.update();
             }
             else if (code == 2) {
-                redLeft.RedLeftAuto();
+                //redLeft.RedLeftAuto();
                 telemetry.addData("RedLeft", "RedLeft program is playing now");
                 telemetry.update();
             }
             else if (code == 3) {
-                redRight.RedRightAuto();
+                //redRight.RedRightAuto();
                 telemetry.addData("RedRight", "RedRight program is playing now");
+                telemetry.update();
+            }
+            else {
+                telemetry.addData("No Auto", "Your stupid eaglederp, stop being a blud");
                 telemetry.update();
             }
     }

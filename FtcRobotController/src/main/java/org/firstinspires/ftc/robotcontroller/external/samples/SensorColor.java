@@ -149,7 +149,7 @@ public class SensorColor extends LinearOpMode {
     // If possible, turn the light on in the beginning (it might already be on anyway,
     // we just make sure it is if we can).
     if (colorSensor instanceof SwitchableLight) {
-      ((SwitchableLight)colorSensor).enableLight(true);
+      ((SwitchableLight) colorSensor).enableLight(true);
     }
 
     // Wait for the start button to be pressed.
@@ -219,12 +219,12 @@ public class SensorColor extends LinearOpMode {
         telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
       }
 
-      if (hsvValues[2] < 0.002) {
+      if (gamepad1.a) {
         telemetry.addData("color", "black");
-        blinkinLedDriver.setPattern(patternOff);
+        blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.AQUA);
         // blinkinLedDriver.close();
       }
-      else{
+      if (gamepad1.b){
         telemetry.addData("pixel", "in");
         blinkinLedDriver.setPattern(pattern);
       }

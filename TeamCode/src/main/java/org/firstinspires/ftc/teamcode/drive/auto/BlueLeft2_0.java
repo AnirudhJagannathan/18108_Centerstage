@@ -137,7 +137,7 @@ public class BlueLeft2_0 extends LinearOpMode {
                             .build();
                 } else if (pos == 2 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                                                            POS = 2
+                     POS = 2
                      ------------------------------------------------------------------------------------- */
                     trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(29, 0, Math.toRadians(0)))
@@ -182,7 +182,7 @@ public class BlueLeft2_0 extends LinearOpMode {
                             .build();
                 } else if (pos == 1 && !posSet) {
                     /** -------------------------------------------------------------------------------------
-                                                            POS = 1
+                     POS = 1
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
                             .lineToLinearHeading(new Pose2d(20, 13, Math.toRadians(25)))

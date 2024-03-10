@@ -94,6 +94,10 @@ public class Spintake {
         pixelStick1.setPosition(1 - STICK_MID);
     }
 
+    public void leftIn() {
+        pixelStick1.setPosition(1 - STICK_END);
+    }
+
     public void rightIntake() {
         pixelStick2.setPosition(STICK_END);
         while (pixelStick2.getPosition() > STICK_END) {

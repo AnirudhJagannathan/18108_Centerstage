@@ -128,9 +128,11 @@ public class TeleOp_Drive extends LinearOpMode {
             csBot.mecanumDriving(1);
 
 
+
             if (gamepad2.left_bumper) {
                 launcher.trayStickOut();
-                spintake.spin(false);
+                if (slides.getCurrentPos() < 50 || fourBar.getFourBar().getPosition() < 0.85)
+                    spintake.spin(false);
             }
             if (slides.getCurrentPos() < 500) {
                 if (gamepad2.dpad_down)
