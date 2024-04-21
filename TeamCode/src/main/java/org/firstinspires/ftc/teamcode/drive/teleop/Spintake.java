@@ -27,7 +27,7 @@ public class Spintake {
 
     public Spintake(HardwareMap hardwareMap, LinearOpMode opmode) {
         spintake = hardwareMap.get(DcMotorEx.class, "spintake");
-        pixelBar = hardwareMap.get(Servo.class, "pixelBar");
+        // pixelBar = hardwareMap.get(Servo.class, "pixelBar");
         pixelStick1 = hardwareMap.get(Servo.class, "pixelStick1");
         pixelStick2 = hardwareMap.get(Servo.class, "pixelStick2");
         spintake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -36,7 +36,7 @@ public class Spintake {
     }
 
     public void spin(boolean auto) {
-        pixelBar.setPosition(BAR_END);
+        // pixelBar.setPosition(BAR_END);
         spintake.setPower(POWER);
         if (!auto)
             stickOut();
@@ -63,11 +63,11 @@ public class Spintake {
     }
 
     public void raiseBar() {
-        pixelBar.setPosition(BAR_START);
+        // pixelBar.setPosition(BAR_START);
     }
 
     public void lowerBar() {
-        pixelBar.setPosition(BAR_END);
+        // pixelBar.setPosition(BAR_END);
     }
 
     public void stickIn() {

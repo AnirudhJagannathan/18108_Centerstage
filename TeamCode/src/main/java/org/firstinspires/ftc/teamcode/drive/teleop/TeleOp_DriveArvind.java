@@ -117,11 +117,7 @@ public class TeleOp_DriveArvind extends LinearOpMode {
                     spintake.stickOut();
                 if (gamepad1.dpad_right)
                     spintake.stickIn();
-                if (distance) {
-                    if (sensorDistance.lengthDetection() < 6) {
-                        drive.setMotorPowers(0.5, 0.5, 0.5, 0.5);
-                    }
-                }
+
                 if (gamepad1.x && distance)
                     distance = false;
                 if (gamepad1.x && !(distance))

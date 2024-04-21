@@ -248,7 +248,7 @@ public class BlueLeft extends LinearOpMode {
                             .build();
 
                     traj7 = drive.trajectoryBuilder(traj6.end())
-                            .lineToLinearHeading(new Pose2d(41.5, 42, Math.toRadians(-90)))
+                            .lineToLinearHeading(new Pose2d(41.5, 43, Math.toRadians(-90)))
                             .addSpatialMarker(new Vector2d(63, 34), () -> {
                                 fourBar.lowerFourBar();
                                 spintake.stop();
@@ -333,7 +333,7 @@ public class BlueLeft extends LinearOpMode {
                         .build();
 
                 traj7 = drive.trajectoryBuilder(traj6.end())
-                        .lineToLinearHeading(new Pose2d(38, 42.25, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(38, 43, Math.toRadians(-90)))
                         .addSpatialMarker(new Vector2d(63, 34), () -> {
                             fourBar.lowerFourBar();
                             spintake.stop();

@@ -30,7 +30,7 @@ public class PixelDetectionTest extends LinearOpMode {
         while (opModeInInit() && !isStopRequested()) {
             telemetry.addData("avg1", dataFromOpenCV.AVG1W);
             telemetry.addData("avg2", dataFromOpenCV.AVG2W);
-            telemetry.addData("Distance", distanceSensor.lengthDetection());
+            //telemetry.addData("Distance", distanceSensor.lengthDetection());
             telemetry.update();
         }
 

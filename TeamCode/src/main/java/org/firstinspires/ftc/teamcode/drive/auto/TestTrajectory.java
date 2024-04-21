@@ -29,8 +29,8 @@ public class TestTrajectory extends LinearOpMode {
     private Spintake spintake;
     private Slides slides;
     private FourBar fourBar;
-    private Webcam webcam1;
-    PixelDetectionPipeline pipeline = new PixelDetectionPipeline();
+    //private Webcam webcam1;
+    //PixelDetectionPipeline pipeline = new PixelDetectionPipeline();
     private SensorDistance distance;
 
     // UNITS ARE METERS
@@ -58,12 +58,12 @@ public class TestTrajectory extends LinearOpMode {
         // SensorDistance sensorDistance = new SensorDistance(hardwareMap, this);
         slides = new Slides(hardwareMap, this);
         fourBar = new FourBar(hardwareMap, this);
-        webcam1 = new Webcam(hardwareMap, "Webcam 1");
+        //webcam1 = new Webcam(hardwareMap, "Webcam 1");
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         distance = new SensorDistance(hardwareMap, this);
         //Webcam webcam2 = new Webcam(hardwareMap, "Webcam 2");
 
-        webcam1.setPipeline(new EasyOpenCVVision());
+        //webcam1.setPipeline(new EasyOpenCVVision());
         //webcam2.setPipeline(new EasyOpenCVVision());
 
         // FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -93,7 +93,7 @@ public class TestTrajectory extends LinearOpMode {
             pos = 3;
         if (dataFromOpenCV.AVG1R == dataFromOpenCV.AVG2R && dataFromOpenCV.AVG2R == dataFromOpenCV.AVG3R)
             pos = 3;
-        webcam1.setPipeline(pipeline);
+        //webcam1.setPipeline(pipeline);
 
         // webcam1.getWebcam().setPipeline(aprilTagDetectionPipeline);
         //Creating Autonomous trajectory
@@ -127,7 +127,7 @@ public class TestTrajectory extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            switch (traj) {
+            /**switch (traj) {
                 case traj1:
                     drive.followTrajectoryAsync(traj1);
                     if (!drive.isBusy()){
@@ -144,15 +144,13 @@ public class TestTrajectory extends LinearOpMode {
                         traj = trajectory.done;
                     }
                 case done:
-                    break;
-            }
-            if (distance.lengthDetection() <= 11.8){
-                traj = trajectory.done;
-            }
+                    break; }*/
+
+            distance.lengthDetection();
             drive.update();
         }
 
-        webcam1.getWebcam().stopStreaming();
+        //webcam1.getWebcam().stopStreaming();
     }
 
 }

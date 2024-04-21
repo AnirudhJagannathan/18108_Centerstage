@@ -356,7 +356,7 @@ public class RedLeft extends LinearOpMode {
                                                             POS = 3
                      ------------------------------------------------------------------------------------- */
                     traj1 = drive.trajectoryBuilder(startPose)
-                            .lineToLinearHeading(new Pose2d(24, 2.75, Math.toRadians(-30)))
+                            .lineToLinearHeading(new Pose2d(25, 3.25, Math.toRadians(-30)))
                             .addSpatialMarker(new Vector2d(12, -2), () -> {
                                 launcher.trayStickOut();
                             })
@@ -364,7 +364,7 @@ public class RedLeft extends LinearOpMode {
 
 
                     traj2 = drive.trajectoryBuilder(traj1.end())
-                            .lineToLinearHeading(new Pose2d(34.5, 10.75, Math.toRadians(-90)))
+                            .lineToLinearHeading(new Pose2d(35.5, 11.75, Math.toRadians(-90)))
                             .build();
 
                     traj3 = drive.trajectoryBuilder(traj2.end())
